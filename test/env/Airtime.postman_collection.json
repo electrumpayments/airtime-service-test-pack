@@ -1,0 +1,2161 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Airtime",
+		"_postman_id": "4f6b6664-9c39-88f3-f34b-520f8b027be9",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Confirmations",
+			"description": "Voucher confirmations",
+			"item": [
+				{
+					"name": "Provision request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 201\"] = responseCode.code === 201;\n\nvar voucherResponse = JSON.parse(responseBody);\nvar processor = voucherResponse.processor;\nvar vendor = voucherResponse.vendor;\nvar voucher = voucherResponse.voucher;\n\npostman.setEnvironmentVariable(\"processorInstId\", processor.id);\npostman.setEnvironmentVariable(\"processorInstName\", processor.name);\npostman.setEnvironmentVariable(\"processorInstRef\", processor.reference);\npostman.setEnvironmentVariable(\"vendorInstRef\", vendor.reference);\npostman.setEnvironmentVariable(\"serialNum\", voucher.serialNumber);\npostman.setEnvironmentVariable(\"batchNum\", voucher.batchNumber);"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\npostman.setEnvironmentVariable(\"voucherId\", voucherId);\n\nvar uuidLast4 = voucherId.substr(voucherId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"voucherId\": \"{{voucherId}}\",\n    \"product\": {\n        \"productId\": \"{{fixedPriceProduct}}\"\n    },\n    \"requestTime\": \"{{timestamp}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\"\n    }\n}"
+						},
+						"description": "Voucher provision request"
+					},
+					"response": []
+				},
+				{
+					"name": "Confirmation of prior voucher",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 202\"] = responseCode.code === 202;"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar confirmationId = uuid();\npostman.setEnvironmentVariable(\"confirmationId\", confirmationId);\n\nvar uuidLast4 = confirmationId.substr(confirmationId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantConfirmRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderConfirmRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorConfirmRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorConfirmRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"confirmationId\": \"{{confirmationId}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantConfirmRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderConfirmRef}}\"\n    },\n    \"processor\": {\n        \"id\": \"{{processorInstId}}\",\n        \"name\": \"{{processorInstName}}\",\n        \"reference\": \"{{processorInstRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\",\n        \"reference\": \"{{vendorInstRef}}\"\n    },\n    \"confirmDate\": \"{{timestamp}}\",\n    \"voucher\": {\n        \"serialNumber\": \"{{serialNum}}\",\n        \"batchNumber\": \"{{batchNum}}\"\n    }\n}"
+						},
+						"description": "Voucher confirmation advice"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Error responses",
+			"description": "",
+			"item": [
+				{
+					"name": "Reversal of non-provisioned voucher",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 404\"] = responseCode.code === 404;\n\nvar errorDetail = JSON.parse(responseBody);\ntests[\"Error type is UNABLE_TO_LOCATE_RECORD\"] = errorDetail.errorType === \"UNABLE_TO_LOCATE_RECORD\";"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\nvar reversalId = uuid();\npostman.setEnvironmentVariable(\"voucherId\", voucherId);\npostman.setEnvironmentVariable(\"reversalId\", reversalId);\n\nvar provUuidLast4 = reversalId.substr(voucherId.length-4, 4);\nvar revUuidLast4 = reversalId.substr(reversalId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRef\", (\"merch\"+provUuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRef\", (\"send\"+provUuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRef\", (\"proc\"+provUuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRef\", (\"vendor\"+provUuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"merchantRevRef\", (\"merch\"+revUuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRevRef\", (\"send\"+revUuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRevRef\", (\"proc\"+revUuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRevRef\", (\"vendor\"+revUuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}/reversals/{{reversalId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reversalId\": \"{{reversalId}}\",\n    \"reversalTime\": \"{{timestamp}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantRevRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderRevRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\"\n    },\n    \"voucherRequest\" : {\n        \"voucherId\": \"{{voucherId}}\",\n        \"product\": {\n            \"productId\": \"{{fixedPriceProduct}}\"\n        },\n        \"requestTime\": \"{{timestamp}}\",\n        \"merchant\": {\n            \"merchantType\": \"{{merchantType}}\",\n            \"merchantId\": \"{{merchantId}}\",\n            \"merchantName\": \"{{merchantName}}\",\n            \"terminalId\": \"{{termId}}\",\n            \"institution\": {\n                \"id\": \"{{merchInstId}}\",\n                \"name\": \"{{merchInstName}}\",\n                \"reference\": \"{{merchantRef}}\"\n            }\n        },\n        \"sender\": {\n            \"id\": \"{{senderInstId}}\",\n            \"name\": \"{{senderInstName}}\",\n            \"reference\": \"{{senderRef}}\"\n        },\n        \"vendor\": {\n            \"id\": \"{{vendorInstId}}\",\n            \"name\": \"{{vendorInstName}}\"\n        }\n    }\n}"
+						},
+						"description": "Voucher reversal advice for a provision which was never processed by the vendor."
+					},
+					"response": []
+				},
+				{
+					"name": "Confirmation of non-provisioned voucher",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 404\"] = responseCode.code === 404;\n\nvar errorDetail = JSON.parse(responseBody);\ntests[\"Error type is UNABLE_TO_LOCATE_RECORD\"] = errorDetail.errorType === \"UNABLE_TO_LOCATE_RECORD\";"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\nvar confirmationId = uuid();\npostman.setEnvironmentVariable(\"voucherId\", voucherId);\npostman.setEnvironmentVariable(\"confirmationId\", confirmationId);\n\nvar uuidLast4 = confirmationId.substr(confirmationId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantConfirmRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderConfirmRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorConfirmRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorConfirmRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"confirmationId\": \"{{confirmationId}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantConfirmRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderConfirmRef}}\"\n    },\n    \"processor\": {\n        \"id\": \"{{processorInstId}}\",\n        \"name\": \"{{processorInstName}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\"\n    },\n    \"confirmDate\": \"{{timestamp}}\",\n    \"voucher\": {\n        \"serialNumber\": \"123\"\n    }\n}"
+						},
+						"description": "Failed attempt to confirm a voucher which wasn't provisioned."
+					},
+					"response": []
+				},
+				{
+					"name": "Void of non-provisioned voucher",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 404\"] = responseCode.code === 404;\n\nvar errorDetail = JSON.parse(responseBody);\ntests[\"Error type is UNABLE_TO_LOCATE_RECORD\"] = errorDetail.errorType === \"UNABLE_TO_LOCATE_RECORD\";"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\nvar voidId = uuid();\npostman.setEnvironmentVariable(\"voucherId\", voucherId);\npostman.setEnvironmentVariable(\"voidId\", voidId);\n\nvar uuidLast4 = voidId.substr(voidId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantVoidRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderVoidRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorVoidRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorVoidRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}/voids/{{voidId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"voidId\": \"{{voidId}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantVoidRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderVoidRef}}\"\n    },\n    \"processor\": {\n        \"id\": \"{{processorInstId}}\",\n        \"name\": \"{{processorInstName}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\"\n    },\n    \"voidDate\": \"{{timestamp}}\",\n    \"voucher\": {\n        \"serialNumber\": \"123\"\n    }\n}"
+						},
+						"description": "Failed attempt to void a voucher which wasn't provisioned"
+					},
+					"response": []
+				},
+				{
+					"name": "Provision request copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 201\"] = responseCode.code === 201;\n\nvar voucherResponse = JSON.parse(responseBody);\nvar processor = voucherResponse.processor;\nvar vendor = voucherResponse.vendor;\nvar voucher = voucherResponse.voucher;\nvar requestTime = voucherResponse.requestTime\n\npostman.setEnvironmentVariable(\"processorInstId\", processor.id);\npostman.setEnvironmentVariable(\"processorInstName\", processor.name);\npostman.setEnvironmentVariable(\"processorInstRef\", processor.reference);\npostman.setEnvironmentVariable(\"vendorInstRef\", vendor.reference);\npostman.setEnvironmentVariable(\"serialNum\", voucher.serialNumber);\npostman.setEnvironmentVariable(\"batchNum\", voucher.batchNumber);\npostman.setEnvironmentVariable(\"requestTime\", requestTime);"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\npostman.setEnvironmentVariable(\"voucherId\", voucherId);\n\nvar uuidLast4 = voucherId.substr(voucherId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"voucherId\": \"{{voucherId}}\",\n    \"product\": {\n        \"productId\": \"{{fixedPriceProduct}}\"\n    },\n    \"requestTime\": \"{{timestamp}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\"\n    }\n}"
+						},
+						"description": "Voucher provision request"
+					},
+					"response": []
+				},
+				{
+					"name": "Confirmation of prior voucher",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 202\"] = responseCode.code === 202;"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar confirmationId = uuid();\npostman.setEnvironmentVariable(\"confirmationId\", confirmationId);\n\nvar uuidLast4 = confirmationId.substr(confirmationId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantConfirmRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderConfirmRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorConfirmRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorConfirmRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"confirmationId\": \"{{confirmationId}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantConfirmRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderConfirmRef}}\"\n    },\n    \"processor\": {\n        \"id\": \"{{processorInstId}}\",\n        \"name\": \"{{processorInstName}}\",\n        \"reference\": \"{{processorInstRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\",\n        \"reference\": \"{{vendorInstRef}}\"\n    },\n    \"confirmDate\": \"{{timestamp}}\",\n    \"voucher\": {\n        \"serialNumber\": \"{{serialNum}}\",\n        \"batchNumber\": \"{{batchNum}}\"\n    }\n}"
+						},
+						"description": "Voucher confirmation advice"
+					},
+					"response": []
+				},
+				{
+					"name": "Reversal of confirmed voucher",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is VOUCHER_ALREADY_CONFIRMED\"] = jsonData.errorType === \"VOUCHER_ALREADY_CONFIRMED\";"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar reversalId = uuid();\npostman.setEnvironmentVariable(\"reversalId\", reversalId);\n\nvar uuidLast4 = reversalId.substr(reversalId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRevRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRevRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRevRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRevRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}/reversals/{{reversalId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reversalId\": \"{{reversalId}}\",\n    \"reversalTime\": \"{{timestamp}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantRevRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderRevRef}}\"\n    },\n    \"processor\": {\n        \"id\": \"{{processorInstId}}\",\n        \"name\": \"{{processorInstName}}\",\n        \"reference\": \"{{processorInstRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\",\n        \"reference\": \"{{vendorInstRef}}\"\n    },\n    \"voucherRequest\" : {\n        \"voucherId\": \"{{voucherId}}\",\n        \"product\": {\n            \"productId\": \"{{fixedPriceProduct}}\"\n        },\n        \"requestTime\": \"{{requestTime}}\",\n        \"merchant\": {\n            \"merchantType\": \"{{merchantType}}\",\n            \"merchantId\": \"{{merchantId}}\",\n            \"merchantName\": \"{{merchantName}}\",\n            \"terminalId\": \"{{termId}}\",\n            \"institution\": {\n                \"id\": \"{{merchInstId}}\",\n                \"name\": \"{{merchInstName}}\",\n                \"reference\": \"{{merchantRef}}\"\n            }\n        },\n        \"sender\": {\n            \"id\": \"{{senderInstId}}\",\n            \"name\": \"{{senderInstName}}\",\n            \"reference\": \"{{senderRef}}\"\n        },\n        \"vendor\": {\n            \"id\": \"{{vendorInstId}}\",\n            \"name\": \"{{vendorInstName}}\"\n        }\n    }\n}"
+						},
+						"description": "Failed attempt to reverse a voucher which has been confirmed."
+					},
+					"response": []
+				},
+				{
+					"name": "Void of confirmed voucher",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is VOUCHER_ALREADY_CONFIRMED\"] = jsonData.errorType === \"VOUCHER_ALREADY_CONFIRMED\";"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voidId = uuid();\npostman.setEnvironmentVariable(\"voidId\", voidId);\n\nvar uuidLast4 = voidId.substr(voidId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantVoidRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderVoidRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorVoidRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorVoidRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}/voids/{{voidId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"voidId\": \"{{voidId}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantVoidRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderVoidRef}}\"\n    },\n    \"processor\": {\n        \"id\": \"{{processorInstId}}\",\n        \"name\": \"{{processorInstName}}\",\n        \"reference\": \"{{processorInstRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\",\n        \"reference\": \"{{vendorInstRef}}\"\n    },\n    \"voidDate\": \"{{timestamp}}\",\n    \"voucher\": {\n        \"serialNumber\": \"{{serialNum}}\",\n        \"batchNumber\": \"{{batchNum}}\"\n    }\n}"
+						},
+						"description": "Failed attempt to void a confirmed voucher"
+					},
+					"response": []
+				},
+				{
+					"name": "Provision request copy copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 201\"] = responseCode.code === 201;\n\nvar voucherResponse = JSON.parse(responseBody);\nvar processor = voucherResponse.processor;\nvar vendor = voucherResponse.vendor;\nvar voucher = voucherResponse.voucher;\nvar requestTime = voucherResponse.requestTime\n\npostman.setEnvironmentVariable(\"processorInstId\", processor.id);\npostman.setEnvironmentVariable(\"processorInstName\", processor.name);\npostman.setEnvironmentVariable(\"processorInstRef\", processor.reference);\npostman.setEnvironmentVariable(\"vendorInstRef\", vendor.reference);\npostman.setEnvironmentVariable(\"serialNum\", voucher.serialNumber);\npostman.setEnvironmentVariable(\"batchNum\", voucher.batchNumber);\npostman.setEnvironmentVariable(\"requestTime\", requestTime);"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\npostman.setEnvironmentVariable(\"voucherId\", voucherId);\n\nvar uuidLast4 = voucherId.substr(voucherId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"voucherId\": \"{{voucherId}}\",\n    \"product\": {\n        \"productId\": \"{{fixedPriceProduct}}\"\n    },\n    \"requestTime\": \"{{timestamp}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\"\n    }\n}"
+						},
+						"description": "Voucher provision request"
+					},
+					"response": []
+				},
+				{
+					"name": "Reversal of prior provision",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 202\"] = responseCode.code === 202;"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar reversalId = uuid();\npostman.setEnvironmentVariable(\"reversalId\", reversalId);\n\nvar uuidLast4 = reversalId.substr(reversalId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRevRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRevRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRevRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRevRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}/reversals/{{reversalId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reversalId\": \"{{reversalId}}\",\n    \"reversalTime\": \"{{timestamp}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantRevRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderRevRef}}\"\n    },\n    \"processor\": {\n        \"id\": \"{{processorInstId}}\",\n        \"name\": \"{{processorInstName}}\",\n        \"reference\": \"{{processorInstRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\",\n        \"reference\": \"{{vendorInstRef}}\"\n    },\n    \"voucherRequest\" : {\n        \"voucherId\": \"{{voucherId}}\",\n        \"product\": {\n            \"productId\": \"{{fixedPriceProduct}}\"\n        },\n        \"requestTime\": \"{{requestTime}}\",\n        \"merchant\": {\n            \"merchantType\": \"{{merchantType}}\",\n            \"merchantId\": \"{{merchantId}}\",\n            \"merchantName\": \"{{merchantName}}\",\n            \"terminalId\": \"{{termId}}\",\n            \"institution\": {\n                \"id\": \"{{merchInstId}}\",\n                \"name\": \"{{merchInstName}}\",\n                \"reference\": \"{{merchantRef}}\"\n            }\n        },\n        \"sender\": {\n            \"id\": \"{{senderInstId}}\",\n            \"name\": \"{{senderInstName}}\",\n            \"reference\": \"{{senderRef}}\"\n        },\n        \"vendor\": {\n            \"id\": \"{{vendorInstId}}\",\n            \"name\": \"{{vendorInstName}}\"\n        }\n    }\n}"
+						},
+						"description": "Voucher reversal advice"
+					},
+					"response": []
+				},
+				{
+					"name": "Confirmation of reversed voucher",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is VOUCHER_ALREADY_REVERSED\"] = jsonData.errorType === \"VOUCHER_ALREADY_REVERSED\";"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar confirmationId = uuid();\npostman.setEnvironmentVariable(\"confirmationId\", confirmationId);\n\nvar uuidLast4 = confirmationId.substr(confirmationId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantConfirmRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderConfirmRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorConfirmRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorConfirmRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"confirmationId\": \"{{confirmationId}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantConfirmRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderConfirmRef}}\"\n    },\n    \"processor\": {\n        \"id\": \"{{processorInstId}}\",\n        \"name\": \"{{processorInstName}}\",\n        \"reference\": \"{{processorInstRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\",\n        \"reference\": \"{{vendorInstRef}}\"\n    },\n    \"confirmDate\": \"{{timestamp}}\",\n    \"voucher\": {\n        \"serialNumber\": \"{{serialNum}}\",\n        \"batchNumber\": \"{{batchNum}}\"\n    }\n}"
+						},
+						"description": "Failed attempt to confirm a voucher which was reversed."
+					},
+					"response": []
+				},
+				{
+					"name": "Void of reversed voucher",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is VOUCHER_ALREADY_REVERSED\"] = jsonData.errorType === \"VOUCHER_ALREADY_REVERSED\";"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voidId = uuid();\npostman.setEnvironmentVariable(\"voidId\", voidId);\n\nvar uuidLast4 = voidId.substr(voidId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantVoidRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderVoidRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorVoidRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorVoidRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}/voids/{{voidId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"voidId\": \"{{voidId}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantVoidRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderVoidRef}}\"\n    },\n    \"processor\": {\n        \"id\": \"{{processorInstId}}\",\n        \"name\": \"{{processorInstName}}\",\n        \"reference\": \"{{processorInstRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\",\n        \"reference\": \"{{vendorInstRef}}\"\n    },\n    \"voidDate\": \"{{timestamp}}\",\n    \"voucher\": {\n        \"serialNumber\": \"{{serialNum}}\",\n        \"batchNumber\": \"{{batchNum}}\"\n    }\n}"
+						},
+						"description": "Failed attempt to void a reversed voucher"
+					},
+					"response": []
+				},
+				{
+					"name": "Provision request copy copy copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 201\"] = responseCode.code === 201;\n\nvar voucherResponse = JSON.parse(responseBody);\nvar processor = voucherResponse.processor;\nvar vendor = voucherResponse.vendor;\nvar voucher = voucherResponse.voucher;\nvar requestTime = voucherResponse.requestTime;\n\npostman.setEnvironmentVariable(\"processorInstId\", processor.id);\npostman.setEnvironmentVariable(\"processorInstName\", processor.name);\npostman.setEnvironmentVariable(\"processorInstRef\", processor.reference);\npostman.setEnvironmentVariable(\"vendorInstRef\", vendor.reference);\npostman.setEnvironmentVariable(\"serialNum\", voucher.serialNumber);\npostman.setEnvironmentVariable(\"batchNum\", voucher.batchNumber);\npostman.setEnvironmentVariable(\"requestTime\", requestTime);"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\npostman.setEnvironmentVariable(\"voucherId\", voucherId);\n\nvar uuidLast4 = voucherId.substr(voucherId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"voucherId\": \"{{voucherId}}\",\n    \"product\": {\n        \"productId\": \"{{fixedPriceProduct}}\"\n    },\n    \"requestTime\": \"{{timestamp}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\"\n    }\n}"
+						},
+						"description": "Voucher provision request"
+					},
+					"response": []
+				},
+				{
+					"name": "Void of prior voucher",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 202\"] = responseCode.code === 202;"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voidId = uuid();\npostman.setEnvironmentVariable(\"voidId\", voidId);\n\nvar uuidLast4 = voidId.substr(voidId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantVoidRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderVoidRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorVoidRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorVoidRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}/voids/{{voidId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"voidId\": \"{{voidId}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantVoidRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderVoidRef}}\"\n    },\n    \"processor\": {\n        \"id\": \"{{processorInstId}}\",\n        \"name\": \"{{processorInstName}}\",\n        \"reference\": \"{{processorInstRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\",\n        \"reference\": \"{{vendorInstRef}}\"\n    },\n    \"voidDate\": \"{{timestamp}}\",\n    \"voucher\": {\n        \"serialNumber\": \"{{serialNum}}\",\n        \"batchNumber\": \"{{batchNum}}\"\n    }\n}"
+						},
+						"description": "Voucher void advice"
+					},
+					"response": []
+				},
+				{
+					"name": "Confirmation of voided voucher",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is VOUCHER_ALREADY_VOIDED\"] = jsonData.errorType === \"VOUCHER_ALREADY_VOIDED\";"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar confirmationId = uuid();\npostman.setEnvironmentVariable(\"confirmationId\", confirmationId);\n\nvar uuidLast4 = confirmationId.substr(confirmationId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantConfirmRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderConfirmRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorConfirmRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorConfirmRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"confirmationId\": \"{{confirmationId}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantConfirmRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderConfirmRef}}\"\n    },\n    \"processor\": {\n        \"id\": \"{{processorInstId}}\",\n        \"name\": \"{{processorInstName}}\",\n        \"reference\": \"{{processorInstRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\",\n        \"reference\": \"{{vendorInstRef}}\"\n    },\n    \"confirmDate\": \"{{timestamp}}\",\n    \"voucher\": {\n        \"serialNumber\": \"{{serialNum}}\",\n        \"batchNumber\": \"{{batchNum}}\"\n    }\n}"
+						},
+						"description": "Failed attempt to confirm a voucher which was voided."
+					},
+					"response": []
+				},
+				{
+					"name": "Reversal of voided voucher",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is VOUCHER_ALREADY_VOIDED\"] = jsonData.errorType === \"VOUCHER_ALREADY_VOIDED\";"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar reversalId = uuid();\npostman.setEnvironmentVariable(\"reversalId\", reversalId);\n\nvar uuidLast4 = reversalId.substr(reversalId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRevRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRevRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRevRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRevRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}/reversals/{{reversalId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reversalId\": \"{{reversalId}}\",\n    \"reversalTime\": \"{{timestamp}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantRevRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderRevRef}}\"\n    },\n    \"processor\": {\n        \"id\": \"{{processorInstId}}\",\n        \"name\": \"{{processorInstName}}\",\n        \"reference\": \"{{processorInstRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\",\n        \"reference\": \"{{vendorInstRef}}\"\n    },\n    \"voucherRequest\" : {\n        \"voucherId\": \"{{voucherId}}\",\n        \"product\": {\n            \"productId\": \"{{fixedPriceProduct}}\"\n        },\n        \"requestTime\": \"{{requestTime}}\",\n        \"merchant\": {\n            \"merchantType\": \"{{merchantType}}\",\n            \"merchantId\": \"{{merchantId}}\",\n            \"merchantName\": \"{{merchantName}}\",\n            \"terminalId\": \"{{termId}}\",\n            \"institution\": {\n                \"id\": \"{{merchInstId}}\",\n                \"name\": \"{{merchInstName}}\",\n                \"reference\": \"{{merchantRef}}\"\n            }\n        },\n        \"sender\": {\n            \"id\": \"{{senderInstId}}\",\n            \"name\": \"{{senderInstName}}\",\n            \"reference\": \"{{senderRef}}\"\n        },\n        \"vendor\": {\n            \"id\": \"{{vendorInstId}}\",\n            \"name\": \"{{vendorInstName}}\"\n        }\n    }\n}"
+						},
+						"description": "Failed attempt to reverse a voucher which has been voided."
+					},
+					"response": []
+				},
+				{
+					"name": "Provision request copy copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 201\"] = responseCode.code === 201;\n\nvar voucherResponse = JSON.parse(responseBody);\nvar processor = voucherResponse.processor;\nvar vendor = voucherResponse.vendor;\nvar voucher = voucherResponse.voucher;\nvar requestTime = voucherResponse.requestTime\n\npostman.setEnvironmentVariable(\"processorInstId\", processor.id);\npostman.setEnvironmentVariable(\"processorInstName\", processor.name);\npostman.setEnvironmentVariable(\"processorInstRef\", processor.reference);\npostman.setEnvironmentVariable(\"vendorInstRef\", vendor.reference);\npostman.setEnvironmentVariable(\"serialNum\", voucher.serialNumber);\npostman.setEnvironmentVariable(\"batchNum\", voucher.batchNumber);\npostman.setEnvironmentVariable(\"requestTime\", requestTime);"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\npostman.setEnvironmentVariable(\"voucherId\", voucherId);\n\nvar uuidLast4 = voucherId.substr(voucherId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"voucherId\": \"{{voucherId}}\",\n    \"product\": {\n        \"productId\": \"{{fixedPriceProduct}}\"\n    },\n    \"requestTime\": \"{{timestamp}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\"\n    }\n}"
+						},
+						"description": "Voucher provision request"
+					},
+					"response": []
+				},
+				{
+					"name": "Duplicate provision request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is DUPLICATE_RECORD\"] = jsonData.errorType === \"DUPLICATE_RECORD\";"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\n//don't update with a new voucher ID in the request.\n//postman.setEnvironmentVariable(\"voucherId\", voucherId);\n\nvar uuidLast4 = voucherId.substr(voucherId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"voucherId\": \"{{voucherId}}\",\n    \"product\": {\n        \"productId\": \"{{fixedPriceProduct}}\"\n    },\n    \"requestTime\": \"{{timestamp}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\"\n    }\n}"
+						},
+						"description": "Failed duplicate voucher provision request"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Format testing",
+			"description": "Messages intended to test the server side validation of fields sent to the server and field formatting of responses from the server.",
+			"item": [
+				{
+					"name": "Missing voucher ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\npostman.setEnvironmentVariable(\"voucherId\", voucherId);\n\nvar uuidLast4 = voucherId.substr(voucherId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"product\": {\n        \"productId\": \"{{fixedPriceProduct}}\"\n    },\n    \"requestTime\": \"{{timestamp}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\"\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Missing product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\npostman.setEnvironmentVariable(\"voucherId\", voucherId);\n\nvar uuidLast4 = voucherId.substr(voucherId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"voucherId\": \"{{voucherId}}\",\n    \"requestTime\": \"{{timestamp}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\"\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Missing product ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\npostman.setEnvironmentVariable(\"voucherId\", voucherId);\n\nvar uuidLast4 = voucherId.substr(voucherId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"voucherId\": \"{{voucherId}}\",\n    \"product\": {\n    },\n    \"requestTime\": \"{{timestamp}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\"\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Missing request time",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\npostman.setEnvironmentVariable(\"voucherId\", voucherId);\n\nvar uuidLast4 = voucherId.substr(voucherId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"voucherId\": \"{{voucherId}}\",\n    \"product\": {\n        \"productId\": \"{{fixedPriceProduct}}\"\n    },\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\"\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Missing merchant",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\npostman.setEnvironmentVariable(\"voucherId\", voucherId);\n\nvar uuidLast4 = voucherId.substr(voucherId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"voucherId\": \"{{voucherId}}\",\n    \"product\": {\n        \"productId\": \"{{fixedPriceProduct}}\"\n    },\n    \"requestTime\": \"{{timestamp}}\",\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\"\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Missing merchant type",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\npostman.setEnvironmentVariable(\"voucherId\", voucherId);\n\nvar uuidLast4 = voucherId.substr(voucherId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"voucherId\": \"{{voucherId}}\",\n    \"product\": {\n        \"productId\": \"{{fixedPriceProduct}}\"\n    },\n    \"requestTime\": \"{{timestamp}}\",\n    \"merchant\": {\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\"\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Missing merchant ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\npostman.setEnvironmentVariable(\"voucherId\", voucherId);\n\nvar uuidLast4 = voucherId.substr(voucherId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"voucherId\": \"{{voucherId}}\",\n    \"product\": {\n        \"productId\": \"{{fixedPriceProduct}}\"\n    },\n    \"requestTime\": \"{{timestamp}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\"\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Missing merchant name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\npostman.setEnvironmentVariable(\"voucherId\", voucherId);\n\nvar uuidLast4 = voucherId.substr(voucherId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"voucherId\": \"{{voucherId}}\",\n    \"product\": {\n        \"productId\": \"{{fixedPriceProduct}}\"\n    },\n    \"requestTime\": \"{{timestamp}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\"\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Missing merchant terminal ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\npostman.setEnvironmentVariable(\"voucherId\", voucherId);\n\nvar uuidLast4 = voucherId.substr(voucherId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"voucherId\": \"{{voucherId}}\",\n    \"product\": {\n        \"productId\": \"{{fixedPriceProduct}}\"\n    },\n    \"requestTime\": \"{{timestamp}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\"\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Missing merchant institution",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\npostman.setEnvironmentVariable(\"voucherId\", voucherId);\n\nvar uuidLast4 = voucherId.substr(voucherId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"voucherId\": \"{{voucherId}}\",\n    \"product\": {\n        \"productId\": \"{{fixedPriceProduct}}\"\n    },\n    \"requestTime\": \"{{timestamp}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\"\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\"\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Missing merchant institution ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\npostman.setEnvironmentVariable(\"voucherId\", voucherId);\n\nvar uuidLast4 = voucherId.substr(voucherId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"voucherId\": \"{{voucherId}}\",\n    \"product\": {\n        \"productId\": \"{{fixedPriceProduct}}\"\n    },\n    \"requestTime\": \"{{timestamp}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\"\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Missing merchant institution name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\npostman.setEnvironmentVariable(\"voucherId\", voucherId);\n\nvar uuidLast4 = voucherId.substr(voucherId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"voucherId\": \"{{voucherId}}\",\n    \"product\": {\n        \"productId\": \"{{fixedPriceProduct}}\"\n    },\n    \"requestTime\": \"{{timestamp}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"reference\": \"{{merchantRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\"\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Missing sender",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\npostman.setEnvironmentVariable(\"voucherId\", voucherId);\n\nvar uuidLast4 = voucherId.substr(voucherId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"voucherId\": \"{{voucherId}}\",\n    \"product\": {\n        \"productId\": \"{{fixedPriceProduct}}\"\n    },\n    \"requestTime\": \"{{timestamp}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantRef}}\"\n        }\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\"\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Missing sender ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\npostman.setEnvironmentVariable(\"voucherId\", voucherId);\n\nvar uuidLast4 = voucherId.substr(voucherId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"voucherId\": \"{{voucherId}}\",\n    \"product\": {\n        \"productId\": \"{{fixedPriceProduct}}\"\n    },\n    \"requestTime\": \"{{timestamp}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantRef}}\"\n        }\n    },\n    \"sender\": {\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\"\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Missing sender name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\npostman.setEnvironmentVariable(\"voucherId\", voucherId);\n\nvar uuidLast4 = voucherId.substr(voucherId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"voucherId\": \"{{voucherId}}\",\n    \"product\": {\n        \"productId\": \"{{fixedPriceProduct}}\"\n    },\n    \"requestTime\": \"{{timestamp}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"reference\": \"{{senderRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\"\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Missing vendor",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\npostman.setEnvironmentVariable(\"voucherId\", voucherId);\n\nvar uuidLast4 = voucherId.substr(voucherId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"voucherId\": \"{{voucherId}}\",\n    \"product\": {\n        \"productId\": \"{{fixedPriceProduct}}\"\n    },\n    \"requestTime\": \"{{timestamp}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderRef}}\"\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Missing vendor ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\npostman.setEnvironmentVariable(\"voucherId\", voucherId);\n\nvar uuidLast4 = voucherId.substr(voucherId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"voucherId\": \"{{voucherId}}\",\n    \"product\": {\n        \"productId\": \"{{fixedPriceProduct}}\"\n    },\n    \"requestTime\": \"{{timestamp}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderRef}}\"\n    },\n    \"vendor\": {\n        \"name\": \"{{vendorInstName}}\"\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Missing vendor name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\npostman.setEnvironmentVariable(\"voucherId\", voucherId);\n\nvar uuidLast4 = voucherId.substr(voucherId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"voucherId\": \"{{voucherId}}\",\n    \"product\": {\n        \"productId\": \"{{fixedPriceProduct}}\"\n    },\n    \"requestTime\": \"{{timestamp}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\"\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Provisions",
+			"description": "",
+			"item": [
+				{
+					"name": "Minimalist provision request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 201\"] = responseCode.code === 201;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Voucher ID returned\"] = jsonData.voucherId === postman.getEnvironmentVariable(\"voucherId\");\n\nvar voucher = jsonData.voucher;\ntests[\"Voucher present\"] = voucher !== null;\ntests[\"Voucher serial number present\"] = voucher.serialNumber !== null;\ntests[\"Voucher pin present\"] = voucher.pin !== null;\ntests[\"Voucher request time present\"] = jsonData.requestTime !== null;\n\nvar merchant = jsonData.merchant;\ntests[\"Merchant present\"] = merchant !== null;\ntests[\"Merchant type echoed\"] = merchant.merchantType === postman.getEnvironmentVariable(\"merchantType\");\ntests[\"Merchant ID echoed\"] = merchant.merchantId === postman.getEnvironmentVariable(\"merchantId\");\ntests[\"Merchant name echoed\"] = merchant.merchantName === postman.getEnvironmentVariable(\"merchantName\");\ntests[\"Merchant terminal echoed\"] = merchant.terminalId === postman.getEnvironmentVariable(\"termId\");\n\nvar merchantInst = merchant.institution;\ntests[\"Merchant institution present\"] = merchantInst !== null;\ntests[\"Merchant institution ID echoed\"] = merchantInst.id === postman.getEnvironmentVariable(\"merchInstId\");\ntests[\"Merchant institution name echoed\"] = merchantInst.name === postman.getEnvironmentVariable(\"merchInstName\");\ntests[\"Merchant institution reference present\"] = merchantInst.reference !== null;\n\nvar processor = jsonData.processor;\ntests[\"Processor institution present\"] = processor !== null;\ntests[\"Processor institution ID present\"] = processor.id !== null;\ntests[\"Processor institution name present\"] = processor.name !== null;\ntests[\"Processor institution reference present\"] = processor.reference !== null;\n\nvar vendor = jsonData.vendor;\ntests[\"Vendor institution present\"] = vendor !== null;\ntests[\"Vendor institution ID echoed\"] = vendor.id === postman.getEnvironmentVariable(\"vendorInstId\");\ntests[\"Vendor institution name echoed\"] = vendor.name === postman.getEnvironmentVariable(\"vendorInstName\");\ntests[\"Vendor institution reference present\"] = vendor.reference !== null;"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\npostman.setEnvironmentVariable(\"voucherId\", voucherId);\n\nvar uuidLast4 = voucherId.substr(voucherId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"voucherId\": \"{{voucherId}}\",\n    \"product\": {\n        \"productId\": \"{{fixedPriceProduct}}\"\n    },\n    \"requestTime\": \"{{timestamp}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\"\n    }\n}"
+						},
+						"description": "Voucher provision request"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reversals",
+			"description": "",
+			"item": [
+				{
+					"name": "Provision request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 201\"] = responseCode.code === 201;\n\nvar jsonData = JSON.parse(responseBody);\nvar requestTime = jsonData.requestTime\npostman.setEnvironmentVariable(\"requestTime\", requestTime);"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\npostman.setEnvironmentVariable(\"voucherId\", voucherId);\n\nvar uuidLast4 = voucherId.substr(voucherId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"voucherId\": \"{{voucherId}}\",\n    \"product\": {\n        \"productId\": \"{{fixedPriceProduct}}\"\n    },\n    \"requestTime\": \"{{timestamp}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\"\n    }\n}"
+						},
+						"description": "Voucher provision request"
+					},
+					"response": []
+				},
+				{
+					"name": "Reversal of prior provision",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 202\"] = responseCode.code === 202;"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar reversalId = uuid();\npostman.setEnvironmentVariable(\"reversalId\", reversalId);\n\nvar uuidLast4 = reversalId.substr(reversalId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRevRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRevRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRevRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRevRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}/reversals/{{reversalId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reversalId\": \"{{reversalId}}\",\n    \"reversalTime\": \"{{timestamp}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantRevRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderRevRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\"\n    },\n    \"voucherRequest\" : {\n        \"voucherId\": \"{{voucherId}}\",\n        \"product\": {\n            \"productId\": \"{{fixedPriceProduct}}\"\n        },\n        \"requestTime\": \"{{requestTime}}\",\n        \"merchant\": {\n            \"merchantType\": \"{{merchantType}}\",\n            \"merchantId\": \"{{merchantId}}\",\n            \"merchantName\": \"{{merchantName}}\",\n            \"terminalId\": \"{{termId}}\",\n            \"institution\": {\n                \"id\": \"{{merchInstId}}\",\n                \"name\": \"{{merchInstName}}\",\n                \"reference\": \"{{merchantRef}}\"\n            }\n        },\n        \"sender\": {\n            \"id\": \"{{senderInstId}}\",\n            \"name\": \"{{senderInstName}}\",\n            \"reference\": \"{{senderRef}}\"\n        },\n        \"vendor\": {\n            \"id\": \"{{vendorInstId}}\",\n            \"name\": \"{{vendorInstName}}\"\n        }\n    }\n}"
+						},
+						"description": "Voucher reversal advice"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Voids",
+			"description": "Voucher voids",
+			"item": [
+				{
+					"name": "Provision request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 201\"] = responseCode.code === 201;\n\nvar voucherResponse = JSON.parse(responseBody);\nvar processor = voucherResponse.processor;\nvar vendor = voucherResponse.vendor;\nvar voucher = voucherResponse.voucher;\n\npostman.setEnvironmentVariable(\"processorInstId\", processor.id);\npostman.setEnvironmentVariable(\"processorInstName\", processor.name);\npostman.setEnvironmentVariable(\"processorInstRef\", processor.reference);\npostman.setEnvironmentVariable(\"vendorInstRef\", vendor.reference);\npostman.setEnvironmentVariable(\"serialNum\", voucher.serialNumber);\npostman.setEnvironmentVariable(\"batchNum\", voucher.batchNumber);"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\npostman.setEnvironmentVariable(\"voucherId\", voucherId);\n\nvar uuidLast4 = voucherId.substr(voucherId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"voucherId\": \"{{voucherId}}\",\n    \"product\": {\n        \"productId\": \"{{fixedPriceProduct}}\"\n    },\n    \"requestTime\": \"{{timestamp}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\"\n    }\n}"
+						},
+						"description": "Voucher provision request"
+					},
+					"response": []
+				},
+				{
+					"name": "Void of prior voucher",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 202\"] = responseCode.code === 202;"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voidId = uuid();\npostman.setEnvironmentVariable(\"voidId\", voidId);\n\nvar uuidLast4 = voidId.substr(voidId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantVoidRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderVoidRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorVoidRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorVoidRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "localhost:8081/airtime/v1/vouchers/{{voucherId}}/voids/{{voidId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"voidId\": \"{{voidId}}\",\n    \"merchant\": {\n        \"merchantType\": \"{{merchantType}}\",\n        \"merchantId\": \"{{merchantId}}\",\n        \"merchantName\": \"{{merchantName}}\",\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{merchInstId}}\",\n            \"name\": \"{{merchInstName}}\",\n            \"reference\": \"{{merchantVoidRef}}\"\n        }\n    },\n    \"sender\": {\n        \"id\": \"{{senderInstId}}\",\n        \"name\": \"{{senderInstName}}\",\n        \"reference\": \"{{senderVoidRef}}\"\n    },\n    \"processor\": {\n        \"id\": \"{{processorInstId}}\",\n        \"name\": \"{{processorInstName}}\",\n        \"reference\": \"{{processorInstRef}}\"\n    },\n    \"vendor\": {\n        \"id\": \"{{vendorInstId}}\",\n        \"name\": \"{{vendorInstName}}\",\n        \"reference\": \"{{vendorInstRef}}\"\n    },\n    \"voidDate\": \"{{timestamp}}\",\n    \"voucher\": {\n        \"serialNumber\": \"{{serialNum}}\",\n        \"batchNumber\": \"{{batchNum}}\"\n    }\n}"
+						},
+						"description": "Voucher void advice"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "localhost:8081/vouchers/kitchen",
+			"request": {
+				"url": "localhost:8081/airtime/v1/vouchers/kitchen",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": "Teapot Test - Test the test server is up and running."
+			},
+			"response": []
+		}
+	]
+}

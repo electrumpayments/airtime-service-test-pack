@@ -1,0 +1,39 @@
+machine:
+  timezone:
+    Africa/Johannesburg
+  java:
+    version: oraclejdk7
+  node:
+    version: 6.2.2
+  services:
+    - docker
+
+general:
+  artifacts:
+    - log
+
+dependencies:
+  pre:
+    - npm install -g newman
+    # copy some utilities over from github
+    - git clone git@github.com:electrumpayments/circlecitools.git ~/circlecitools
+    - chmod +x ~/circlecitools/bin/*.sh
+    # a custom maven settings file ensures we can talk to our artifactory
+    - cp ~/circlecitools/config/maven/settings.xml ~/.m2/settings.xml
+    # setup our git account
+    - git config --global user.email "circleci@electrum.co.za"
+    - git config --global user.name "Another Electrum Robot"
+
+test:
+  override:
+    - mvn clean install
+    - docker build -t="airtime-service-test-server" ./target
+    - docker run -d -p 8081:8081 --name airtime-service-test-server_container airtime-service-test-server
+    - ~/circlecitools/bin/waitForServer.sh localhost:8081 500
+    - ~/circlecitools/bin/newmanTest.sh Airtime.postman_collection.json localhost.postman_environment.json
+
+deployment:
+  production:
+    branch: master
+    heroku:
+      appname: airtime-service-test-server
