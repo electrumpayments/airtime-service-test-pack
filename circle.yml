@@ -27,8 +27,8 @@ dependencies:
 test:
   override:
     - mvn clean install
-    - docker build -t="airtime-service-test-server" ./target
-    - docker run -d -p 8081:8081 --name airtime-service-test-server_container airtime-service-test-server
+    - docker build -t="airtime-service-test-pack" ./target
+    - docker run -d -p 8081:8081 --name airtime-service-test-pack_container airtime-service-test-pack
     - ~/circlecitools/bin/waitForServer.sh localhost:8081 500
     - ~/circlecitools/bin/newmanTest.sh Airtime.postman_collection.json localhost.postman_environment.json
 
@@ -36,4 +36,4 @@ deployment:
   production:
     branch: master
     heroku:
-      appname: airtime-service-test-server
+      appname: airtime-service-test-pack

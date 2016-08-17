@@ -3,12 +3,12 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.electrum</groupId>
-  <artifactId>test-server</artifactId>
+  <artifactId>airtime-service-test-pack</artifactId>
   <version>0.0.1</version>
   <packaging>jar</packaging>
-  <name>TestServer</name>
-  <description>TestServer</description>
-  <url>https://electrumpayments.github.io/test-server</url>
+  <name>Airtime Test Pack</name>
+  <description>Server and Postman scripts to test Airtime Service Interface implementaitons</description>
+  <url>https://electrumpayments.github.io/airtime-service-test-pack</url>
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>
@@ -25,9 +25,9 @@
     </developer>
   </developers>
   <scm>
-    <connection>scm:git:git@github.com:electrumpayments/test-server.git</connection>
-    <developerConnection>scm:git:git@github.com:electrumpayments/test-server.git</developerConnection>
-    <url>git@github.com:electrumpayments/test-server.git</url>
+    <connection>scm:git:git@github.com:electrumpayments/airtime-service-test-pack.git</connection>
+    <developerConnection>scm:git:git@github.com:electrumpayments/airtime-service-test-pack.git</developerConnection>
+    <url>git@github.com:electrumpayments/airtime-service-test-pack.git</url>
   </scm>
 
   <properties>
