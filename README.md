@@ -8,6 +8,6 @@ You can find documentation for this project [here](https://electrumpayments.gith
 
 Client implementations may be tested by configuring clients to point towards the [test server](http://airtime-service-test-pack.herokuapp.com:8081).
 
-## Server Testing With Postman and newman
+## Server Testing With Postman and Newman
 
 Server implementations may be tested using [Postman](https://www.getpostman.com) and [Newman](https://www.getpostman.com/docs/newman_intro). Scripts are available to automate the sending of requests to the server to be tested and to validate the responses from the server. 
