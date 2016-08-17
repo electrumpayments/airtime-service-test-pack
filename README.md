@@ -10,4 +10,4 @@ Client implementations may be tested by configuring clients to point towards the
 
 ## Server Testing With Postman and newman
 
-Server implementations may be tested using [Postman](https://www.getpostman.com) and [Newman](https://www.getpostman.com/docs/newman_intro). Scripts are available to automate the sending of requests to the server to be tested and to validate the responses from the server.
+Server implementations may be tested using [Postman](https://www.getpostman.com) and [Newman](https://www.getpostman.com/docs/newman_intro). Scripts are available to automate the sending of requests to the server to be tested and to validate the responses from the server. 
