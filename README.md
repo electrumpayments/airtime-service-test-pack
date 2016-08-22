@@ -1,23 +1,13 @@
 # Airtime Service Interface
 
-The Airtime Service Interface documents the messaging interface used by Electrum to connect acquirers, processors, and mobile network operators together for performing airtime sales.
+The Airtime Service Interface test pack provides a means to test both client and server implementaions of the Electrum Airtime Service Interface.
 
 You can find documentation for this project [here](https://electrumpayments.github.io/airtime-service-interface-docs/).
 
-## Java projects
+## Client Testing With The Test Server
 
-To include the service interface into your maven project, include the below dependency.
+Client implementations may be tested by configuring clients to point towards the [test server](http://airtime-service-test-pack.herokuapp.com).
 
-```xml
-<dependency>
-    <groupId>io.electrum</groupId>
-    <artifactId>airtime-service-interface</artifactId>
-    <version>1.0.0</version>
-</dependency>
-```
+## Server Testing With Postman and Newman
 
-Alternatively, you can download the jar from [Bintray](https://bintray.com/electrumpayments/java-open-source/airtime-service-interface).
-
-## Other languages
-
-The interface is also available as a swagger (OpenApi) definition, which can be used to generate starter projects in many languages. See more info [here](https://electrumpayments.github.io/airtime-service-interface-docs/specification/swagger).
+Server implementations may be tested using [Postman](https://www.getpostman.com) and [Newman](https://www.getpostman.com/docs/newman_intro). Scripts are available to automate the sending of requests to the server to be tested and to validate the responses from the server.
