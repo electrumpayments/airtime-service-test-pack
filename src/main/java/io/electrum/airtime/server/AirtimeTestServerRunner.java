@@ -25,10 +25,10 @@ public class AirtimeTestServerRunner {
    private static AirtimeTestServer testServer;
 
    public static void main(String[] args) throws Exception {
-      startAirtimeTestServer();
+      startAirtimeTestServer(args[0]);
    }
 
-   public static void startAirtimeTestServer() throws Exception {
+   public static void startAirtimeTestServer(String port) throws Exception {
 
       log_logger.info("---- STARTING AIRTIME SERVER ----");
 
@@ -48,7 +48,7 @@ public class AirtimeTestServerRunner {
          // HTTP Configuration
          HttpConfiguration http_config = new HttpConfiguration();
          http_config.setSecureScheme("https");
-         http_config.setSecurePort(8082);
+         http_config.setSecurePort(new Integer(port));
          http_config.setOutputBufferSize(32768);
          http_config.setRequestHeaderSize(8192);
          http_config.setResponseHeaderSize(8192);
@@ -68,7 +68,7 @@ public class AirtimeTestServerRunner {
 
          // === jetty-http.xml ===
          ServerConnector http = new ServerConnector(server, new HttpConnectionFactory(http_config));
-         http.setPort(8081);
+         http.setPort(new Integer(port));
          http.setIdleTimeout(30000);
          server.addConnector(http);
 

@@ -39,7 +39,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -89,7 +89,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -145,7 +145,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -195,7 +195,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -245,7 +245,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -295,7 +295,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -345,7 +345,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -395,7 +395,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -445,7 +445,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -495,7 +495,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -545,7 +545,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -595,7 +595,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -645,7 +645,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -695,7 +695,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -745,7 +745,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -795,7 +795,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -845,7 +845,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -895,7 +895,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -951,7 +951,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1001,7 +1001,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1051,7 +1051,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1101,7 +1101,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1151,7 +1151,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1201,7 +1201,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1251,7 +1251,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1301,7 +1301,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1351,7 +1351,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1401,7 +1401,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1451,7 +1451,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1501,7 +1501,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1551,7 +1551,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1601,7 +1601,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1651,7 +1651,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1701,7 +1701,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1751,7 +1751,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1801,7 +1801,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1851,7 +1851,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1901,7 +1901,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1951,7 +1951,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2001,7 +2001,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2051,7 +2051,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2101,7 +2101,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2151,7 +2151,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2201,7 +2201,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2251,7 +2251,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2301,7 +2301,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2351,7 +2351,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2401,7 +2401,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2451,7 +2451,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2501,7 +2501,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2551,7 +2551,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2601,7 +2601,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2651,7 +2651,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2701,7 +2701,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2751,7 +2751,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2801,7 +2801,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2851,7 +2851,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2907,7 +2907,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2957,7 +2957,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -3013,7 +3013,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -3069,7 +3069,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -3119,7 +3119,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
+						"url": "airtime-service-test-pack.herokuapp.com/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -3144,9 +3144,9 @@
 			]
 		},
 		{
-			"name": "airtime-service-test-pack.herokuapp.com:8081/vouchers/kitchen",
+			"name": "airtime-service-test-pack.herokuapp.com/vouchers/kitchen",
 			"request": {
-				"url": "airtime-service-test-pack.herokuapp.com:8081/airtime/v1/vouchers/kitchen",
+				"url": "airtime-service-test-pack.herokuapp.com/airtime/v1/vouchers/kitchen",
 				"method": "GET",
 				"header": [],
 				"body": {
