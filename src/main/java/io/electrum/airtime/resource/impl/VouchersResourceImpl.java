@@ -29,7 +29,7 @@ import io.swagger.annotations.Authorization;
 public class VouchersResourceImpl extends VouchersResource implements IVouchersResource {
 
    static VouchersResourceImpl instance = null;
-   private static final Logger log = LoggerFactory.getLogger(TestServer.class.getPackage().getName());
+   private static final Logger log = LoggerFactory.getLogger(AirtimeTestServer.class.getPackage().getName());
 
    @Override
    protected IVouchersResource getResourceImplementation() {

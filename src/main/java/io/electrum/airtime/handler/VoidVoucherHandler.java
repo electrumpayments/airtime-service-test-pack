@@ -10,13 +10,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.electrum.airtime.api.model.VoucherVoid;
-import io.electrum.airtime.resource.impl.TestServer;
-import io.electrum.airtime.server.TestServerRunner;
+import io.electrum.airtime.resource.impl.AirtimeTestServer;
+import io.electrum.airtime.server.AirtimeTestServerRunner;
 import io.electrum.airtime.server.util.RequestKey;
 import io.electrum.airtime.server.util.VoucherModelUtils;
 
 public class VoidVoucherHandler {
-   private static final Logger log = LoggerFactory.getLogger(TestServer.class.getPackage().getName());
+   private static final Logger log = LoggerFactory.getLogger(AirtimeTestServer.class.getPackage().getName());
    public Response handle(UUID voucherId, UUID voidId, VoucherVoid voidAdv, HttpHeaders httpHeaders) {
       try
       {
@@ -35,7 +35,7 @@ public class VoidVoucherHandler {
          if (rsp != null) {
             return rsp;
          }
-         ConcurrentHashMap<RequestKey, VoucherVoid> voidRecords = TestServerRunner.getTestServer().getVoidRecords();
+         ConcurrentHashMap<RequestKey, VoucherVoid> voidRecords = AirtimeTestServerRunner.getTestServer().getVoidRecords();
          RequestKey voidKey = new RequestKey(username, password, RequestKey.VOIDS_RESOURCE, voucherId.toString());
          // quietly overwrites any existing void
          voidRecords.put(voidKey, voidAdv);

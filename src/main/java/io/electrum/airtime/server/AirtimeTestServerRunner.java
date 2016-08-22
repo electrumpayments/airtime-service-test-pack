@@ -17,18 +17,18 @@ import org.glassfish.jersey.servlet.ServletContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.electrum.airtime.resource.impl.TestServer;
-public class TestServerRunner {
+import io.electrum.airtime.resource.impl.AirtimeTestServer;
+public class AirtimeTestServerRunner {
 
    private static Logger log_logger = LoggerFactory.getLogger("io.electrum.airtime.server.log");
    
-   private static TestServer testServer;
+   private static AirtimeTestServer testServer;
 
    public static void main(String[] args) throws Exception {
-      startTestServer();
+      startAirtimeTestServer();
    }
 
-   public static void startTestServer() throws Exception {
+   public static void startAirtimeTestServer() throws Exception {
 
       log_logger.info("---- STARTING AIRTIME SERVER ----");
 
@@ -75,7 +75,7 @@ public class TestServerRunner {
          ConstraintSecurityHandler sh = new ConstraintSecurityHandler();
          // sh.addConstraintMapping(cm);
 
-         testServer = new TestServer();
+         testServer = new AirtimeTestServer();
          ServletContainer servletContainer = new ServletContainer(testServer);
          ServletHolder servletHolder = new ServletHolder(servletContainer);
          ServletContextHandler context = new ServletContextHandler();
@@ -94,7 +94,7 @@ public class TestServerRunner {
       }
    }
    
-   public static TestServer getTestServer()
+   public static AirtimeTestServer getTestServer()
    {
       return testServer;
    }

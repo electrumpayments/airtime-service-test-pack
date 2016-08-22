@@ -23,8 +23,8 @@ import io.electrum.airtime.api.model.VoucherRequest;
 import io.electrum.airtime.api.model.VoucherResponse;
 import io.electrum.airtime.api.model.VoucherReversal;
 import io.electrum.airtime.api.model.VoucherVoid;
-import io.electrum.airtime.resource.impl.TestServer;
-import io.electrum.airtime.server.TestServerRunner;
+import io.electrum.airtime.resource.impl.AirtimeTestServer;
+import io.electrum.airtime.server.AirtimeTestServerRunner;
 import io.electrum.airtime.server.model.DetailMessage;
 import io.electrum.airtime.server.model.FormatError;
 import io.electrum.vas.model.ErrorDetail;
@@ -37,7 +37,7 @@ import io.electrum.vas.model.ThirdPartyIdentifier;
 public class VoucherModelUtils {
    private static List<String> redeemInstructions = new ArrayList<String>();
    private static List<String> messageLines = new ArrayList<String>();
-   private static final Logger log = LoggerFactory.getLogger(TestServer.class.getPackage().getName());
+   private static final Logger log = LoggerFactory.getLogger(AirtimeTestServer.class.getPackage().getName());
    static {
       redeemInstructions.add("To redeem your airtime");
       redeemInstructions.add("enter the USSD code below:");
@@ -260,7 +260,7 @@ public class VoucherModelUtils {
 
    public static Response canProvisionVoucher(UUID voucherId, String username, String password) {
       ConcurrentHashMap<RequestKey, VoucherRequest> provisionRecords =
-            TestServerRunner.getTestServer().getProvisionRecords();
+            AirtimeTestServerRunner.getTestServer().getProvisionRecords();
       RequestKey requestKey = new RequestKey(username, password, RequestKey.VOUCHERS_RESOURCE, voucherId.toString());
       VoucherRequest originalRequest = provisionRecords.get(requestKey);
       if (originalRequest != null) {
@@ -273,7 +273,7 @@ public class VoucherModelUtils {
                      .product(originalRequest.getProduct())
                      .receiver(originalRequest.getReceiver());
          ConcurrentHashMap<RequestKey, VoucherResponse> responseRecords =
-               TestServerRunner.getTestServer().getResponseRecords();
+               AirtimeTestServerRunner.getTestServer().getResponseRecords();
          VoucherResponse rsp = responseRecords.get(requestKey);
          if (rsp != null) {
             detailMessage.setVoucher(rsp.getVoucher());
@@ -283,7 +283,7 @@ public class VoucherModelUtils {
       }
 
       ConcurrentHashMap<RequestKey, VoucherReversal> reversalRecords =
-            TestServerRunner.getTestServer().getReversalRecords();
+            AirtimeTestServerRunner.getTestServer().getReversalRecords();
       RequestKey reversalKey = new RequestKey(username, password, RequestKey.REVERSALS_RESOURCE, voucherId.toString());
       VoucherReversal reversal = reversalRecords.get(reversalKey);
       if (reversal != null) {
@@ -295,7 +295,7 @@ public class VoucherModelUtils {
                      .reversalId(reversal.getId())
                      .product(reversal.getVoucherRequest().getProduct());
          ConcurrentHashMap<RequestKey, VoucherResponse> responseRecords =
-               TestServerRunner.getTestServer().getResponseRecords();
+               AirtimeTestServerRunner.getTestServer().getResponseRecords();
          VoucherResponse rsp = responseRecords.get(requestKey);
          if (rsp != null) {
             detailMessage.setVoucher(rsp.getVoucher());
@@ -308,7 +308,7 @@ public class VoucherModelUtils {
 
    public static Response canReverseVoucher(UUID voucherId, String username, String password) {
       ConcurrentHashMap<RequestKey, VoucherRequest> provisionRecords =
-            TestServerRunner.getTestServer().getProvisionRecords();
+            AirtimeTestServerRunner.getTestServer().getProvisionRecords();
       if (!isVoucherProvisioned(voucherId, provisionRecords, username, password)) {
          ErrorDetail errorDetail =
                new ErrorDetail().errorType(ErrorType.UNABLE_TO_LOCATE_RECORD).errorMessage("No voucher req.");
@@ -320,7 +320,7 @@ public class VoucherModelUtils {
 
       // check it's not confirmed
       ConcurrentHashMap<RequestKey, VoucherConfirmation> confirmationRecords =
-            TestServerRunner.getTestServer().getConfirmationRecords();
+            AirtimeTestServerRunner.getTestServer().getConfirmationRecords();
       RequestKey confirmKey =
             new RequestKey(username, password, RequestKey.CONFIRMATIONS_RESOURCE, voucherId.toString());
       VoucherConfirmation confirmation = confirmationRecords.get(confirmKey);
@@ -338,7 +338,7 @@ public class VoucherModelUtils {
       }
 
       // check it's not voided
-      ConcurrentHashMap<RequestKey, VoucherVoid> voidRecords = TestServerRunner.getTestServer().getVoidRecords();
+      ConcurrentHashMap<RequestKey, VoucherVoid> voidRecords = AirtimeTestServerRunner.getTestServer().getVoidRecords();
       RequestKey voidKey = new RequestKey(username, password, RequestKey.VOIDS_RESOURCE, voucherId.toString());
       VoucherVoid voidAdv = voidRecords.get(voidKey);
       if (voidAdv != null) {
@@ -358,7 +358,7 @@ public class VoucherModelUtils {
 
    public static Response canConfirmVoucher(UUID voucherId, String username, String password) {
       ConcurrentHashMap<RequestKey, VoucherRequest> provisionRecords =
-            TestServerRunner.getTestServer().getProvisionRecords();
+            AirtimeTestServerRunner.getTestServer().getProvisionRecords();
       // check voucher was provisioned
       if (!isVoucherProvisioned(voucherId, provisionRecords, username, password)) {
          ErrorDetail errorDetail =
@@ -371,7 +371,7 @@ public class VoucherModelUtils {
 
       // check it's not reversed
       ConcurrentHashMap<RequestKey, VoucherReversal> reversalRecords =
-            TestServerRunner.getTestServer().getReversalRecords();
+            AirtimeTestServerRunner.getTestServer().getReversalRecords();
       RequestKey reversalsKey = new RequestKey(username, password, RequestKey.REVERSALS_RESOURCE, voucherId.toString());
       VoucherReversal reversal = reversalRecords.get(reversalsKey);
       if (reversal != null) {
@@ -386,7 +386,7 @@ public class VoucherModelUtils {
       }
 
       // check it's not voided
-      ConcurrentHashMap<RequestKey, VoucherVoid> voidRecords = TestServerRunner.getTestServer().getVoidRecords();
+      ConcurrentHashMap<RequestKey, VoucherVoid> voidRecords = AirtimeTestServerRunner.getTestServer().getVoidRecords();
       RequestKey voidKey = new RequestKey(username, password, RequestKey.VOIDS_RESOURCE, voucherId.toString());
       VoucherVoid voidAdv = voidRecords.get(voidKey);
       if (voidAdv != null) {
@@ -403,7 +403,7 @@ public class VoucherModelUtils {
 
    public static Response canVoidVoucher(UUID voucherId, String username, String password) {
       ConcurrentHashMap<RequestKey, VoucherRequest> provisionRecords =
-            TestServerRunner.getTestServer().getProvisionRecords();
+            AirtimeTestServerRunner.getTestServer().getProvisionRecords();
       // check voucher was provisioned
       if (!isVoucherProvisioned(voucherId, provisionRecords, username, password)) {
          ErrorDetail errorDetail =
@@ -416,7 +416,7 @@ public class VoucherModelUtils {
 
       // check it's not reversed
       ConcurrentHashMap<RequestKey, VoucherReversal> reversalRecords =
-            TestServerRunner.getTestServer().getReversalRecords();
+            AirtimeTestServerRunner.getTestServer().getReversalRecords();
       RequestKey reversalsKey = new RequestKey(username, password, RequestKey.REVERSALS_RESOURCE, voucherId.toString());
       VoucherReversal reversal = reversalRecords.get(reversalsKey);
       if (reversal != null) {
@@ -432,7 +432,7 @@ public class VoucherModelUtils {
 
       // check it's not confirmed
       ConcurrentHashMap<RequestKey, VoucherConfirmation> confirmationRecords =
-            TestServerRunner.getTestServer().getConfirmationRecords();
+            AirtimeTestServerRunner.getTestServer().getConfirmationRecords();
       RequestKey confirmKey =
             new RequestKey(username, password, RequestKey.CONFIRMATIONS_RESOURCE, voucherId.toString());
       VoucherConfirmation confirmation = confirmationRecords.get(confirmKey);

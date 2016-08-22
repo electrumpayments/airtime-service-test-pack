@@ -12,13 +12,13 @@ import org.slf4j.LoggerFactory;
 
 import io.electrum.airtime.api.model.VoucherRequest;
 import io.electrum.airtime.api.model.VoucherResponse;
-import io.electrum.airtime.resource.impl.TestServer;
-import io.electrum.airtime.server.TestServerRunner;
+import io.electrum.airtime.resource.impl.AirtimeTestServer;
+import io.electrum.airtime.server.AirtimeTestServerRunner;
 import io.electrum.airtime.server.util.RequestKey;
 import io.electrum.airtime.server.util.VoucherModelUtils;
 
 public class ProvisionVoucherHandler {
-   private static final Logger log = LoggerFactory.getLogger(TestServer.class.getPackage().getName());
+   private static final Logger log = LoggerFactory.getLogger(AirtimeTestServer.class.getPackage().getName());
    public Response handle(UUID voucherId, VoucherRequest request, HttpHeaders httpHeaders, UriInfo uriInfo) {
       try
       {
@@ -39,11 +39,11 @@ public class ProvisionVoucherHandler {
             return rsp;
          }
          ConcurrentHashMap<RequestKey, VoucherRequest> provisionRecords =
-               TestServerRunner.getTestServer().getProvisionRecords();
+               AirtimeTestServerRunner.getTestServer().getProvisionRecords();
          provisionRecords.put(key, request);
          VoucherResponse voucherRsp = VoucherModelUtils.voucherRspFromReq(request);
          ConcurrentHashMap<RequestKey, VoucherResponse> responseRecords =
-               TestServerRunner.getTestServer().getResponseRecords();
+               AirtimeTestServerRunner.getTestServer().getResponseRecords();
          responseRecords.put(key, voucherRsp);
          rsp = Response.created(uriInfo.getRequestUri()).entity(voucherRsp).build();
          return rsp;

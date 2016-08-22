@@ -27,7 +27,7 @@ import io.electrum.airtime.api.model.VoucherReversal;
 import io.electrum.airtime.api.model.VoucherVoid;
 import io.electrum.airtime.server.util.RequestKey;
 
-public class TestServer extends ResourceConfig {
+public class AirtimeTestServer extends ResourceConfig {
 
    private ConcurrentHashMap<RequestKey, VoucherRequest> provisionRecords;
    private ConcurrentHashMap<RequestKey, VoucherResponse> responseRecords;
@@ -35,10 +35,10 @@ public class TestServer extends ResourceConfig {
    private ConcurrentHashMap<RequestKey, VoucherConfirmation> confirmationRecords;
    private ConcurrentHashMap<RequestKey, VoucherVoid> voidRecords;
    private static final PropertyNamingStrategy LOWER_CASE_WITH_HYPHEN_STRATEGY = new LowerCaseWitHyphenStrategy();
-   private static final Logger log = LoggerFactory.getLogger(TestServer.class.getPackage().getName());
+   private static final Logger log = LoggerFactory.getLogger(AirtimeTestServer.class.getPackage().getName());
 
-   public TestServer() {
-      packages(TestServer.class.getPackage().getName());
+   public AirtimeTestServer() {
+      packages(AirtimeTestServer.class.getPackage().getName());
 
       register(MyObjectMapperProvider.class);
       register(JacksonFeature.class);

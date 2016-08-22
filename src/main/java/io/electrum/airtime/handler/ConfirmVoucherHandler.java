@@ -10,13 +10,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.electrum.airtime.api.model.VoucherConfirmation;
-import io.electrum.airtime.resource.impl.TestServer;
-import io.electrum.airtime.server.TestServerRunner;
+import io.electrum.airtime.resource.impl.AirtimeTestServer;
+import io.electrum.airtime.server.AirtimeTestServerRunner;
 import io.electrum.airtime.server.util.RequestKey;
 import io.electrum.airtime.server.util.VoucherModelUtils;
 
 public class ConfirmVoucherHandler {
-   private static final Logger log = LoggerFactory.getLogger(TestServer.class.getPackage().getName());
+   private static final Logger log = LoggerFactory.getLogger(AirtimeTestServer.class.getPackage().getName());
    public Response handle(
          UUID voucherId,
          UUID confirmationId,
@@ -40,7 +40,7 @@ public class ConfirmVoucherHandler {
             return rsp;
          }
          ConcurrentHashMap<RequestKey, VoucherConfirmation> confimrationRecords =
-               TestServerRunner.getTestServer().getConfirmationRecords();
+               AirtimeTestServerRunner.getTestServer().getConfirmationRecords();
          RequestKey confirmationsKey =
                new RequestKey(username, password, RequestKey.CONFIRMATIONS_RESOURCE, voucherId.toString());
          // quietly overwrites any existing confirmation
