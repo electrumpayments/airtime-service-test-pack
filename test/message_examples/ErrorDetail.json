@@ -1,0 +1,13 @@
+{
+  "errorType": "FORMAT_ERROR",
+  "errorMessage": "Bad formatting",
+  "detailMessage": {
+    "formatErrors": [
+      {
+        "field": "id",
+        "msg": "may not be null",
+        "value": "null"
+      }
+    ]
+  }
+}

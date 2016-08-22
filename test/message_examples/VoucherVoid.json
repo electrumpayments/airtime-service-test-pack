@@ -1,0 +1,46 @@
+{
+    "id": "8a5d7bd4-5345-95d6-f1ef-2631a63fca00",
+    "requestId": "d71be1ad-72f0-a6ca-9006-f6095868cb85",
+      "thirdPartyIdentifiers": [
+        {
+            "institutionId": "11111111",
+            "transactionIdentifier": "ORIG3898"
+        },
+        {
+            "institutionId": "22222222",
+            "transactionIdentifier": "CLNT3898"
+        },
+        {
+            "institutionId": "33333333",
+            "transactionIdentifier": "51463475700067"
+        },
+        {
+            "institutionId": "44444444",
+            "transactionIdentifier": "52285755502221430390"
+        }
+      ],
+    "time": "2016-08-22T11:01:19.029Z",
+    "voucher": {
+        "serialNumber": "561141009004976790",
+        "batchNumber": "5669685193",
+        "redeemInstructions": []
+    },
+    "thirdPartyIdentifiers": [
+      {
+          "institutionId": "11111111",
+          "transactionIdentifier": "ORIG3898"
+      },
+      {
+          "institutionId": "22222222",
+          "transactionIdentifier": "CLNT3898"
+      },
+      {
+          "institutionId": "33333333",
+          "transactionIdentifier": "51463475700067"
+      },
+      {
+          "institutionId": "44444444",
+          "transactionIdentifier": "52285755502221430390"
+      }
+    ],
+}
