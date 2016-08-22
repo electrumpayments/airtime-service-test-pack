@@ -16,10 +16,6 @@ import org.glassfish.jersey.internal.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.electrum.airtime.api.model.ErrorDetail;
-import io.electrum.airtime.api.model.ErrorDetail.ErrorTypeEnum;
-import io.electrum.airtime.api.model.Institution;
-import io.electrum.airtime.api.model.Merchant;
 import io.electrum.airtime.api.model.SlipData;
 import io.electrum.airtime.api.model.Voucher;
 import io.electrum.airtime.api.model.VoucherConfirmation;
@@ -31,6 +27,12 @@ import io.electrum.airtime.resource.impl.TestServer;
 import io.electrum.airtime.server.TestServerRunner;
 import io.electrum.airtime.server.model.DetailMessage;
 import io.electrum.airtime.server.model.FormatError;
+import io.electrum.vas.model.ErrorDetail;
+import io.electrum.vas.model.ErrorDetail.ErrorType;
+import io.electrum.vas.model.Institution;
+import io.electrum.vas.model.Merchant;
+import io.electrum.vas.model.Originator;
+import io.electrum.vas.model.ThirdPartyIdentifier;
 
 public class VoucherModelUtils {
    private static List<String> redeemInstructions = new ArrayList<String>();
@@ -40,19 +42,23 @@ public class VoucherModelUtils {
       redeemInstructions.add("To redeem your airtime");
       redeemInstructions.add("enter the USSD code below:");
       redeemInstructions.add("*999*<pin>#");
-      messageLines.add("Use the vendor reference");
+      messageLines.add("Use the Receiver reference");
       messageLines.add("number to query your network");
       messageLines.add("operator.");
    }
 
    public static VoucherResponse voucherRspFromReq(VoucherRequest req) {
       VoucherResponse rsp = new VoucherResponse();
-      rsp.setMerchant(req.getMerchant());
-      rsp.setRequestTime(req.getRequestTime());
-      Institution vendor = req.getVendor();
-      vendor.setReference(RandomData.random09AZ((int) ((Math.random() * 20)+1)));
-      rsp.setVendor(req.getVendor());
-      rsp.setVoucherId(req.getVoucherId());
+      rsp.setOriginator(req.getOriginator());
+      rsp.setTime(req.getTime());
+      Institution receiver = req.getReceiver();
+      List<ThirdPartyIdentifier> thirdPartyIds = req.getThirdPartyIdentifiers();
+      if(thirdPartyIds == null)
+      {
+         new ArrayList<ThirdPartyIdentifier>();
+      }
+      rsp.setReceiver(req.getReceiver());
+      rsp.setId(req.getId());
       Voucher voucher = new Voucher();
       voucher.setPin(RandomData.random09((int) ((Math.random() * 20)+1)));
       voucher.setSerialNumber(RandomData.random09((int) ((Math.random() * 20)+1)));
@@ -61,29 +67,29 @@ public class VoucherModelUtils {
       rsp.setVoucher(voucher);
       SlipData slipData = new SlipData();
       slipData.setMessageLines(messageLines);
-      slipData.setVendorReference(RandomData.random09AZ((int) ((Math.random() * 20)+1)));
+      slipData.setReceiverReference(RandomData.random09AZ((int) ((Math.random() * 20)+1)));
       rsp.setSlipData(slipData);
-      Institution processor = req.getProcessor();
-      if (processor == null) {
-         processor = new Institution();
-         processor.setId("33333333");
-         processor.setName("TransactionsRUs");
+      Institution settlementEntity = req.getSettlementEntity();
+      if (settlementEntity == null) {
+         settlementEntity = new Institution();
+         settlementEntity.setId("33333333");
+         settlementEntity.setName("TransactionsRUs");
       }
-      processor.setReference(RandomData.random09AZ((int) ((Math.random() * 20)+1)));
-      rsp.setProcessor(processor);
+      thirdPartyIds.add(new ThirdPartyIdentifier().institutionId(settlementEntity.getId()).transactionIdentifier(RandomData.random09AZ((int) ((Math.random() * 20)+1))));
+      thirdPartyIds.add(new ThirdPartyIdentifier().institutionId(receiver.getId()).transactionIdentifier(RandomData.random09AZ((int) ((Math.random() * 20)+1))));
+      rsp.setSettlementEntity(settlementEntity);
+      rsp.setThirdPartyIdentifiers(thirdPartyIds);
       return rsp;
    }
 
    public static ErrorDetail productNotRecognised(VoucherRequest req) {
       ErrorDetail errorDetail = new ErrorDetail();
-      errorDetail.setErrorType(ErrorTypeEnum.INVALID_PRODUCT);
+      errorDetail.setErrorType(ErrorType.INVALID_PRODUCT);
       errorDetail.setErrorMessage("Unknown product");
       DetailMessage detailMessage = new DetailMessage();
       detailMessage.setFreeString("This MNO does not recognise the product requested.");
       detailMessage.setProduct(req.getProduct());
-      Institution vendor = req.getVendor();
-      vendor.setReference(RandomData.random09AZ((int) (Math.random() * 21)));
-      detailMessage.setVendor(req.getVendor());
+      detailMessage.setReceiver(req.getReceiver());
       return errorDetail;
    }
 
@@ -99,18 +105,31 @@ public class VoucherModelUtils {
 
    public static void validateVoucherRequest(VoucherRequest voucherRequest, Set<ConstraintViolation<?>> violations) {
       violations.addAll(validate(voucherRequest));
-      Merchant merchant = voucherRequest.getMerchant();
-      violations.addAll(validate(merchant));
-      if(merchant != null)
+      if(voucherRequest != null)
       {
-         violations.addAll(validate(merchant.getInstitution()));
+         violations.addAll(validate(voucherRequest.getClient()));
+         violations.addAll(validate(voucherRequest.getId()));
+         Originator originator = voucherRequest.getOriginator();
+         violations.addAll(validate(originator));
+         if(originator != null)
+         {
+            violations.addAll(validate(originator.getInstitution()));
+            violations.addAll(validate(originator.getTerminalId()));
+            Merchant merchant = originator.getMerchant();
+            violations.addAll(validate(merchant));
+            if(merchant != null)
+            {
+               violations.addAll(validate(merchant.getMerchantId()));
+               violations.addAll(validate(merchant.getMerchantType()));
+               violations.addAll(validate(merchant.getMerchantName()));
+            }
+         }
+         violations.addAll(validate(voucherRequest.getProduct()));
+         violations.addAll(validate(voucherRequest.getReceiver()));
+         violations.addAll(validate(voucherRequest.getSettlementEntity()));
+         violations.addAll(validate(voucherRequest.getThirdPartyIdentifiers()));
+         violations.addAll(validate(voucherRequest.getTime()));
       }
-      violations.addAll(validate(voucherRequest.getProcessor()));
-      violations.addAll(validate(voucherRequest.getProduct()));
-      violations.addAll(validate(voucherRequest.getRequestTime()));
-      violations.addAll(validate(voucherRequest.getSender()));
-      violations.addAll(validate(voucherRequest.getVendor()));
-      violations.addAll(validate(voucherRequest.getVoucherId()));
    }
 
    public static Response validateVoucherRequest(VoucherRequest voucherRequest) {
@@ -122,13 +141,12 @@ public class VoucherModelUtils {
    public static Response validateVoucherReversal(VoucherReversal voucherReversal) {
       Set<ConstraintViolation<?>> violations = new HashSet<ConstraintViolation<?>>();
       violations.addAll(validate(voucherReversal));
-      violations.addAll(validate(voucherReversal.getMerchant()));
-      violations.addAll(validate(voucherReversal.getMerchant().getInstitution()));
-      violations.addAll(validate(voucherReversal.getProcessor()));
-      violations.addAll(validate(voucherReversal.getReversalTime()));
-      violations.addAll(validate(voucherReversal.getSender()));
-      violations.addAll(validate(voucherReversal.getVendor()));
-      violations.addAll(validate(voucherReversal.getReversalId()));
+      violations.addAll(validate(voucherReversal.getId()));
+      violations.addAll(validate(voucherReversal.getRequestId()));
+      violations.addAll(validate(voucherReversal.getReversalReason()));
+      violations.addAll(validate(voucherReversal.getThirdPartyIdentifiers()));
+      violations.addAll(validate(voucherReversal.getTime()));
+      violations.addAll(validate(voucherReversal.getVoucherRequest()));
       validateVoucherRequest(voucherReversal.getVoucherRequest(), violations);
       return buildFormatErrorRsp(violations);
    }
@@ -136,28 +154,22 @@ public class VoucherModelUtils {
    public static Response validateVoucherConfirmation(VoucherConfirmation voucherConfirmation) {
       Set<ConstraintViolation<?>> violations = new HashSet<ConstraintViolation<?>>();
       violations.addAll(validate(voucherConfirmation));
-      violations.addAll(validate(voucherConfirmation.getMerchant()));
-      violations.addAll(validate(voucherConfirmation.getMerchant().getInstitution()));
-      violations.addAll(validate(voucherConfirmation.getProcessor()));
-      violations.addAll(validate(voucherConfirmation.getConfirmDate()));
-      violations.addAll(validate(voucherConfirmation.getSender()));
-      violations.addAll(validate(voucherConfirmation.getVendor()));
+      violations.addAll(validate(voucherConfirmation.getId()));
+      violations.addAll(validate(voucherConfirmation.getRequestId()));
+      violations.addAll(validate(voucherConfirmation.getThirdPartyIdentifiers()));
+      violations.addAll(validate(voucherConfirmation.getTime()));
       violations.addAll(validate(voucherConfirmation.getVoucher()));
-      violations.addAll(validate(voucherConfirmation.getConfirmationId()));
       return buildFormatErrorRsp(violations);
    }
 
    public static Response validateVoucherVoid(VoucherVoid voucherVoid) {
       Set<ConstraintViolation<?>> violations = new HashSet<ConstraintViolation<?>>();
       violations.addAll(validate(voucherVoid));
-      violations.addAll(validate(voucherVoid.getMerchant()));
-      violations.addAll(validate(voucherVoid.getMerchant().getInstitution()));
-      violations.addAll(validate(voucherVoid.getProcessor()));
-      violations.addAll(validate(voucherVoid.getVoidDate()));
-      violations.addAll(validate(voucherVoid.getSender()));
-      violations.addAll(validate(voucherVoid.getVendor()));
+      violations.addAll(validate(voucherVoid.getId()));
+      violations.addAll(validate(voucherVoid.getRequestId()));
+      violations.addAll(validate(voucherVoid.getThirdPartyIdentifiers()));
+      violations.addAll(validate(voucherVoid.getTime()));
       violations.addAll(validate(voucherVoid.getVoucher()));
-      violations.addAll(validate(voucherVoid.getVoidId()));
       return buildFormatErrorRsp(violations);
    }
 
@@ -176,7 +188,7 @@ public class VoucherModelUtils {
          i++;
       }
       ErrorDetail errorDetail =
-            new ErrorDetail().errorType(ErrorTypeEnum.FORMAT_ERROR)
+            new ErrorDetail().errorType(ErrorType.FORMAT_ERROR)
                   .errorMessage("Bad formatting")
                   .detailMessage(new DetailMessage().formatErrors(formatErrors));
       return Response.status(400).entity(errorDetail).build();
@@ -185,8 +197,8 @@ public class VoucherModelUtils {
    public static Response isUuidConsistent(UUID uuid, VoucherRequest voucherReq) {
       Response rsp = null;
       String pathId = uuid.toString();
-      String objectId = voucherReq.getVoucherId();
-      ErrorDetail errorDetail = isUuidConsistent(pathId, objectId);
+      UUID objectId = voucherReq.getId();
+      ErrorDetail errorDetail = isUuidConsistent(pathId, objectId.toString());
       if (errorDetail != null) {
          DetailMessage detailMessage = (DetailMessage) errorDetail.getDetailMessage();
          detailMessage.setVoucherId(objectId);
@@ -198,8 +210,8 @@ public class VoucherModelUtils {
    public static Response isUuidConsistent(UUID uuid, VoucherReversal voucherRev) {
       Response rsp = null;
       String pathId = uuid.toString();
-      String objectId = voucherRev.getReversalId();
-      ErrorDetail errorDetail = isUuidConsistent(pathId, objectId);
+      UUID objectId = voucherRev.getId();
+      ErrorDetail errorDetail = isUuidConsistent(pathId, objectId.toString());
       if (errorDetail != null) {
          DetailMessage detailMessage = (DetailMessage) errorDetail.getDetailMessage();
          detailMessage.setReversalId(objectId);
@@ -211,8 +223,8 @@ public class VoucherModelUtils {
    public static Response isUuidConsistent(UUID uuid, VoucherConfirmation voucherConfirmation) {
       Response rsp = null;
       String pathId = uuid.toString();
-      String objectId = voucherConfirmation.getConfirmationId();
-      ErrorDetail errorDetail = isUuidConsistent(pathId, objectId);
+      UUID objectId = voucherConfirmation.getId();
+      ErrorDetail errorDetail = isUuidConsistent(pathId, objectId.toString());
       if (errorDetail != null) {
          DetailMessage detailMessage = (DetailMessage) errorDetail.getDetailMessage();
          detailMessage.setConfirmationId(objectId);
@@ -224,8 +236,8 @@ public class VoucherModelUtils {
    public static Response isUuidConsistent(UUID uuid, VoucherVoid voucherVoid) {
       Response rsp = null;
       String pathId = uuid.toString();
-      String objectId = voucherVoid.getVoidId();
-      ErrorDetail errorDetail = isUuidConsistent(pathId, objectId);
+      UUID objectId = voucherVoid.getId();
+      ErrorDetail errorDetail = isUuidConsistent(pathId, objectId.toString());
       if (errorDetail != null) {
          DetailMessage detailMessage = (DetailMessage) errorDetail.getDetailMessage();
          detailMessage.setVoidId(objectId);
@@ -237,7 +249,7 @@ public class VoucherModelUtils {
    public static ErrorDetail isUuidConsistent(String pathId, String objectId) {
       ErrorDetail errorDetail = null;
       if (!pathId.equals(objectId)) {
-         errorDetail = new ErrorDetail().errorType(ErrorTypeEnum.FORMAT_ERROR).errorMessage("UUID inconsistent");
+         errorDetail = new ErrorDetail().errorType(ErrorType.FORMAT_ERROR).errorMessage("UUID inconsistent");
          DetailMessage detailMessage = new DetailMessage();
          detailMessage.setPathId(pathId);
          detailMessage.setFreeString("The ID path parameter is not the same as the object's ID.");
@@ -253,13 +265,13 @@ public class VoucherModelUtils {
       VoucherRequest originalRequest = provisionRecords.get(requestKey);
       if (originalRequest != null) {
          ErrorDetail errorDetail =
-               new ErrorDetail().errorType(ErrorTypeEnum.DUPLICATE_RECORD).errorMessage("Duplicate UUID.");
+               new ErrorDetail().errorType(ErrorType.DUPLICATE_RECORD).errorMessage("Duplicate UUID.");
          DetailMessage detailMessage =
                new DetailMessage().freeString("Voucher request with UUID already processed with the associated fields.")
-                     .voucherId(voucherId.toString())
-                     .requestTime(originalRequest.getRequestTime())
+                     .voucherId(voucherId)
+                     .requestTime(originalRequest.getTime().toString())
                      .product(originalRequest.getProduct())
-                     .vendor(originalRequest.getVendor());
+                     .receiver(originalRequest.getReceiver());
          ConcurrentHashMap<RequestKey, VoucherResponse> responseRecords =
                TestServerRunner.getTestServer().getResponseRecords();
          VoucherResponse rsp = responseRecords.get(requestKey);
@@ -276,14 +288,12 @@ public class VoucherModelUtils {
       VoucherReversal reversal = reversalRecords.get(reversalKey);
       if (reversal != null) {
          ErrorDetail errorDetail =
-               new ErrorDetail().errorType(ErrorTypeEnum.VOUCHER_ALREADY_REVERSED).errorMessage("Voucher reversed.");
+               new ErrorDetail().errorType(ErrorType.ACCOUNT_ALREADY_SETTLED).errorMessage("Voucher reversed.");
          DetailMessage detailMessage =
                new DetailMessage()
                      .freeString("Voucher reversal with UUID already processed with the associated fields.")
-                     .reversalId(reversal.getReversalId())
-                     .reversalTime(reversal.getReversalTime())
-                     .product(reversal.getVoucherRequest().getProduct())
-                     .vendor(reversal.getVendor());
+                     .reversalId(reversal.getId())
+                     .product(reversal.getVoucherRequest().getProduct());
          ConcurrentHashMap<RequestKey, VoucherResponse> responseRecords =
                TestServerRunner.getTestServer().getResponseRecords();
          VoucherResponse rsp = responseRecords.get(requestKey);
@@ -301,10 +311,10 @@ public class VoucherModelUtils {
             TestServerRunner.getTestServer().getProvisionRecords();
       if (!isVoucherProvisioned(voucherId, provisionRecords, username, password)) {
          ErrorDetail errorDetail =
-               new ErrorDetail().errorType(ErrorTypeEnum.UNABLE_TO_LOCATE_RECORD).errorMessage("No voucher req.");
+               new ErrorDetail().errorType(ErrorType.UNABLE_TO_LOCATE_RECORD).errorMessage("No voucher req.");
          errorDetail.setDetailMessage(
                new DetailMessage().freeString("No VoucherRequest located for given voucherId.")
-                     .voucherId(voucherId.toString()));
+                     .voucherId(voucherId));
          return Response.status(404).entity(errorDetail).build();
       }
 
@@ -316,16 +326,14 @@ public class VoucherModelUtils {
       VoucherConfirmation confirmation = confirmationRecords.get(confirmKey);
       if (confirmation != null) {
          ErrorDetail errorDetail =
-               new ErrorDetail().errorType(ErrorTypeEnum.VOUCHER_ALREADY_CONFIRMED)
+               new ErrorDetail().errorType(ErrorType.ACCOUNT_ALREADY_SETTLED)
                      .errorMessage("Voucher confirmed.")
                      .detailMessage(
                            new DetailMessage()
                                  .freeString(
                                        "The voucher cannot be reversed as it has already been confirmed with the associated details.")
-                                 .confirmationId(confirmation.getConfirmationId())
-                                 .confirmDate(confirmation.getConfirmDate())
-                                 .voucher(confirmation.getVoucher())
-                                 .vendor(confirmation.getVendor()));
+                                 .confirmationId(confirmation.getId())
+                                 .voucher(confirmation.getVoucher()));
          return Response.status(400).entity(errorDetail).build();
       }
 
@@ -335,16 +343,14 @@ public class VoucherModelUtils {
       VoucherVoid voidAdv = voidRecords.get(voidKey);
       if (voidAdv != null) {
          ErrorDetail errorDetail =
-               new ErrorDetail().errorType(ErrorTypeEnum.VOUCHER_ALREADY_VOIDED)
+               new ErrorDetail().errorType(ErrorType.ACCOUNT_ALREADY_SETTLED)
                      .errorMessage("Voucher voided.")
                      .detailMessage(
                            new DetailMessage()
                                  .freeString(
                                        "The voucher cannot be reversed as it has already been voided with the associated details.")
-                                 .voidId(voidAdv.getVoidId())
-                                 .voidDate(voidAdv.getVoidDate())
-                                 .voucher(voidAdv.getVoucher())
-                                 .vendor(voidAdv.getVendor()));
+                                 .voidId(voidAdv.getId())
+                                 .voucher(voidAdv.getVoucher()));
          return Response.status(400).entity(errorDetail).build();
       }
       return null;
@@ -356,10 +362,10 @@ public class VoucherModelUtils {
       // check voucher was provisioned
       if (!isVoucherProvisioned(voucherId, provisionRecords, username, password)) {
          ErrorDetail errorDetail =
-               new ErrorDetail().errorType(ErrorTypeEnum.UNABLE_TO_LOCATE_RECORD).errorMessage("No voucher req.");
+               new ErrorDetail().errorType(ErrorType.UNABLE_TO_LOCATE_RECORD).errorMessage("No voucher req.");
          errorDetail.setDetailMessage(
                new DetailMessage().freeString("No VoucherRequest located for given voucherId.")
-                     .voucherId(voucherId.toString()));
+                     .voucherId(voucherId));
          return Response.status(404).entity(errorDetail).build();
       }
 
@@ -370,14 +376,12 @@ public class VoucherModelUtils {
       VoucherReversal reversal = reversalRecords.get(reversalsKey);
       if (reversal != null) {
          ErrorDetail errorDetail =
-               new ErrorDetail().errorType(ErrorTypeEnum.VOUCHER_ALREADY_REVERSED).errorMessage("Voucher reversed.");
+               new ErrorDetail().errorType(ErrorType.ACCOUNT_ALREADY_SETTLED).errorMessage("Voucher reversed.");
          errorDetail.setDetailMessage(
                new DetailMessage()
                      .freeString("Voucher provision has already been reversed with the associated details.")
-                     .reversalId(reversal.getReversalId())
-                     .reversalTime(reversal.getReversalTime())
-                     .product(reversal.getVoucherRequest().getProduct())
-                     .vendor(reversal.getVendor()));
+                     .reversalId(reversal.getId())
+                     .product(reversal.getVoucherRequest().getProduct()));
          return Response.status(400).entity(errorDetail).build();
       }
 
@@ -387,13 +391,11 @@ public class VoucherModelUtils {
       VoucherVoid voidAdv = voidRecords.get(voidKey);
       if (voidAdv != null) {
          ErrorDetail errorDetail =
-               new ErrorDetail().errorType(ErrorTypeEnum.VOUCHER_ALREADY_VOIDED).errorMessage("Voucher voided.");
+               new ErrorDetail().errorType(ErrorType.ACCOUNT_ALREADY_SETTLED).errorMessage("Voucher voided.");
          errorDetail.setDetailMessage(
                new DetailMessage().freeString("Voucher provision has already been voided with the associated details.")
-                     .voidId(voidAdv.getVoidId())
-                     .voidDate(voidAdv.getVoidDate())
-                     .voucher(voidAdv.getVoucher())
-                     .vendor(voidAdv.getVendor()));
+                     .voidId(voidAdv.getId())
+                     .voucher(voidAdv.getVoucher()));
          return Response.status(400).entity(errorDetail).build();
       }
       return null;
@@ -405,10 +407,10 @@ public class VoucherModelUtils {
       // check voucher was provisioned
       if (!isVoucherProvisioned(voucherId, provisionRecords, username, password)) {
          ErrorDetail errorDetail =
-               new ErrorDetail().errorType(ErrorTypeEnum.UNABLE_TO_LOCATE_RECORD).errorMessage("No voucher req.");
+               new ErrorDetail().errorType(ErrorType.UNABLE_TO_LOCATE_RECORD).errorMessage("No voucher req.");
          errorDetail.setDetailMessage(
                new DetailMessage().freeString("No VoucherRequest located for given voucherId.")
-                     .voucherId(voucherId.toString()));
+                     .voucherId(voucherId));
          return Response.status(404).entity(errorDetail).build();
       }
 
@@ -419,14 +421,12 @@ public class VoucherModelUtils {
       VoucherReversal reversal = reversalRecords.get(reversalsKey);
       if (reversal != null) {
          ErrorDetail errorDetail =
-               new ErrorDetail().errorType(ErrorTypeEnum.VOUCHER_ALREADY_REVERSED).errorMessage("Voucher reversed.");
+               new ErrorDetail().errorType(ErrorType.ACCOUNT_ALREADY_SETTLED).errorMessage("Voucher reversed.");
          errorDetail.setDetailMessage(
                new DetailMessage()
                      .freeString("Voucher provision has already been reversed with the associated details.")
-                     .reversalId(reversal.getReversalId())
-                     .reversalTime(reversal.getReversalTime())
-                     .product(reversal.getVoucherRequest().getProduct())
-                     .vendor(reversal.getVendor()));
+                     .reversalId(reversal.getId())
+                     .product(reversal.getVoucherRequest().getProduct()));
          return Response.status(400).entity(errorDetail).build();
       }
 
@@ -438,14 +438,12 @@ public class VoucherModelUtils {
       VoucherConfirmation confirmation = confirmationRecords.get(confirmKey);
       if (confirmation != null) {
          ErrorDetail errorDetail =
-               new ErrorDetail().errorType(ErrorTypeEnum.VOUCHER_ALREADY_CONFIRMED).errorMessage("Voucher confirmed.");
+               new ErrorDetail().errorType(ErrorType.ACCOUNT_ALREADY_SETTLED).errorMessage("Voucher confirmed.");
          errorDetail.setDetailMessage(
                new DetailMessage()
                      .freeString("Voucher provision has already been confirmed with the associated details.")
-                     .confirmationId(confirmation.getConfirmationId())
-                     .confirmDate(confirmation.getConfirmDate())
-                     .voucher(confirmation.getVoucher())
-                     .vendor(confirmation.getVendor()));
+                     .confirmationId(confirmation.getId())
+                     .voucher(confirmation.getVoucher()));
          return Response.status(400).entity(errorDetail).build();
       }
       return null;

@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import io.electrum.vas.Utils;
 import io.swagger.annotations.ApiModelProperty;
 
 public class FormatError {
@@ -80,20 +81,10 @@ public class FormatError {
       StringBuilder sb = new StringBuilder();
       sb.append("class DetailMessage {\n");
 
-      sb.append("    field: ").append(toIndentedString(field)).append("\n");
-      sb.append("    msg: ").append(toIndentedString(msg)).append("\n");
-      sb.append("    value: ").append(toIndentedString(value)).append("\n");
+      sb.append("    field: ").append(Utils.toIndentedString(field)).append("\n");
+      sb.append("    msg: ").append(Utils.toIndentedString(msg)).append("\n");
+      sb.append("    value: ").append(Utils.toIndentedString(value)).append("\n");
       sb.append("}");
       return sb.toString();
-   }
-
-   /**
-    * Convert the given object to string with each line indented by 4 spaces (except the first line).
-    */
-   private String toIndentedString(Object o) {
-      if (o == null) {
-         return "null";
-      }
-      return o.toString().replace("\n", "\n    ");
    }
 }

@@ -7,38 +7,56 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.electrum.airtime.api.model.VoucherRequest;
 import io.electrum.airtime.api.model.VoucherResponse;
+import io.electrum.airtime.resource.impl.TestServer;
 import io.electrum.airtime.server.TestServerRunner;
 import io.electrum.airtime.server.util.RequestKey;
 import io.electrum.airtime.server.util.VoucherModelUtils;
 
 public class ProvisionVoucherHandler {
+   private static final Logger log = LoggerFactory.getLogger(TestServer.class.getPackage().getName());
    public Response handle(UUID voucherId, VoucherRequest request, HttpHeaders httpHeaders, UriInfo uriInfo) {
-      Response rsp = VoucherModelUtils.validateVoucherRequest(request);
-      if (rsp != null) {
+      try
+      {
+         Response rsp = VoucherModelUtils.validateVoucherRequest(request);
+         if (rsp != null) {
+            return rsp;
+         }
+         rsp = VoucherModelUtils.isUuidConsistent(voucherId, request);
+         if (rsp != null) {
+            return rsp;
+         }
+         String authString = VoucherModelUtils.getAuthString(httpHeaders.getHeaderString(HttpHeaders.AUTHORIZATION));
+         String username = VoucherModelUtils.getUsernameFromAuth(authString);
+         String password = VoucherModelUtils.getPasswordFromAuth(authString);
+         RequestKey key = new RequestKey(username, password, RequestKey.VOUCHERS_RESOURCE, voucherId.toString());
+         rsp = VoucherModelUtils.canProvisionVoucher(voucherId, username, password);
+         if (rsp != null) {
+            return rsp;
+         }
+         ConcurrentHashMap<RequestKey, VoucherRequest> provisionRecords =
+               TestServerRunner.getTestServer().getProvisionRecords();
+         provisionRecords.put(key, request);
+         VoucherResponse voucherRsp = VoucherModelUtils.voucherRspFromReq(request);
+         ConcurrentHashMap<RequestKey, VoucherResponse> responseRecords =
+               TestServerRunner.getTestServer().getResponseRecords();
+         responseRecords.put(key, voucherRsp);
+         rsp = Response.created(uriInfo.getRequestUri()).entity(voucherRsp).build();
          return rsp;
       }
-      rsp = VoucherModelUtils.isUuidConsistent(voucherId, request);
-      if (rsp != null) {
+      catch (Exception e)
+      {
+         log.debug("error processing VoucherProvision", e);
+         for(StackTraceElement ste : e.getStackTrace())
+         {
+            log.debug(ste.toString());
+         }
+         Response rsp = Response.serverError().entity(e.getMessage()).build();
          return rsp;
       }
-      String authString = VoucherModelUtils.getAuthString(httpHeaders.getHeaderString(HttpHeaders.AUTHORIZATION));
-      String username = VoucherModelUtils.getUsernameFromAuth(authString);
-      String password = VoucherModelUtils.getPasswordFromAuth(authString);
-      RequestKey key = new RequestKey(username, password, RequestKey.VOUCHERS_RESOURCE, voucherId.toString());
-      rsp = VoucherModelUtils.canProvisionVoucher(voucherId, username, password);
-      if (rsp != null) {
-         return rsp;
-      }
-      ConcurrentHashMap<RequestKey, VoucherRequest> provisionRecords =
-            TestServerRunner.getTestServer().getProvisionRecords();
-      provisionRecords.put(key, request);
-      VoucherResponse voucherRsp = VoucherModelUtils.voucherRspFromReq(request);
-      ConcurrentHashMap<RequestKey, VoucherResponse> responseRecords =
-            TestServerRunner.getTestServer().getResponseRecords();
-      responseRecords.put(key, voucherRsp);
-      rsp = Response.created(uriInfo.getRequestUri()).entity(voucherRsp).build();
-      return rsp;
    }
 }
