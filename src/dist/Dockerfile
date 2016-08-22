@@ -1,5 +1,5 @@
 # the base image is a trusted ubuntu build with java 8 (https://index.docker.io/u/dockerfile/java/)
-FROM java:8
+FROM java:7
 
 # that's me!
 MAINTAINER Tim Whelan, timwhelan@electrum.co.za
