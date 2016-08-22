@@ -17,4 +17,4 @@ ADD ${project.artifactId}-${project.version}-jar-with-dependencies.jar ${project
 EXPOSE 	8080
 
 # run the server when a container based on this image is being run
-CMD ["java", "-jar", "${project.artifactId}-${project.version}-jar-with-dependencies.jar", "8081" ]
+CMD ["java", "-jar", "${project.artifactId}-${project.version}-jar-with-dependencies.jar", "8080" ]
