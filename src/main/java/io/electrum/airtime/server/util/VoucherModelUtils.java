@@ -13,6 +13,7 @@ import javax.validation.Validator;
 import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.internal.util.Base64;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +33,7 @@ import io.electrum.vas.model.ErrorDetail.ErrorType;
 import io.electrum.vas.model.Institution;
 import io.electrum.vas.model.Merchant;
 import io.electrum.vas.model.Originator;
+import io.electrum.vas.model.Tender;
 import io.electrum.vas.model.ThirdPartyIdentifier;
 
 public class VoucherModelUtils {
@@ -61,6 +63,7 @@ public class VoucherModelUtils {
       rsp.setId(req.getId());
       Voucher voucher = new Voucher();
       voucher.setPin(RandomData.random09((int) ((Math.random() * 20)+1)));
+      voucher.setExpiryDate(new DateTime());
       voucher.setSerialNumber(RandomData.random09((int) ((Math.random() * 20)+1)));
       voucher.setBatchNumber(RandomData.random09((int) ((Math.random() * 20)+1)));
       voucher.setRedeemInstructions(redeemInstructions);
@@ -158,6 +161,12 @@ public class VoucherModelUtils {
       violations.addAll(validate(voucherConfirmation.getRequestId()));
       violations.addAll(validate(voucherConfirmation.getThirdPartyIdentifiers()));
       violations.addAll(validate(voucherConfirmation.getTime()));
+      List<Tender> tenders = voucherConfirmation.getTenders();
+      violations.addAll(validate(tenders));
+      for(Tender tender : tenders)
+      {
+         violations.addAll(validate(tender));
+      }
       violations.addAll(validate(voucherConfirmation.getVoucher()));
       return buildFormatErrorRsp(violations);
    }
@@ -169,6 +178,7 @@ public class VoucherModelUtils {
       violations.addAll(validate(voucherVoid.getRequestId()));
       violations.addAll(validate(voucherVoid.getThirdPartyIdentifiers()));
       violations.addAll(validate(voucherVoid.getTime()));
+      violations.addAll(validate(voucherVoid.getReversalReason()));
       violations.addAll(validate(voucherVoid.getVoucher()));
       return buildFormatErrorRsp(violations);
    }
