@@ -34,7 +34,6 @@ public class AirtimeTestServer extends ResourceConfig {
    private ConcurrentHashMap<RequestKey, VoucherReversal> reversalRecords;
    private ConcurrentHashMap<RequestKey, VoucherConfirmation> confirmationRecords;
    private ConcurrentHashMap<RequestKey, VoucherVoid> voidRecords;
-   private static final PropertyNamingStrategy LOWER_CASE_WITH_HYPHEN_STRATEGY = new LowerCaseWitHyphenStrategy();
    private static final Logger log = LoggerFactory.getLogger(AirtimeTestServer.class.getPackage().getName());
 
    public AirtimeTestServer() {

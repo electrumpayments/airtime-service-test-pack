@@ -2,7 +2,7 @@
 	"variables": [],
 	"info": {
 		"name": "Airtime",
-		"_postman_id": "b0375696-0442-9aed-7de0-940ce97f4848",
+		"_postman_id": "f4ffb035-90c6-1107-25eb-a9f213330e20",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -39,7 +39,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -89,7 +89,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -145,7 +145,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}/reversals/{{reversalId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -195,7 +195,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -245,7 +245,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}/voids/{{voidId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -261,7 +261,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": \"{{voidId}}\",\n    \"requestId\": \"{{voucherId}}\",\n    \"time\": \"{{timestamp}}\",\n    \"thirdPartyIdentifiers\": [\n        {\n            \"institutionId\": \"{{originatorInstId}}\",\n            \"transactionIdentifier\": \"{{originatorRef}}\"\n        },\n        {\n            \"institutionId\": \"{{clientInstId}}\",\n            \"transactionIdentifier\": \"{{clientRef}}\"\n        }\n    ],\n    \"voucher\": {\n        \"serialNumber\": \"123\"\n    }\n}"
+							"raw": "{\n    \"id\": \"{{voidId}}\",\n    \"requestId\": \"{{voucherId}}\",\n    \"time\": \"{{timestamp}}\",\n    \"thirdPartyIdentifiers\": [\n        {\n            \"institutionId\": \"{{originatorInstId}}\",\n            \"transactionIdentifier\": \"{{originatorRef}}\"\n        },\n        {\n            \"institutionId\": \"{{clientInstId}}\",\n            \"transactionIdentifier\": \"{{clientRef}}\"\n        }\n    ],\n    \"reversalReason\": \"CANCELLED\",\n    \"voucher\": {\n        \"serialNumber\": \"123\"\n    }\n}"
 						},
 						"description": "Failed attempt to void a voucher which wasn't provisioned"
 					},
@@ -295,7 +295,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -345,7 +345,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -395,7 +395,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}/reversals/{{reversalId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -445,7 +445,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}/voids/{{voidId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -461,7 +461,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": \"{{voidId}}\",\n    \"requestId\": \"{{voucherId}}\",\n    \"time\": \"{{timestamp}}\",\n    \"thirdPartyIdentifiers\": [\n        {\n            \"institutionId\": \"{{thirdPartyId1}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef1}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId2}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef2}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId3}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef3}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId4}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef4}}\"\n        }\n    ],\n    \"voucher\": {\n        \"serialNumber\": \"{{serialNum}}\",\n        \"batchNumber\": \"{{batchNum}}\"\n    }\n}"
+							"raw": "{\n    \"id\": \"{{voidId}}\",\n    \"requestId\": \"{{voucherId}}\",\n    \"time\": \"{{timestamp}}\",\n    \"thirdPartyIdentifiers\": [\n        {\n            \"institutionId\": \"{{thirdPartyId1}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef1}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId2}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef2}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId3}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef3}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId4}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef4}}\"\n        }\n    ],\n    \"reversalReason\": \"CANCELLED\",\n    \"voucher\": {\n        \"serialNumber\": \"{{serialNum}}\",\n        \"batchNumber\": \"{{batchNum}}\"\n    }\n}"
 						},
 						"description": "Failed attempt to void a confirmed voucher."
 					},
@@ -495,7 +495,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -545,7 +545,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}/reversals/{{reversalId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -595,7 +595,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -645,7 +645,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}/voids/{{voidId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -661,7 +661,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": \"{{voidId}}\",\n    \"requestId\": \"{{voucherId}}\",\n    \"time\": \"{{timestamp}}\",\n    \"thirdPartyIdentifiers\": [\n        {\n            \"institutionId\": \"{{thirdPartyId1}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef1}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId2}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef2}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId3}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef3}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId4}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef4}}\"\n        }\n    ],\n    \"voucher\": {\n        \"serialNumber\": \"{{serialNum}}\",\n        \"batchNumber\": \"{{batchNum}}\"\n    }\n}"
+							"raw": "{\n    \"id\": \"{{voidId}}\",\n    \"requestId\": \"{{voucherId}}\",\n    \"time\": \"{{timestamp}}\",\n    \"thirdPartyIdentifiers\": [\n        {\n            \"institutionId\": \"{{thirdPartyId1}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef1}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId2}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef2}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId3}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef3}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId4}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef4}}\"\n        }\n    ],\n    \"reversalReason\": \"CANCELLED\",\n    \"voucher\": {\n        \"serialNumber\": \"{{serialNum}}\",\n        \"batchNumber\": \"{{batchNum}}\"\n    }\n}"
 						},
 						"description": "Failed attempt to void a reversed voucher."
 					},
@@ -695,7 +695,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -745,7 +745,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}/voids/{{voidId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -761,7 +761,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": \"{{voidId}}\",\n    \"requestId\": \"{{voucherId}}\",\n    \"time\": \"{{timestamp}}\",\n    \"thirdPartyIdentifiers\": [\n        {\n            \"institutionId\": \"{{thirdPartyId1}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef1}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId2}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef2}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId3}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef3}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId4}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef4}}\"\n        }\n    ],\n    \"voucher\": {\n        \"serialNumber\": \"{{serialNum}}\",\n        \"batchNumber\": \"{{batchNum}}\"\n    }\n}"
+							"raw": "{\n    \"id\": \"{{voidId}}\",\n    \"requestId\": \"{{voucherId}}\",\n    \"time\": \"{{timestamp}}\",\n    \"thirdPartyIdentifiers\": [\n        {\n            \"institutionId\": \"{{thirdPartyId1}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef1}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId2}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef2}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId3}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef3}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId4}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef4}}\"\n        }\n    ],\n    \"reversalReason\": \"CANCELLED\",\n    \"voucher\": {\n        \"serialNumber\": \"{{serialNum}}\",\n        \"batchNumber\": \"{{batchNum}}\"\n    }\n}"
 						},
 						"description": "Voucher void advice"
 					},
@@ -795,7 +795,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}/reversals/{{reversalId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -845,7 +845,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -895,7 +895,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -951,7 +951,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1001,7 +1001,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1051,7 +1051,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1101,7 +1101,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1151,7 +1151,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1201,7 +1201,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1251,7 +1251,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1301,7 +1301,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1351,7 +1351,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1401,7 +1401,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1451,7 +1451,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1501,7 +1501,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1551,7 +1551,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1601,7 +1601,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1651,7 +1651,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1701,7 +1701,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1751,7 +1751,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1801,7 +1801,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1851,7 +1851,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1901,7 +1901,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -1918,56 +1918,6 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"id\": \"{{voucherId}}\",\n    \"product\": {\n        \"productId\": \"{{fixedPriceProduct}}\"\n    },\n    \"time\": \"{{timestamp}}\",\n    \"originator\": {\n        \"merchant\": {\n            \"merchantType\": \"{{merchantType}}\",\n            \"merchantId\": \"{{merchantId}}\",\n            \"merchantName\": {\n                \"name\": \"{{merchantName}}\",\n                \"city\": \"{{merchantCity}}\",\n                \"region\": \"{{merchantRegion}}\",\n                \"country\": \"{{merchantCountry}}\"\n            }\n        },\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{originatorInstId}}\",\n            \"name\": \"{{originatorInstName}}\"\n        }\n    },\n    \"client\": {\n        \"id\": \"{{clientInstId}}\"\n    },\n    \"receiver\": {\n        \"id\": \"{{receiverInstId}}\",\n        \"name\": \"{{receiverInstName}}\"\n    },\n    \"thirdPartyIdentifiers\" : [\n        {\n            \"institutionId\": \"{{originatorInstId}}\",\n            \"transactionIdentifier\": \"{{originatorRef}}\"\n        },\n        {\n            \"institutionId\": \"{{clientInstId}}\",\n            \"transactionIdentifier\": \"{{clientRef}}\"\n        }\n    ]\n}"
-						},
-						"description": ""
-					},
-					"response": []
-				},
-				{
-					"name": "Missing thirdPartyIdentifiers",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\npostman.setEnvironmentVariable(\"voucherId\", voucherId);\n\nvar uuidLast4 = voucherId.substr(voucherId.length-4, 4);\n\npostman.setEnvironmentVariable(\"merchantRef\", (\"merch\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"senderRef\", (\"send\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"processorRef\", (\"proc\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"vendorRef\", (\"vendor\"+uuidLast4).toUpperCase());\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": {
-								"username": "testClient",
-								"password": "password",
-								"saveHelperData": true,
-								"showPassword": false
-							}
-						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}",
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
-							},
-							{
-								"key": "Authorization",
-								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
-								"description": ""
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"id\": \"{{voucherId}}\",\n    \"product\": {\n        \"productId\": \"{{fixedPriceProduct}}\"\n    },\n    \"time\": \"{{timestamp}}\",\n    \"originator\": {\n        \"merchant\": {\n            \"merchantType\": \"{{merchantType}}\",\n            \"merchantId\": \"{{merchantId}}\",\n            \"merchantName\": {\n                \"name\": \"{{merchantName}}\",\n                \"city\": \"{{merchantCity}}\",\n                \"region\": \"{{merchantRegion}}\",\n                \"country\": \"{{merchantCountry}}\"\n            }\n        },\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{originatorInstId}}\",\n            \"name\": \"{{originatorInstName}}\"\n        }\n    },\n    \"client\": {\n        \"id\": \"{{clientInstId}}\",\n        \"name\": \"{{clientInstName}}\"\n    },\n    \"receiver\": {\n        \"id\": \"{{receiverInstId}}\",\n        \"name\": \"{{receiverInstName}}\"\n    }\n}"
 						},
 						"description": ""
 					},
@@ -2001,7 +1951,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}/reversals/{{reversalId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2051,7 +2001,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}/reversals/{{reversalId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2101,7 +2051,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}/reversals/{{reversalId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2118,56 +2068,6 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"id\": \"{{reversalId}}\",\n    \"requestId\": \"{{voucherId}}\",\n    \"thirdPartyIdentifiers\": [\n        {\n            \"institutionId\": \"{{thirdPartyId1}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef1}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId2}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef2}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId3}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef3}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId4}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef4}}\"\n        }\n    ],\n    \"reversalReason\": \"TIMEOUT\",\n    \"voucherRequest\" : {\n        \"id\": \"{{voucherId}}\",\n        \"product\": {\n            \"productId\": \"{{fixedPriceProduct}}\"\n        },\n        \"time\": \"{{requestTime}}\",\n        \"originator\": {\n            \"merchant\": {\n                \"merchantType\": \"{{merchantType}}\",\n                \"merchantId\": \"{{merchantId}}\",\n                \"merchantName\": {\n                    \"name\": \"{{merchantName}}\",\n                    \"city\": \"{{merchantCity}}\",\n                    \"region\": \"{{merchantRegion}}\",\n                    \"country\": \"{{merchantCountry}}\"\n                }\n            },\n            \"terminalId\": \"{{termId}}\",\n            \"institution\": {\n                \"id\": \"{{originatorInstId}}\",\n                \"name\": \"{{originatorInstName}}\"\n            }\n        },\n        \"client\": {\n            \"id\": \"{{clientInstId}}\",\n            \"name\": \"{{clientInstName}}\"\n        },\n        \"receiver\": {\n            \"id\": \"{{receiverInstId}}\",\n            \"name\": \"{{receiverInstName}}\"\n        },\n        \"thirdPartyIdentifiers\" : [\n            {\n                \"institutionId\": \"{{originatorInstId}}\",\n                \"transactionIdentifier\": \"{{originatorRef}}\"\n            },\n            {\n                \"institutionId\": \"{{clientInstId}}\",\n                \"transactionIdentifier\": \"{{clientRef}}\"\n            }\n        ]\n    }\n}"
-						},
-						"description": ""
-					},
-					"response": []
-				},
-				{
-					"name": "Missing thirdPartyIdentifiers",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar reversalId = uuid();\npostman.setEnvironmentVariable(\"reversalId\", reversalId);\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": {
-								"username": "testClient",
-								"password": "password",
-								"saveHelperData": true,
-								"showPassword": false
-							}
-						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
-							},
-							{
-								"key": "Authorization",
-								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
-								"description": ""
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"id\": \"{{reversalId}}\",\n    \"requestId\": \"{{voucherId}}\",\n    \"time\": \"{{timestamp}}\",\n    \"reversalReason\": \"TIMEOUT\",\n    \"voucherRequest\" : {\n        \"id\": \"{{voucherId}}\",\n        \"product\": {\n            \"productId\": \"{{fixedPriceProduct}}\"\n        },\n        \"time\": \"{{requestTime}}\",\n        \"originator\": {\n            \"merchant\": {\n                \"merchantType\": \"{{merchantType}}\",\n                \"merchantId\": \"{{merchantId}}\",\n                \"merchantName\": {\n                    \"name\": \"{{merchantName}}\",\n                    \"city\": \"{{merchantCity}}\",\n                    \"region\": \"{{merchantRegion}}\",\n                    \"country\": \"{{merchantCountry}}\"\n                }\n            },\n            \"terminalId\": \"{{termId}}\",\n            \"institution\": {\n                \"id\": \"{{originatorInstId}}\",\n                \"name\": \"{{originatorInstName}}\"\n            }\n        },\n        \"client\": {\n            \"id\": \"{{clientInstId}}\",\n            \"name\": \"{{clientInstName}}\"\n        },\n        \"receiver\": {\n            \"id\": \"{{receiverInstId}}\",\n            \"name\": \"{{receiverInstName}}\"\n        },\n        \"thirdPartyIdentifiers\" : [\n            {\n                \"institutionId\": \"{{originatorInstId}}\",\n                \"transactionIdentifier\": \"{{originatorRef}}\"\n            },\n            {\n                \"institutionId\": \"{{clientInstId}}\",\n                \"transactionIdentifier\": \"{{clientRef}}\"\n            }\n        ]\n    }\n}"
 						},
 						"description": ""
 					},
@@ -2201,7 +2101,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}/reversals/{{reversalId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2251,7 +2151,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}/reversals/{{reversalId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2301,7 +2201,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}/voids/{{voidId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2351,7 +2251,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}/voids/{{voidId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2401,7 +2301,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}/voids/{{voidId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2418,56 +2318,6 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"id\": \"{{voidId}}\",\n    \"requestId\": \"{{voucherId}}\",\n    \"thirdPartyIdentifiers\": [\n        {\n            \"institutionId\": \"{{thirdPartyId1}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef1}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId2}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef2}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId3}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef3}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId4}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef4}}\"\n        }\n    ],\n    \"voucher\": {\n        \"serialNumber\": \"{{serialNum}}\",\n        \"batchNumber\": \"{{batchNum}}\"\n    }\n}"
-						},
-						"description": ""
-					},
-					"response": []
-				},
-				{
-					"name": "Missing void thirdPartyIdentifiers",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voidId = uuid();\npostman.setEnvironmentVariable(\"voidId\", voidId);\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": {
-								"username": "testClient",
-								"password": "password",
-								"saveHelperData": true,
-								"showPassword": false
-							}
-						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
-							},
-							{
-								"key": "Authorization",
-								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
-								"description": ""
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"id\": \"{{voidId}}\",\n    \"requestId\": \"{{voucherId}}\",\n    \"time\": \"{{timestamp}}\",\n    \"voucher\": {\n        \"serialNumber\": \"{{serialNum}}\",\n        \"batchNumber\": \"{{batchNum}}\"\n    }\n}"
 						},
 						"description": ""
 					},
@@ -2501,7 +2351,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}/voids/{{voidId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2551,7 +2401,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}/voids/{{voidId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2601,7 +2451,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2651,7 +2501,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2701,7 +2551,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2718,56 +2568,6 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"id\": \"{{confirmationId}}\",\n    \"requestId\": \"{{voucherId}}\",\n    \"thirdPartyIdentifiers\": [\n        {\n            \"institutionId\": \"{{thirdPartyId1}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef1}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId2}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef2}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId3}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef3}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId4}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef4}}\"\n        }\n    ],\n    \"voucher\": {\n        \"serialNumber\": \"{{serialNum}}\",\n        \"batchNumber\": \"{{batchNum}}\"\n    }\n}"
-						},
-						"description": ""
-					},
-					"response": []
-				},
-				{
-					"name": "Missing confirmation thirdPartyIdentifiers",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voidId = uuid();\npostman.setEnvironmentVariable(\"confirmationId\", voidId);\n\nvar timestamp = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", timestamp);"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": {
-								"username": "testClient",
-								"password": "password",
-								"saveHelperData": true,
-								"showPassword": false
-							}
-						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
-							},
-							{
-								"key": "Authorization",
-								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
-								"description": ""
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"id\": \"{{confirmationId}}\",\n    \"requestId\": \"{{voucherId}}\",\n    \"time\": \"{{timestamp}}\",\n    \"voucher\": {\n        \"serialNumber\": \"{{serialNum}}\",\n        \"batchNumber\": \"{{batchNum}}\"\n    }\n}"
 						},
 						"description": ""
 					},
@@ -2801,7 +2601,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2851,7 +2651,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}/confirmations/{{confirmationId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2907,7 +2707,63 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"{{voucherId}}\",\n    \"product\": {\n        \"productId\": \"{{fixedPriceProduct}}\"\n    },\n    \"time\": \"{{timestamp}}\",\n    \"originator\": {\n        \"merchant\": {\n            \"merchantType\": \"{{merchantType}}\",\n            \"merchantId\": \"{{merchantId}}\",\n            \"merchantName\": {\n                \"name\": \"{{merchantName}}\",\n                \"city\": \"{{merchantCity}}\",\n                \"region\": \"{{merchantRegion}}\",\n                \"country\": \"{{merchantCountry}}\"\n            }\n        },\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{originatorInstId}}\",\n            \"name\": \"{{originatorInstName}}\"\n        }\n    },\n    \"client\": {\n        \"id\": \"{{clientInstId}}\",\n        \"name\": \"{{clientInstName}}\"\n    },\n    \"receiver\": {\n        \"id\": \"{{receiverInstId}}\",\n        \"name\": \"{{receiverInstName}}\"\n    },\n    \"thirdPartyIdentifiers\" : [\n        {\n            \"institutionId\": \"{{originatorInstId}}\",\n            \"transactionIdentifier\": \"{{originatorRef}}\"\n        },\n        {\n            \"institutionId\": \"{{clientInstId}}\",\n            \"transactionIdentifier\": \"{{clientRef}}\"\n        }\n    ]\n}"
+						},
+						"description": "Voucher provision request"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reversals",
+			"description": "",
+			"item": [
+				{
+					"name": "Provision request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": "tests[\"Status code is 201\"] = responseCode.code === 201;\n\nvar jsonData = JSON.parse(responseBody);\n\nvar thirdPartyIds = jsonData.thirdPartyIdentifiers\npostman.setEnvironmentVariable(\"thirdPartyId1\", thirdPartyIds[0].institutionId);\npostman.setEnvironmentVariable(\"thirdPartyTranRef1\", thirdPartyIds[0].transactionIdentifier);\n\npostman.setEnvironmentVariable(\"thirdPartyId2\", thirdPartyIds[1].institutionId);\npostman.setEnvironmentVariable(\"thirdPartyTranRef2\", thirdPartyIds[1].transactionIdentifier);\n\npostman.setEnvironmentVariable(\"thirdPartyId3\", thirdPartyIds[2].institutionId);\npostman.setEnvironmentVariable(\"thirdPartyTranRef3\", thirdPartyIds[2].transactionIdentifier);\n\npostman.setEnvironmentVariable(\"thirdPartyId4\", thirdPartyIds[3].institutionId);\npostman.setEnvironmentVariable(\"thirdPartyTranRef4\", thirdPartyIds[3].transactionIdentifier);"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\npostman.setEnvironmentVariable(\"voucherId\", voucherId);\n\nvar uuidLast4 = voucherId.substr(voucherId.length-4, 4);\n\npostman.setEnvironmentVariable(\"originatorRef\", (\"orig\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"clientRef\", (\"clnt\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"settlementEntityRef\", (\"seEn\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"receiverRef\", (\"receiver\"+uuidLast4).toUpperCase());\n\nvar dateTime = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", dateTime);\npostman.setEnvironmentVariable(\"requestTime\", dateTime);"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "testClient",
+								"password": "password",
+								"saveHelperData": true,
+								"showPassword": false
+							}
+						},
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2957,7 +2813,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/reversals/{{reversalId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}/reversals/{{reversalId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -2976,62 +2832,6 @@
 							"raw": "{\n    \"id\": \"{{reversalId}}\",\n    \"requestId\": \"{{voucherId}}\",\n    \"time\": \"{{timestamp}}\",\n    \"thirdPartyIdentifiers\": [\n        {\n            \"institutionId\": \"{{thirdPartyId1}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef1}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId2}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef2}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId3}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef3}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId4}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef4}}\"\n        }\n    ],\n    \"reversalReason\": \"TIMEOUT\",\n    \"voucherRequest\" : {\n        \"id\": \"{{voucherId}}\",\n        \"product\": {\n            \"productId\": \"{{fixedPriceProduct}}\"\n        },\n        \"time\": \"{{requestTime}}\",\n        \"originator\": {\n            \"merchant\": {\n                \"merchantType\": \"{{merchantType}}\",\n                \"merchantId\": \"{{merchantId}}\",\n                \"merchantName\": {\n                    \"name\": \"{{merchantName}}\",\n                    \"city\": \"{{merchantCity}}\",\n                    \"region\": \"{{merchantRegion}}\",\n                    \"country\": \"{{merchantCountry}}\"\n                }\n            },\n            \"terminalId\": \"{{termId}}\",\n            \"institution\": {\n                \"id\": \"{{originatorInstId}}\",\n                \"name\": \"{{originatorInstName}}\"\n            }\n        },\n        \"client\": {\n            \"id\": \"{{clientInstId}}\",\n            \"name\": \"{{clientInstName}}\"\n        },\n        \"receiver\": {\n            \"id\": \"{{receiverInstId}}\",\n            \"name\": \"{{receiverInstName}}\"\n        },\n        \"thirdPartyIdentifiers\" : [\n            {\n                \"institutionId\": \"{{originatorInstId}}\",\n                \"transactionIdentifier\": \"{{originatorRef}}\"\n            },\n            {\n                \"institutionId\": \"{{clientInstId}}\",\n                \"transactionIdentifier\": \"{{clientRef}}\"\n            }\n        ]\n    }\n}"
 						},
 						"description": "Voucher reversal advice"
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Reversals",
-			"description": "",
-			"item": [
-				{
-					"name": "Provision request",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": "tests[\"Status code is 201\"] = responseCode.code === 201;\n\nvar jsonData = JSON.parse(responseBody);\n\nvar thirdPartyIds = jsonData.thirdPartyIdentifiers\npostman.setEnvironmentVariable(\"thirdPartyId1\", thirdPartyIds[0].institutionId);\npostman.setEnvironmentVariable(\"thirdPartyTranRef1\", thirdPartyIds[0].transactionIdentifier);\n\npostman.setEnvironmentVariable(\"thirdPartyId2\", thirdPartyIds[1].institutionId);\npostman.setEnvironmentVariable(\"thirdPartyTranRef2\", thirdPartyIds[1].transactionIdentifier);\n\npostman.setEnvironmentVariable(\"thirdPartyId3\", thirdPartyIds[2].institutionId);\npostman.setEnvironmentVariable(\"thirdPartyTranRef3\", thirdPartyIds[2].transactionIdentifier);\n\npostman.setEnvironmentVariable(\"thirdPartyId4\", thirdPartyIds[3].institutionId);\npostman.setEnvironmentVariable(\"thirdPartyTranRef4\", thirdPartyIds[3].transactionIdentifier);"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"type": "text/javascript",
-								"exec": "function _p8(s) {\n       var p = (Math.random().toString(16)+\"000000000\").substr(2,8);\n       return s ? \"-\" + p.substr(0,4) + \"-\" + p.substr(4,4) : p ;\n   }\n\nfunction uuid() {\n   \n   return _p8() + _p8(true) + _p8(true) + _p8();\n}\n\nvar voucherId = uuid();\npostman.setEnvironmentVariable(\"voucherId\", voucherId);\n\nvar uuidLast4 = voucherId.substr(voucherId.length-4, 4);\n\npostman.setEnvironmentVariable(\"originatorRef\", (\"orig\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"clientRef\", (\"clnt\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"settlementEntityRef\", (\"seEn\"+uuidLast4).toUpperCase());\npostman.setEnvironmentVariable(\"receiverRef\", (\"receiver\"+uuidLast4).toUpperCase());\n\nvar dateTime = new Date().toISOString();\npostman.setEnvironmentVariable(\"timestamp\", dateTime);\npostman.setEnvironmentVariable(\"requestTime\", dateTime);"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": {
-								"username": "testClient",
-								"password": "password",
-								"saveHelperData": true,
-								"showPassword": false
-							}
-						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}",
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
-							},
-							{
-								"key": "Authorization",
-								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
-								"description": ""
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"id\": \"{{voucherId}}\",\n    \"product\": {\n        \"productId\": \"{{fixedPriceProduct}}\"\n    },\n    \"time\": \"{{timestamp}}\",\n    \"originator\": {\n        \"merchant\": {\n            \"merchantType\": \"{{merchantType}}\",\n            \"merchantId\": \"{{merchantId}}\",\n            \"merchantName\": {\n                \"name\": \"{{merchantName}}\",\n                \"city\": \"{{merchantCity}}\",\n                \"region\": \"{{merchantRegion}}\",\n                \"country\": \"{{merchantCountry}}\"\n            }\n        },\n        \"terminalId\": \"{{termId}}\",\n        \"institution\": {\n            \"id\": \"{{originatorInstId}}\",\n            \"name\": \"{{originatorInstName}}\"\n        }\n    },\n    \"client\": {\n        \"id\": \"{{clientInstId}}\",\n        \"name\": \"{{clientInstName}}\"\n    },\n    \"receiver\": {\n        \"id\": \"{{receiverInstId}}\",\n        \"name\": \"{{receiverInstName}}\"\n    },\n    \"thirdPartyIdentifiers\" : [\n        {\n            \"institutionId\": \"{{originatorInstId}}\",\n            \"transactionIdentifier\": \"{{originatorRef}}\"\n        },\n        {\n            \"institutionId\": \"{{clientInstId}}\",\n            \"transactionIdentifier\": \"{{clientRef}}\"\n        }\n    ]\n}"
-						},
-						"description": "Voucher provision request"
 					},
 					"response": []
 				}
@@ -3069,7 +2869,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -3119,7 +2919,7 @@
 								"showPassword": false
 							}
 						},
-						"url": "localhost:8080/airtime/v2/vouchers/{{voucherId}}/voids/{{voidId}}",
+						"url": "{{host}}/airtime/{{version}}/vouchers/{{voucherId}}/voids/{{voidId}}",
 						"method": "POST",
 						"header": [
 							{
@@ -3135,27 +2935,13 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": \"{{voidId}}\",\n    \"requestId\": \"{{voucherId}}\",\n    \"time\": \"{{timestamp}}\",\n    \"thirdPartyIdentifiers\": [\n        {\n            \"institutionId\": \"{{thirdPartyId1}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef1}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId2}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef2}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId3}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef3}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId4}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef4}}\"\n        }\n    ],\n    \"voucher\": {\n        \"serialNumber\": \"{{serialNum}}\",\n        \"batchNumber\": \"{{batchNum}}\"\n    }\n}"
+							"raw": "{\n    \"id\": \"{{voidId}}\",\n    \"requestId\": \"{{voucherId}}\",\n    \"time\": \"{{timestamp}}\",\n    \"thirdPartyIdentifiers\": [\n        {\n            \"institutionId\": \"{{thirdPartyId1}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef1}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId2}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef2}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId3}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef3}}\"\n        },\n        {\n            \"institutionId\": \"{{thirdPartyId4}}\",\n            \"transactionIdentifier\": \"{{thirdPartyTranRef4}}\"\n        }\n    ],\n    \"reversalReason\": \"CANCELLED\",\n    \"voucher\": {\n        \"serialNumber\": \"{{serialNum}}\",\n        \"batchNumber\": \"{{batchNum}}\"\n    }\n}"
 						},
 						"description": "Voucher void advice"
 					},
 					"response": []
 				}
 			]
-		},
-		{
-			"name": "localhost:8080/vouchers/kitchen",
-			"request": {
-				"url": "localhost:8080/airtime/v1/vouchers/kitchen",
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "formdata",
-					"formdata": []
-				},
-				"description": "Teapot Test - Test the test server is up and running."
-			},
-			"response": []
 		}
 	]
 }

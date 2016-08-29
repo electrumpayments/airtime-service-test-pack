@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
@@ -24,7 +23,7 @@ import io.electrum.airtime.handler.VoucherMessageHandlerFactory;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.Authorization;
 
-@Path("/airtime/v2/vouchers")
+@Path("/airtime/v3/vouchers")
 @Api(description = "the Airtime API", authorizations = { @Authorization("httpBasic") })
 public class VouchersResourceImpl extends VouchersResource implements IVouchersResource {
 
