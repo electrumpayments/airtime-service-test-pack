@@ -12,8 +12,4 @@ public class VoucherMessageHandlerFactory {
    public static ReverseVoucherHandler getReverseVoucherHandler() {
       return new ReverseVoucherHandler();
    }
-
-   public static VoidVoucherHandler getVoidVoucherHandler() {
-      return new VoidVoucherHandler();
-   }
 }

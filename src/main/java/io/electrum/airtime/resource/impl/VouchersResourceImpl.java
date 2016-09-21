@@ -17,13 +17,12 @@ import io.electrum.airtime.api.IVouchersResource;
 import io.electrum.airtime.api.VouchersResource;
 import io.electrum.airtime.api.model.VoucherConfirmation;
 import io.electrum.airtime.api.model.VoucherRequest;
-import io.electrum.airtime.api.model.VoucherReversal;
-import io.electrum.airtime.api.model.VoucherVoid;
 import io.electrum.airtime.handler.VoucherMessageHandlerFactory;
+import io.electrum.vas.model.BasicReversal;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.Authorization;
 
-@Path("/airtime/v3/vouchers")
+@Path("/airtime/v4/vouchers")
 @Api(description = "the Airtime API", authorizations = { @Authorization("httpBasic") })
 public class VouchersResourceImpl extends VouchersResource implements IVouchersResource {
 
@@ -40,7 +39,7 @@ public class VouchersResourceImpl extends VouchersResource implements IVouchersR
 
    @Override
    public Response confirmVoucherImpl(
-         UUID voucherId,
+         UUID requestId,
          UUID confirmationId,
          VoucherConfirmation confirmation,
          SecurityContext securityContext,
@@ -51,14 +50,14 @@ public class VouchersResourceImpl extends VouchersResource implements IVouchersR
       log.debug(String.format("%s %s\n%s", httpServletRequest.getMethod(), uriInfo.getPath(), confirmation));
       Response rsp =
             VoucherMessageHandlerFactory.getConfirmVoucherHandler()
-                  .handle(voucherId, confirmationId, confirmation, httpHeaders);
+                  .handle(requestId, confirmationId, confirmation, httpHeaders);
       log.debug(String.format("Entity returned:\n%s", rsp.getEntity()));
       return rsp;
    }
 
    @Override
    public Response provisionVoucherImpl(
-         UUID voucherId,
+         UUID requestId,
          @Valid VoucherRequest request,
          SecurityContext securityContext,
          HttpHeaders httpHeaders,
@@ -67,16 +66,16 @@ public class VouchersResourceImpl extends VouchersResource implements IVouchersR
       log.info(String.format("%s %s", httpServletRequest.getMethod(), uriInfo.getPath()));
       log.debug(String.format("%s %s\n%s", httpServletRequest.getMethod(), uriInfo.getPath(), request));
       Response rsp =
-            VoucherMessageHandlerFactory.getProvisionVoucherHandler().handle(voucherId, request, httpHeaders, uriInfo);
+            VoucherMessageHandlerFactory.getProvisionVoucherHandler().handle(requestId, request, httpHeaders, uriInfo);
       log.debug(String.format("Entity returned:\n%s", rsp.getEntity()));
       return rsp;
    }
 
    @Override
    public Response reverseVoucherImpl(
-         UUID voucherId,
+         UUID requestId,
          UUID reversalId,
-         VoucherReversal reversal,
+         BasicReversal reversal,
          SecurityContext securityContext,
          HttpHeaders httpHeaders,
          UriInfo uriInfo,
@@ -85,24 +84,7 @@ public class VouchersResourceImpl extends VouchersResource implements IVouchersR
       log.debug(String.format("%s %s\n%s", httpServletRequest.getMethod(), uriInfo.getPath(), reversal));
       Response rsp =
             VoucherMessageHandlerFactory.getReverseVoucherHandler()
-                  .handle(voucherId, reversalId, reversal, httpHeaders);
-      log.debug(String.format("Entity returned:\n%s", rsp.getEntity()));
-      return rsp;
-   }
-
-   @Override
-   public Response voidVoucherImpl(
-         UUID voucherId,
-         UUID voidId,
-         VoucherVoid voidAdv,
-         SecurityContext securityContext,
-         HttpHeaders httpHeaders,
-         UriInfo uriInfo,
-         HttpServletRequest httpServletRequest) {
-      log.info(String.format("%s %s", httpServletRequest.getMethod(), uriInfo.getPath()));
-      log.debug(String.format("%s %s\n%s", httpServletRequest.getMethod(), uriInfo.getPath(), voidAdv));
-      Response rsp =
-            VoucherMessageHandlerFactory.getVoidVoucherHandler().handle(voucherId, voidId, voidAdv, httpHeaders);
+                  .handle(requestId, reversalId, reversal, httpHeaders);
       log.debug(String.format("Entity returned:\n%s", rsp.getEntity()));
       return rsp;
    }

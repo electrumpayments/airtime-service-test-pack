@@ -23,17 +23,15 @@ import com.fasterxml.jackson.datatype.joda.JodaModule;
 import io.electrum.airtime.api.model.VoucherConfirmation;
 import io.electrum.airtime.api.model.VoucherRequest;
 import io.electrum.airtime.api.model.VoucherResponse;
-import io.electrum.airtime.api.model.VoucherReversal;
-import io.electrum.airtime.api.model.VoucherVoid;
 import io.electrum.airtime.server.util.RequestKey;
+import io.electrum.vas.model.BasicReversal;
 
 public class AirtimeTestServer extends ResourceConfig {
 
    private ConcurrentHashMap<RequestKey, VoucherRequest> provisionRecords;
    private ConcurrentHashMap<RequestKey, VoucherResponse> responseRecords;
-   private ConcurrentHashMap<RequestKey, VoucherReversal> reversalRecords;
+   private ConcurrentHashMap<RequestKey, BasicReversal> reversalRecords;
    private ConcurrentHashMap<RequestKey, VoucherConfirmation> confirmationRecords;
-   private ConcurrentHashMap<RequestKey, VoucherVoid> voidRecords;
    private static final Logger log = LoggerFactory.getLogger(AirtimeTestServer.class.getPackage().getName());
 
    public AirtimeTestServer() {
@@ -44,9 +42,8 @@ public class AirtimeTestServer extends ResourceConfig {
       provisionRecords = new ConcurrentHashMap<RequestKey, VoucherRequest>();
       log.debug("Initing new TestServer");
       responseRecords = new ConcurrentHashMap<RequestKey, VoucherResponse>();
-      reversalRecords = new ConcurrentHashMap<RequestKey, VoucherReversal>();
+      reversalRecords = new ConcurrentHashMap<RequestKey, BasicReversal>();
       confirmationRecords = new ConcurrentHashMap<RequestKey, VoucherConfirmation>();
-      voidRecords = new ConcurrentHashMap<RequestKey, VoucherVoid>();
    }
 
    public ConcurrentHashMap<RequestKey, VoucherRequest> getProvisionRecords() {
@@ -65,11 +62,11 @@ public class AirtimeTestServer extends ResourceConfig {
       this.responseRecords = responseRecords;
    }
 
-   public ConcurrentHashMap<RequestKey, VoucherReversal> getReversalRecords() {
+   public ConcurrentHashMap<RequestKey, BasicReversal> getReversalRecords() {
       return reversalRecords;
    }
 
-   public void setReversalRecords(ConcurrentHashMap<RequestKey, VoucherReversal> reversalRecords) {
+   public void setReversalRecords(ConcurrentHashMap<RequestKey, BasicReversal> reversalRecords) {
       this.reversalRecords = reversalRecords;
    }
 
@@ -81,14 +78,6 @@ public class AirtimeTestServer extends ResourceConfig {
       this.confirmationRecords = confirmationRecords;
    }
 
-   public ConcurrentHashMap<RequestKey, VoucherVoid> getVoidRecords() {
-      return voidRecords;
-   }
-
-   public void setVoidRecords(ConcurrentHashMap<RequestKey, VoucherVoid> voidRecords) {
-      this.voidRecords = voidRecords;
-   }
-
    @Provider
    public static class MyObjectMapperProvider implements ContextResolver<ObjectMapper> {
 
@@ -97,13 +86,13 @@ public class AirtimeTestServer extends ResourceConfig {
 
       public MyObjectMapperProvider() {
          mapper = new ObjectMapper();
-//         mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-//         mapper.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
-//         mapper.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
-//         mapper.setPropertyNamingStrategy(LOWER_CASE_WITH_HYPHEN_STRATEGY);
-//         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-//         DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
-//         mapper.setDateFormat(DATE_FORMAT);
+         // mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+         // mapper.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
+         // mapper.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
+         // mapper.setPropertyNamingStrategy(LOWER_CASE_WITH_HYPHEN_STRATEGY);
+         // mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+         // DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
+         // mapper.setDateFormat(DATE_FORMAT);
          mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
          mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
          mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
