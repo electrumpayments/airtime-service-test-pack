@@ -1,1 +1,1 @@
-java $JAVA_OPTS -jar target/airtime-service-test-pack-1.0.0-jar-with-dependencies.jar $PORT
+java $JAVA_OPTS -jar target/airtime-service-test-pack-1.0.1-jar-with-dependencies.jar $PORT

@@ -129,7 +129,7 @@ public class VoucherModelUtils {
             }
          }
          violations.addAll(validate(voucherRequest.getProduct()));
-         Amounts amounts = voucherRequest.getAmountss();
+         Amounts amounts = voucherRequest.getAmounts();
          violations.addAll(validate(amounts));
          if (amounts != null) {
             violations.addAll(validate(amounts.getRequestAmount()));
