@@ -1,0 +1,23 @@
+{
+  "id": "0d2b3f33-1129-86c8-551c-69a6aab7384c",
+  "requestId": "9c7a4529-0bfa-4f8a-27e3-2a679881a8e8",
+  "time": "2016-11-09T11:29:55.251Z",
+  "thirdPartyIdentifiers": [
+    {
+      "institutionId": "11111111",
+      "transactionIdentifier": "ORIGCE6C"
+    },
+    {
+      "institutionId": "22222222",
+      "transactionIdentifier": "CLNTCE6C"
+    },
+    {
+      "institutionId": "33333333",
+      "transactionIdentifier": "29810186695366"
+    },
+    {
+      "institutionId": "44444444",
+      "transactionIdentifier": "1433163474472890"
+    }
+  ]
+}

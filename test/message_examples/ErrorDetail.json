@@ -1,13 +1,16 @@
 {
-  "errorType": "FORMAT_ERROR",
-  "errorMessage": "Bad formatting",
+  "id": "dfc9dea0-f5cf-758d-6207-cb57fc7ddb16",
+  "originalId": "4def23bc-6640-1d84-1097-c812be497427",
+  "errorType": "ACCOUNT_ALREADY_SETTLED",
+  "errorMessage": "Voucher confirmed.",
+  "requestType": "VOUCHER_REVERSAL",
   "detailMessage": {
-    "formatErrors": [
-      {
-        "field": "id",
-        "msg": "may not be null",
-        "value": "null"
-      }
-    ]
+    "confirmationId": "4a163fcb-6021-a22d-7294-a5d1a1ada71d",
+    "voucher": {
+      "serialNumber": "6821431730965",
+      "batchNumber": "586820414347744",
+      "redeemInstructions": []
+    },
+    "freeString": "The voucher cannot be reversed as it has already been confirmed with the associated details."
   }
 }
