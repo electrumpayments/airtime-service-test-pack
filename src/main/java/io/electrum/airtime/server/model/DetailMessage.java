@@ -2,26 +2,25 @@ package io.electrum.airtime.server.model;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.electrum.airtime.api.model.Product;
-import io.electrum.airtime.api.model.SlipData;
 import io.electrum.airtime.api.model.Voucher;
 import io.electrum.vas.Utils;
 import io.electrum.vas.model.Institution;
 import io.electrum.vas.model.Originator;
+import io.electrum.vas.model.SlipData;
 import io.electrum.vas.model.ThirdPartyIdentifier;
 import io.swagger.annotations.ApiModelProperty;
 
 public class DetailMessage {
 
    private String pathId = null;
-   private UUID voucherId = null;
-   private UUID reversalId = null;
-   private UUID confirmationId = null;
-   private UUID voidId = null;
+   private String voucherId = null;
+   private String reversalId = null;
+   private String confirmationId = null;
+   private String voidId = null;
    private Product product = null;
    private String requestTime = null;
    private String reversalTime = null;
@@ -38,7 +37,7 @@ public class DetailMessage {
    private List<FormatError> formatErrors = null;
 
    /**
-    * The randomly generated UUID identifying this voucher request, as defined for a variant 4 UUID in [RFC
+    * The randomly generated String identifying this voucher request, as defined for a variant 4 String in [RFC
     * 4122](https://tools.ietf.org/html/rfc4122). This must be the same as the voucherId path parameter.
     **/
    public DetailMessage pathId(String pathId) {
@@ -46,7 +45,7 @@ public class DetailMessage {
       return this;
    }
 
-   @ApiModelProperty(value = "The randomly generated UUID identifying this voucher request, as defined for a variant 4 UUID in [RFC 4122](https://tools.ietf.org/html/rfc4122). This must be the same as the voucherId path parameter.")
+   @ApiModelProperty(value = "The randomly generated String identifying this voucher request, as defined for a variant 4 String in [RFC 4122](https://tools.ietf.org/html/rfc4122). This must be the same as the voucherId path parameter.")
    @JsonProperty("pathId")
    public String getPathId() {
       return pathId;
@@ -57,78 +56,78 @@ public class DetailMessage {
    }
 
    /**
-    * The randomly generated UUID identifying this voucher request, as defined for a variant 4 UUID in [RFC
+    * The randomly generated String identifying this voucher request, as defined for a variant 4 String in [RFC
     * 4122](https://tools.ietf.org/html/rfc4122). This must be the same as the voucherId path parameter.
     **/
-   public DetailMessage voucherId(UUID voucherId) {
+   public DetailMessage voucherId(String voucherId) {
       this.voucherId = voucherId;
       return this;
    }
 
-   @ApiModelProperty(value = "The randomly generated UUID identifying this voucher request, as defined for a variant 4 UUID in [RFC 4122](https://tools.ietf.org/html/rfc4122). This must be the same as the voucherId path parameter.")
+   @ApiModelProperty(value = "The randomly generated String identifying this voucher request, as defined for a variant 4 String in [RFC 4122](https://tools.ietf.org/html/rfc4122). This must be the same as the voucherId path parameter.")
    @JsonProperty("voucherId")
-   public UUID getVoucherId() {
+   public String getVoucherId() {
       return voucherId;
    }
 
-   public void setVoucherId(UUID voucherId) {
+   public void setVoucherId(String voucherId) {
       this.voucherId = voucherId;
    }
 
    /**
-    * The randomly generated UUID identifying this voucher reversal, as defined for a variant 4 UUID in [RFC
+    * The randomly generated String identifying this voucher reversal, as defined for a variant 4 String in [RFC
     * 4122](https://tools.ietf.org/html/rfc4122). This must be the same as the reversalId path parameter.
     **/
-   public DetailMessage reversalId(UUID reversalId) {
+   public DetailMessage reversalId(String reversalId) {
       this.reversalId = reversalId;
       return this;
    }
 
-   @ApiModelProperty(value = "The randomly generated UUID identifying this voucher reversal, as defined for a variant 4 UUID in [RFC 4122](https://tools.ietf.org/html/rfc4122). This must be the same as the reversalId path parameter.")
+   @ApiModelProperty(value = "The randomly generated String identifying this voucher reversal, as defined for a variant 4 String in [RFC 4122](https://tools.ietf.org/html/rfc4122). This must be the same as the reversalId path parameter.")
    @JsonProperty("reversalId")
-   public UUID getReversalId() {
+   public String getReversalId() {
       return reversalId;
    }
 
-   public void setReversalId(UUID reversalId) {
+   public void setReversalId(String reversalId) {
       this.reversalId = reversalId;
    }
 
    /**
-    * The randomly generated UUID identifying this voucher confirmation, as defined for a variant 4 UUID in [RFC
+    * The randomly generated String identifying this voucher confirmation, as defined for a variant 4 String in [RFC
     * 4122](https://tools.ietf.org/html/rfc4122). This must be the same as the confirmationId path parameter.
     **/
-   public DetailMessage confirmationId(UUID confirmationId) {
+   public DetailMessage confirmationId(String confirmationId) {
       this.confirmationId = confirmationId;
       return this;
    }
 
-   @ApiModelProperty(value = "The randomly generated UUID identifying this voucher confirmation, as defined for a variant 4 UUID in [RFC 4122](https://tools.ietf.org/html/rfc4122). This must be the same as the confirmationId path parameter.")
+   @ApiModelProperty(value = "The randomly generated String identifying this voucher confirmation, as defined for a variant 4 String in [RFC 4122](https://tools.ietf.org/html/rfc4122). This must be the same as the confirmationId path parameter.")
    @JsonProperty("confirmationId")
-   public UUID getConfirmationId() {
+   public String getConfirmationId() {
       return confirmationId;
    }
 
-   public void setConfirmationId(UUID confirmationId) {
+   public void setConfirmationId(String confirmationId) {
       this.confirmationId = confirmationId;
    }
 
    /**
-    * The randomly generated UUID identifying this voucher void, as defined for a variant 4 UUID in [RFC
+    * The randomly generated String identifying this voucher void, as defined for a variant 4 String in [RFC
     * 4122](https://tools.ietf.org/html/rfc4122). This must be the same as the voidId path parameter.
     **/
-   public DetailMessage voidId(UUID voidId) {
+   public DetailMessage voidId(String voidId) {
       this.voidId = voidId;
       return this;
    }
 
-   @ApiModelProperty(value = "The randomly generated UUID identifying this voucher void, as defined for a variant 4 UUID in [RFC 4122](https://tools.ietf.org/html/rfc4122). This must be the same as the voidId path parameter.")
+   @ApiModelProperty(value = "The randomly generated String identifying this voucher void, as defined for a variant 4 String in [RFC 4122](https://tools.ietf.org/html/rfc4122). This must be the same as the voidId path parameter.")
    @JsonProperty("voidId")
-   public UUID getVoidId() {
+   public String getVoidId() {
       return voidId;
    }
 
-   public void setVoidId(UUID voidId) {
+   public void setVoidId(String voidId) {
       this.voidId = voidId;
    }
 

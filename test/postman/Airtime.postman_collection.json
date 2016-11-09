@@ -2,7 +2,7 @@
 	"variables": [],
 	"info": {
 		"name": "Airtime",
-		"_postman_id": "2f9b359f-ca43-1199-fd80-a513606100e2",
+		"_postman_id": "9a1c68de-48ef-3987-d02a-8d2d41b37892",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -49,7 +49,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"value": "Basic MjIyMjIyMjI6cGFzc3dvcmQ=",
 								"description": ""
 							}
 						],
@@ -68,7 +68,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 202\"] = responseCode.code === 202;"
+								"exec": "tests[\"Status code is 202\"] = responseCode.code === 202;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Confirmation ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"confirmationId\");\ntests[\"Request ID returned\"] = jsonData.requestId === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Time returned\"] = jsonData.time === postman.getEnvironmentVariable(\"timestamp\");\ntests[\"Third party identifiers\"] = jsonData.id !== null;"
 							}
 						},
 						{
@@ -99,7 +99,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"value": "Basic MjIyMjIyMjI6cGFzc3dvcmQ=",
 								"description": ""
 							}
 						],
@@ -124,7 +124,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 404\"] = responseCode.code === 404;\n\nvar errorDetail = JSON.parse(responseBody);\ntests[\"Error type is UNABLE_TO_LOCATE_RECORD\"] = errorDetail.errorType === \"UNABLE_TO_LOCATE_RECORD\";"
+								"exec": "tests[\"Status code is 404\"] = responseCode.code === 404;\n\nvar errorDetail = JSON.parse(responseBody);\ntests[\"Error type is UNABLE_TO_LOCATE_RECORD\"] = errorDetail.errorType === \"UNABLE_TO_LOCATE_RECORD\";\ntests[\"Request ID returned\"] = errorDetail.originalId === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Reversal ID returned\"] = errorDetail.id === postman.getEnvironmentVariable(\"reversalId\");\ntests[\"Request Type correct\"] = errorDetail.requestType === \"VOUCHER_REVERSAL\";"
 							}
 						},
 						{
@@ -155,7 +155,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"value": "Basic MjIyMjIyMjI6cGFzc3dvcmQ=",
 								"description": ""
 							}
 						],
@@ -174,7 +174,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 404\"] = responseCode.code === 404;\n\nvar errorDetail = JSON.parse(responseBody);\ntests[\"Error type is UNABLE_TO_LOCATE_RECORD\"] = errorDetail.errorType === \"UNABLE_TO_LOCATE_RECORD\";"
+								"exec": "tests[\"Status code is 404\"] = responseCode.code === 404;\n\nvar errorDetail = JSON.parse(responseBody);\ntests[\"Error type is UNABLE_TO_LOCATE_RECORD\"] = errorDetail.errorType === \"UNABLE_TO_LOCATE_RECORD\";\ntests[\"Request ID returned\"] = errorDetail.originalId === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Confirmation ID returned\"] = errorDetail.id === postman.getEnvironmentVariable(\"confirmationId\");\ntests[\"Request Type correct\"] = errorDetail.requestType === \"VOUCHER_CONFIRMATION\";"
 							}
 						},
 						{
@@ -205,7 +205,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"value": "Basic MjIyMjIyMjI6cGFzc3dvcmQ=",
 								"description": ""
 							}
 						],
@@ -324,7 +324,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is ACCOUNT_ALREADY_SETTLED\"] = jsonData.errorType === \"ACCOUNT_ALREADY_SETTLED\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is ACCOUNT_ALREADY_SETTLED\"] = jsonData.errorType === \"ACCOUNT_ALREADY_SETTLED\";\ntests[\"Request ID returned\"] = jsonData.originalId === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Reversal ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"reversalId\");\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REVERSAL\";"
 							}
 						},
 						{
@@ -355,7 +355,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"value": "Basic MjIyMjIyMjI6cGFzc3dvcmQ=",
 								"description": ""
 							}
 						],
@@ -405,7 +405,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"value": "Basic MjIyMjIyMjI6cGFzc3dvcmQ=",
 								"description": ""
 							}
 						],
@@ -474,7 +474,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is ACCOUNT_ALREADY_SETTLED\"] = jsonData.errorType === \"ACCOUNT_ALREADY_SETTLED\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is ACCOUNT_ALREADY_SETTLED\"] = jsonData.errorType === \"ACCOUNT_ALREADY_SETTLED\";\ntests[\"Request ID returned\"] = jsonData.originalId === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Confirmation ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"confirmationId\");\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_CONFIRMATION\";"
 							}
 						},
 						{
@@ -524,7 +524,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is DUPLICATE_RECORD\"] = jsonData.errorType === \"DUPLICATE_RECORD\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is DUPLICATE_RECORD\"] = jsonData.errorType === \"DUPLICATE_RECORD\";\ntests[\"No original ID returned\"] = jsonData.originalId == null;\ntests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
 							}
 						},
 						{
@@ -555,7 +555,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"value": "Basic MjIyMjIyMjI6cGFzc3dvcmQ=",
 								"description": ""
 							}
 						],
@@ -574,7 +574,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";\ntests[\"No original ID returned\"] = jsonData.originalId == null;\ntests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
 							}
 						},
 						{
@@ -630,7 +630,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";\ntests[\"No original ID returned\"] = jsonData.originalId == null;\n//null ID can't be checked\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
 							}
 						},
 						{
@@ -661,7 +661,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"value": "Basic MjIyMjIyMjI6cGFzc3dvcmQ=",
 								"description": ""
 							}
 						],
@@ -680,7 +680,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";\ntests[\"No original ID returned\"] = jsonData.originalId == null;\ntests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
 							}
 						},
 						{
@@ -730,7 +730,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";\ntests[\"No original ID returned\"] = jsonData.originalId == null;\ntests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
 							}
 						},
 						{
@@ -780,7 +780,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";\ntests[\"No original ID returned\"] = jsonData.originalId == null;\ntests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
 							}
 						},
 						{
@@ -830,7 +830,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";\ntests[\"No original ID returned\"] = jsonData.originalId == null;\ntests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
 							}
 						},
 						{
@@ -880,7 +880,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";\ntests[\"No original ID returned\"] = jsonData.originalId == null;\ntests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
 							}
 						},
 						{
@@ -930,7 +930,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";\ntests[\"No original ID returned\"] = jsonData.originalId == null;\ntests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
 							}
 						},
 						{
@@ -980,7 +980,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";\ntests[\"No original ID returned\"] = jsonData.originalId == null;\ntests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
 							}
 						},
 						{
@@ -1030,7 +1030,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";\ntests[\"No original ID returned\"] = jsonData.originalId == null;\ntests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
 							}
 						},
 						{
@@ -1080,7 +1080,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";\ntests[\"No original ID returned\"] = jsonData.originalId == null;\ntests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
 							}
 						},
 						{
@@ -1130,7 +1130,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";\ntests[\"No original ID returned\"] = jsonData.originalId == null;\ntests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
 							}
 						},
 						{
@@ -1180,7 +1180,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";\ntests[\"No original ID returned\"] = jsonData.originalId == null;\ntests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
 							}
 						},
 						{
@@ -1230,7 +1230,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";\ntests[\"No original ID returned\"] = jsonData.originalId == null;\ntests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
 							}
 						},
 						{
@@ -1280,7 +1280,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";\ntests[\"No original ID returned\"] = jsonData.originalId == null;\ntests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
 							}
 						},
 						{
@@ -1330,7 +1330,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";\ntests[\"No original ID returned\"] = jsonData.originalId == null;\ntests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
 							}
 						},
 						{
@@ -1380,7 +1380,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";\ntests[\"No original ID returned\"] = jsonData.originalId == null;\ntests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
 							}
 						},
 						{
@@ -1430,7 +1430,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";\ntests[\"No original ID returned\"] = jsonData.originalId == null;\ntests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
 							}
 						},
 						{
@@ -1480,7 +1480,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";\ntests[\"No original ID returned\"] = jsonData.originalId == null;\ntests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
 							}
 						},
 						{
@@ -1530,7 +1530,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";\ntests[\"No original ID returned\"] = jsonData.originalId == null;\ntests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
 							}
 						},
 						{
@@ -1580,7 +1580,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";\ntests[\"No original ID returned\"] = jsonData.originalId == null;\ntests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
 							}
 						},
 						{
@@ -1630,7 +1630,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";\ntests[\"Request ID returned\"] = jsonData.originalId === postman.getEnvironmentVariable(\"requestId\");\n//missing reversal ID can't be checked\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REVERSAL\";"
 							}
 						},
 						{
@@ -1661,7 +1661,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"value": "Basic MjIyMjIyMjI6cGFzc3dvcmQ=",
 								"description": ""
 							}
 						],
@@ -1680,7 +1680,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";\ntests[\"Reversal ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"reversalId\");\n//missing request ID can't be checked\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REVERSAL\";"
 							}
 						},
 						{
@@ -1711,7 +1711,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"value": "Basic MjIyMjIyMjI6cGFzc3dvcmQ=",
 								"description": ""
 							}
 						],
@@ -1730,7 +1730,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";\ntests[\"Reversal ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"reversalId\");\ntests[\"Request ID returned\"] = jsonData.originalId === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REVERSAL\";"
 							}
 						},
 						{
@@ -1761,7 +1761,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"value": "Basic MjIyMjIyMjI6cGFzc3dvcmQ=",
 								"description": ""
 							}
 						],
@@ -1780,7 +1780,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";\ntests[\"Reversal ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"reversalId\");\ntests[\"Request ID returned\"] = jsonData.originalId === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REVERSAL\";"
 							}
 						},
 						{
@@ -1830,7 +1830,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";\n//missing confirmation ID can't be checked\ntests[\"Request ID returned\"] = jsonData.originalId === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_CONFIRMATION\";"
 							}
 						},
 						{
@@ -1861,7 +1861,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"value": "Basic MjIyMjIyMjI6cGFzc3dvcmQ=",
 								"description": ""
 							}
 						],
@@ -1880,7 +1880,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";\ntests[\"Confirmation ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"confirmationId\");\n//missing request ID can't be checked\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_CONFIRMATION\";"
 							}
 						},
 						{
@@ -1911,7 +1911,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"value": "Basic MjIyMjIyMjI6cGFzc3dvcmQ=",
 								"description": ""
 							}
 						],
@@ -1930,7 +1930,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";\ntests[\"Confirmation ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"confirmationId\");\ntests[\"Request ID returned\"] = jsonData.originalId === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_CONFIRMATION\";"
 							}
 						},
 						{
@@ -1961,7 +1961,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"value": "Basic MjIyMjIyMjI6cGFzc3dvcmQ=",
 								"description": ""
 							}
 						],
@@ -1980,7 +1980,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";\ntests[\"Confirmation ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"confirmationId\");\ntests[\"Request ID returned\"] = jsonData.originalId === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_CONFIRMATION\";"
 							}
 						},
 						{
@@ -2030,7 +2030,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";"
+								"exec": "tests[\"Status code is 400\"] = responseCode.code === 400;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";\ntests[\"Confirmation ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"confirmationId\");\ntests[\"Request ID returned\"] = jsonData.originalId === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_CONFIRMATION\";"
 							}
 						},
 						{
@@ -2061,7 +2061,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"value": "Basic MjIyMjIyMjI6cGFzc3dvcmQ=",
 								"description": ""
 							}
 						],
@@ -2173,7 +2173,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"value": "Basic MjIyMjIyMjI6cGFzc3dvcmQ=",
 								"description": ""
 							}
 						],
@@ -2192,7 +2192,7 @@
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
-								"exec": "tests[\"Status code is 202\"] = responseCode.code === 202;"
+								"exec": "tests[\"Status code is 202\"] = responseCode.code === 202;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"Reversal ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"reversalId\");\ntests[\"Request ID returned\"] = jsonData.requestId === postman.getEnvironmentVariable(\"requestId\");\ntests[\"Time returned\"] = jsonData.time === postman.getEnvironmentVariable(\"timestamp\");\ntests[\"Third party identifiers\"] = jsonData.id !== null;"
 							}
 						},
 						{
@@ -2223,7 +2223,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA==",
+								"value": "Basic MjIyMjIyMjI6cGFzc3dvcmQ=",
 								"description": ""
 							}
 						],

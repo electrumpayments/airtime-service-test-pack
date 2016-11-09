@@ -1,6 +1,5 @@
 package io.electrum.airtime.handler;
 
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.ws.rs.core.HttpHeaders;
@@ -11,9 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.electrum.airtime.api.model.ErrorDetail;
+import io.electrum.airtime.api.model.ErrorDetail.ErrorType;
 import io.electrum.airtime.api.model.VoucherRequest;
 import io.electrum.airtime.api.model.VoucherResponse;
-import io.electrum.airtime.api.model.ErrorDetail.ErrorType;
 import io.electrum.airtime.resource.impl.AirtimeTestServer;
 import io.electrum.airtime.server.AirtimeTestServerRunner;
 import io.electrum.airtime.server.model.DetailMessage;
@@ -22,7 +21,7 @@ import io.electrum.airtime.server.util.VoucherModelUtils;
 
 public class ProvisionVoucherHandler {
    private static final Logger log = LoggerFactory.getLogger(AirtimeTestServer.class.getPackage().getName());
-   public Response handle(UUID voucherId, VoucherRequest request, HttpHeaders httpHeaders, UriInfo uriInfo) {
+   public Response handle(String voucherId, VoucherRequest request, HttpHeaders httpHeaders, UriInfo uriInfo) {
       try
       {
          Response rsp = VoucherModelUtils.validateVoucherRequest(request);
@@ -37,7 +36,7 @@ public class ProvisionVoucherHandler {
          String username = VoucherModelUtils.getUsernameFromAuth(authString);
          if(!request.getClient().getId().equals(username))
          {
-            ErrorDetail errorDetail = new ErrorDetail().errorType(ErrorType.FORMAT_ERROR).errorMessage("Incorrect username");
+            ErrorDetail errorDetail = new ErrorDetail().id(request.getId()).requestType(ErrorDetail.RequestType.VOUCHER_REQUEST).errorType(ErrorType.FORMAT_ERROR).errorMessage("Incorrect username");
             DetailMessage detailMessage = new DetailMessage();
             detailMessage.setFreeString("The HTTP Basic Authentication username ("+username+") is not the same as the value in the Client.Id field ("+request.getClient().getId()+").");
             detailMessage.setClient(request.getClient());

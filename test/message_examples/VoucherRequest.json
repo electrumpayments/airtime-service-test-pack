@@ -44,6 +44,12 @@
           "transactionIdentifier": "52285755502221430390"
       }
     ],
+    "amounts": {
+      "requestAmount": {
+        "amount": 100,
+        "currency": "710"
+      }
+    },
     "voucher": {
         "pin": "90615565836713554",
         "serialNumber": "2959556257670027433",
@@ -53,13 +59,5 @@
           "enter the USSD code below:",
           "*999*<pin>#"
         ]
-    },
-    "slipData": {
-        "messageLines": [
-          "Use the Receiver reference",
-          "number to query your network",
-          "operator."
-        ],
-        "receiverReference": "6"
     }
 }
