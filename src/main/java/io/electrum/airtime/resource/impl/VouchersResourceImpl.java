@@ -1,7 +1,5 @@
 package io.electrum.airtime.resource.impl;
 
-import java.util.UUID;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.ws.rs.Path;
@@ -22,7 +20,7 @@ import io.electrum.vas.model.BasicReversal;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.Authorization;
 
-@Path("/airtime/v4/vouchers")
+@Path("/airtime/v5/vouchers")
 @Api(description = "the Airtime API", authorizations = { @Authorization("httpBasic") })
 public class VouchersResourceImpl extends VouchersResource implements IVouchersResource {
 
@@ -39,8 +37,8 @@ public class VouchersResourceImpl extends VouchersResource implements IVouchersR
 
    @Override
    public Response confirmVoucherImpl(
-         UUID requestId,
-         UUID confirmationId,
+         String requestId,
+         String confirmationId,
          VoucherConfirmation confirmation,
          SecurityContext securityContext,
          HttpHeaders httpHeaders,
@@ -57,7 +55,7 @@ public class VouchersResourceImpl extends VouchersResource implements IVouchersR
 
    @Override
    public Response provisionVoucherImpl(
-         UUID requestId,
+         String requestId,
          @Valid VoucherRequest request,
          SecurityContext securityContext,
          HttpHeaders httpHeaders,
@@ -73,8 +71,8 @@ public class VouchersResourceImpl extends VouchersResource implements IVouchersR
 
    @Override
    public Response reverseVoucherImpl(
-         UUID requestId,
-         UUID reversalId,
+         String requestId,
+         String reversalId,
          BasicReversal reversal,
          SecurityContext securityContext,
          HttpHeaders httpHeaders,

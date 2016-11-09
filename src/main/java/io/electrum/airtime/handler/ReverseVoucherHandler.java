@@ -1,6 +1,5 @@
 package io.electrum.airtime.handler;
 
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.ws.rs.core.HttpHeaders;
@@ -13,12 +12,13 @@ import io.electrum.airtime.resource.impl.AirtimeTestServer;
 import io.electrum.airtime.server.AirtimeTestServerRunner;
 import io.electrum.airtime.server.util.RequestKey;
 import io.electrum.airtime.server.util.VoucherModelUtils;
+import io.electrum.vas.model.BasicAdviceResponse;
 import io.electrum.vas.model.BasicReversal;
 
 public class ReverseVoucherHandler {
    private static final Logger log = LoggerFactory.getLogger(AirtimeTestServer.class.getPackage().getName());
 
-   public Response handle(UUID voucherId, UUID reversalId, BasicReversal reversal, HttpHeaders httpHeaders) {
+   public Response handle(String voucherId, String reversalId, BasicReversal reversal, HttpHeaders httpHeaders) {
       try {
          Response rsp = VoucherModelUtils.validateBasicReversal(reversal);
          if (rsp != null) {
@@ -31,7 +31,7 @@ public class ReverseVoucherHandler {
          String authString = VoucherModelUtils.getAuthString(httpHeaders.getHeaderString(HttpHeaders.AUTHORIZATION));
          String username = VoucherModelUtils.getUsernameFromAuth(authString);
          String password = VoucherModelUtils.getPasswordFromAuth(authString);
-         rsp = VoucherModelUtils.canReverseVoucher(voucherId, username, password);
+         rsp = VoucherModelUtils.canReverseVoucher(voucherId, reversalId, username, password);
          if (rsp != null) {
             if (rsp.getStatus() == 404) {
                ConcurrentHashMap<RequestKey, BasicReversal> reversalRecords =
@@ -49,7 +49,14 @@ public class ReverseVoucherHandler {
                new RequestKey(username, password, RequestKey.REVERSALS_RESOURCE, voucherId.toString());
          // quietly overwrites any existing reversal
          reversalRecords.put(reversalKey, reversal);
-         rsp = Response.accepted().build();
+         rsp =
+               Response
+                     .accepted(
+                           new BasicAdviceResponse().id(reversal.getId())
+                                 .requestId(reversal.getRequestId())
+                                 .time(reversal.getTime())
+                                 .transactionIdentifiers(reversal.getThirdPartyIdentifiers()))
+                     .build();
          return rsp;
       } catch (Exception e) {
          log.debug("error processing VoucherProvision", e);

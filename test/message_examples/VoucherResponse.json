@@ -1,6 +1,6 @@
 {
-  "id": "f77ea17d-6e0e-2e2b-026b-a12d4d563898",
-  "time": "2016-08-22T10:38:37.966Z",
+  "id": "9c7a4529-0bfa-4f8a-27e3-2a679881a8e8",
+  "time": "2016-11-09T11:26:02.700Z",
   "originator": {
     "institution": {
       "id": "11111111",
@@ -29,37 +29,61 @@
   "thirdPartyIdentifiers": [
     {
       "institutionId": "11111111",
-      "transactionIdentifier": "ORIG3898"
+      "transactionIdentifier": "ORIGA8E8"
     },
     {
       "institutionId": "22222222",
-      "transactionIdentifier": "CLNT3898"
+      "transactionIdentifier": "CLNTA8E8"
     },
     {
       "institutionId": "33333333",
-      "transactionIdentifier": "51463475700067"
+      "transactionIdentifier": "60"
     },
     {
       "institutionId": "44444444",
-      "transactionIdentifier": "52285755502221430390"
+      "transactionIdentifier": "760364370"
     }
   ],
+  "slipData": {
+    "messageLines": [
+      {
+        "text": "For any queries please",
+        "fontWidthScaleFactor": 1,
+        "fontHeightScaleFactor": 1,
+        "line": false,
+        "cut": false
+      },
+      {
+        "text": "contact your network",
+        "fontWidthScaleFactor": 1,
+        "fontHeightScaleFactor": 1,
+        "line": false,
+        "cut": false
+      },
+      {
+        "text": "operator.",
+        "fontWidthScaleFactor": 1,
+        "fontHeightScaleFactor": 1,
+        "line": false,
+        "cut": false
+      }
+    ],
+    "slipWidth": 0
+  },
+  "responseProduct": {
+    "productId": "productId123",
+    "name": "TalkALot",
+    "type": "AIRTIME_FIXED"
+  },
   "voucher": {
-    "pin": "90615565836713554",
-    "serialNumber": "2959556257670027433",
-    "batchNumber": "6143351302",
+    "pin": "70",
+    "expiryDate": "2016-11-09T11:26:02.788Z",
+    "serialNumber": "19850353552",
+    "batchNumber": "1567",
     "redeemInstructions": [
       "To redeem your airtime",
       "enter the USSD code below:",
       "*999*<pin>#"
     ]
-  },
-  "slipData": {
-    "messageLines": [
-      "Use the Receiver reference",
-      "number to query your network",
-      "operator."
-    ],
-    "receiverReference": "6"
   }
 }
