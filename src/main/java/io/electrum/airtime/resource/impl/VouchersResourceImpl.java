@@ -34,7 +34,7 @@ public class VouchersResourceImpl extends VouchersResource implements IVouchersR
    }
 
    @Override
-   public Response confirmVoucherImpl(
+   public void confirmVoucherImpl(
          String requestId,
          String confirmationId,
          VoucherConfirmation confirmation,
@@ -52,12 +52,10 @@ public class VouchersResourceImpl extends VouchersResource implements IVouchersR
       log.debug(String.format("Entity returned:\n%s", rsp.getEntity()));
 
       asyncResponse.resume(rsp);
-
-      return rsp;
    }
 
    @Override
-   public Response provisionVoucherImpl(
+   public void provisionVoucherImpl(
          String requestId,
          @Valid VoucherRequest voucherRequest,
          SecurityContext securityContext,
@@ -74,12 +72,10 @@ public class VouchersResourceImpl extends VouchersResource implements IVouchersR
       log.debug(String.format("Entity returned:\n%s", rsp.getEntity()));
 
       asyncResponse.resume(rsp);
-
-      return rsp;
    }
 
    @Override
-   public Response reverseVoucherImpl(
+   public void reverseVoucherImpl(
          String requestId,
          String reversalId,
          BasicReversal reversal,
@@ -97,7 +93,5 @@ public class VouchersResourceImpl extends VouchersResource implements IVouchersR
       log.debug(String.format("Entity returned:\n%s", rsp.getEntity()));
 
       asyncResponse.resume(rsp);
-
-      return rsp;
    }
 }
