@@ -32,6 +32,7 @@ import io.electrum.vas.model.BasicReversal;
 import io.electrum.vas.model.Institution;
 import io.electrum.vas.model.Merchant;
 import io.electrum.vas.model.Originator;
+import io.electrum.vas.model.PaymentMethod;
 import io.electrum.vas.model.SlipData;
 import io.electrum.vas.model.SlipLine;
 import io.electrum.vas.model.Tender;
@@ -132,6 +133,12 @@ public class VoucherModelUtils {
          violations.addAll(validate(amounts));
          if (amounts != null) {
             violations.addAll(validate(amounts.getRequestAmount()));
+         }
+         List<PaymentMethod> paymentMethods = voucherRequest.getPaymentMethods();
+         if (paymentMethods != null) {
+            for (PaymentMethod pm : paymentMethods) {
+               violations.addAll(validate(pm));
+            }
          }
          violations.addAll(validate(voucherRequest.getReceiver()));
          violations.addAll(validate(voucherRequest.getSettlementEntity()));
