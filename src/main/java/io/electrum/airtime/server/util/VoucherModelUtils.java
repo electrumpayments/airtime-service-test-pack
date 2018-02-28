@@ -11,6 +11,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.ws.rs.core.Response;
 
+import io.electrum.vas.model.*;
 import org.glassfish.jersey.internal.util.Base64;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -27,15 +28,6 @@ import io.electrum.airtime.resource.impl.AirtimeTestServer;
 import io.electrum.airtime.server.AirtimeTestServerRunner;
 import io.electrum.airtime.server.model.DetailMessage;
 import io.electrum.airtime.server.model.FormatError;
-import io.electrum.vas.model.Amounts;
-import io.electrum.vas.model.BasicReversal;
-import io.electrum.vas.model.Institution;
-import io.electrum.vas.model.Merchant;
-import io.electrum.vas.model.Originator;
-import io.electrum.vas.model.SlipData;
-import io.electrum.vas.model.SlipLine;
-import io.electrum.vas.model.Tender;
-import io.electrum.vas.model.ThirdPartyIdentifier;
 
 public class VoucherModelUtils {
    private static List<String> redeemInstructions = new ArrayList<String>();
@@ -132,6 +124,14 @@ public class VoucherModelUtils {
          violations.addAll(validate(amounts));
          if (amounts != null) {
             violations.addAll(validate(amounts.getRequestAmount()));
+         }
+         List<PaymentMethod> paymentMethods = voucherRequest.getPaymentMethods();
+         if (paymentMethods != null) {
+            for (PaymentMethod pm : paymentMethods) {
+               violations.addAll(validate(pm));
+               LedgerAmount ledgerAmount = pm.getAmount();
+               violations.addAll(validate(ledgerAmount));
+            }
          }
          violations.addAll(validate(voucherRequest.getReceiver()));
          violations.addAll(validate(voucherRequest.getSettlementEntity()));
