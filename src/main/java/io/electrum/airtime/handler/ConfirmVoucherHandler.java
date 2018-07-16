@@ -8,9 +8,11 @@ import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.electrum.airtime.api.model.ErrorDetail;
 import io.electrum.airtime.api.model.VoucherConfirmation;
 import io.electrum.airtime.resource.impl.AirtimeTestServer;
 import io.electrum.airtime.server.AirtimeTestServerRunner;
+import io.electrum.airtime.server.util.AirtimeModelUtils;
 import io.electrum.airtime.server.util.RequestKey;
 import io.electrum.airtime.server.util.VoucherModelUtils;
 import io.electrum.vas.model.BasicAdviceResponse;
@@ -28,29 +30,33 @@ public class ConfirmVoucherHandler {
          if (rsp != null) {
             return rsp;
          }
-         rsp = VoucherModelUtils.isUuidConsistent(confirmationId, confirmation);
-         if (rsp != null) {
-            return rsp;
+
+         if (!VoucherModelUtils.isUuidConsistent(confirmationId, confirmation.getId())) {
+            return Response.status(400)
+                  .entity(buildVoucherConfirmationErrorResponse(confirmationId, confirmation))
+                  .build();
          }
-         String authString = VoucherModelUtils.getAuthString(httpHeaders.getHeaderString(HttpHeaders.AUTHORIZATION));
-         String username = VoucherModelUtils.getUsernameFromAuth(authString);
-         String password = VoucherModelUtils.getPasswordFromAuth(authString);
+
+         String authString = AirtimeModelUtils.getAuthString(httpHeaders.getHeaderString(HttpHeaders.AUTHORIZATION));
+         String username = AirtimeModelUtils.getUsernameFromAuth(authString);
+         String password = AirtimeModelUtils.getPasswordFromAuth(authString);
          rsp = VoucherModelUtils.canConfirmVoucher(voucherId, confirmationId, username, password);
          if (rsp != null) {
             return rsp;
          }
          ConcurrentHashMap<RequestKey, VoucherConfirmation> confimrationRecords =
-               AirtimeTestServerRunner.getTestServer().getConfirmationRecords();
+               AirtimeTestServerRunner.getTestServer().getVoucherConfirmationRecords();
          RequestKey confirmationsKey =
                new RequestKey(username, password, RequestKey.CONFIRMATIONS_RESOURCE, voucherId.toString());
          // quietly overwrites any existing confirmation
          confimrationRecords.put(confirmationsKey, confirmation);
          rsp =
-               Response.accepted(
-                     new BasicAdviceResponse().id(confirmation.getId())
-                           .requestId(confirmation.getRequestId())
-                           .time(confirmation.getTime())
-                           .transactionIdentifiers(confirmation.getThirdPartyIdentifiers()))
+               Response
+                     .accepted(
+                           new BasicAdviceResponse().id(confirmation.getId())
+                                 .requestId(confirmation.getRequestId())
+                                 .time(confirmation.getTime())
+                                 .transactionIdentifiers(confirmation.getThirdPartyIdentifiers()))
                      .build();
          return rsp;
       } catch (Exception e) {
@@ -58,5 +64,13 @@ public class ConfirmVoucherHandler {
          Response rsp = Response.serverError().entity(e.getMessage()).build();
          return rsp;
       }
+   }
+
+   private ErrorDetail buildVoucherConfirmationErrorResponse(String confirmationId, VoucherConfirmation confirmation) {
+      return VoucherModelUtils.buildInconsistentIdErrorDetail(
+            confirmationId,
+            confirmation.getId(),
+            confirmation.getRequestId(),
+            ErrorDetail.RequestType.VOUCHER_REVERSAL);
    }
 }

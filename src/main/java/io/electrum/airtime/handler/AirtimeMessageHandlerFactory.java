@@ -1,6 +1,6 @@
 package io.electrum.airtime.handler;
 
-public class VoucherMessageHandlerFactory {
+public class AirtimeMessageHandlerFactory {
    public static ConfirmVoucherHandler getConfirmVoucherHandler() {
       return new ConfirmVoucherHandler();
    }
@@ -12,4 +12,9 @@ public class VoucherMessageHandlerFactory {
    public static ReverseVoucherHandler getReverseVoucherHandler() {
       return new ReverseVoucherHandler();
    }
+
+   public static PurchaseRequestHandler getPurchaseRequestHandler() {
+      return new PurchaseRequestHandler();
+   }
+
 }
