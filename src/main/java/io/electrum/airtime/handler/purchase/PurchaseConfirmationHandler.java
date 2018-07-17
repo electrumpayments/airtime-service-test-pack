@@ -1,4 +1,4 @@
-package io.electrum.airtime.handler;
+package io.electrum.airtime.handler.purchase;
 
 import static io.electrum.airtime.server.util.AirtimeModelUtils.buildAdviceResponseFromAdvice;
 
@@ -9,12 +9,13 @@ import javax.ws.rs.core.Response;
 
 import io.electrum.airtime.api.PurchaseResource;
 import io.electrum.airtime.api.model.PurchaseConfirmation;
+import io.electrum.airtime.handler.BaseHandler;
 import io.electrum.airtime.server.AirtimeTestServerRunner;
 import io.electrum.airtime.server.util.PurchaseModelUtils;
 import io.electrum.airtime.server.util.RequestKey;
 
 public class PurchaseConfirmationHandler extends BaseHandler {
-   protected PurchaseConfirmationHandler(HttpHeaders httpHeaders) {
+   public PurchaseConfirmationHandler(HttpHeaders httpHeaders) {
       super(httpHeaders);
    }
 

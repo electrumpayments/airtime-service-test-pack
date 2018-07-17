@@ -51,7 +51,6 @@ public class PurchaseResourceImpl extends PurchaseResource implements IPurchaseR
       log.debug(String.format("Entity returned:\n%s", rsp.getEntity()));
 
       asyncResponse.resume(rsp);
-
    }
 
    @Override
@@ -91,16 +90,31 @@ public class PurchaseResourceImpl extends PurchaseResource implements IPurchaseR
 
    @Override
    public void getPurchaseStatus(
-         String s,
-         String s1,
-         String s2,
+         String provider,
+         String purchaseReference,
+         String originalMsgId,
          SecurityContext securityContext,
          Request request,
          HttpHeaders httpHeaders,
          AsyncResponse asyncResponse,
          UriInfo uriInfo,
          HttpServletRequest httpServletRequest) {
+      // todo FINISH THIS
+      log.info(String.format("%s %s", httpServletRequest.getMethod(), uriInfo.getPath()));
+      log.debug(
+            String.format(
+                  "%s %s\n%s\n%s\n%s",
+                  httpServletRequest.getMethod(),
+                  uriInfo.getPath(),
+                  provider,
+                  purchaseReference,
+                  originalMsgId));
+      Response rsp =
+            AirtimeMessageHandlerFactory.getPurchaseStatusHandler(httpHeaders)
+                  .handle(provider, purchaseReference, originalMsgId);
+      log.debug(String.format("Entity returned:\n%s", rsp.getEntity()));
 
+      asyncResponse.resume(rsp);
    }
 
 }

@@ -1,4 +1,4 @@
-package io.electrum.airtime.handler;
+package io.electrum.airtime.handler.purchase;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -10,12 +10,13 @@ import io.electrum.airtime.api.PurchaseResource;
 import io.electrum.airtime.api.model.ErrorDetail;
 import io.electrum.airtime.api.model.PurchaseRequest;
 import io.electrum.airtime.api.model.PurchaseResponse;
+import io.electrum.airtime.handler.BaseHandler;
 import io.electrum.airtime.server.AirtimeTestServerRunner;
 import io.electrum.airtime.server.util.PurchaseModelUtils;
 import io.electrum.airtime.server.util.RequestKey;
 
 public class PurchaseRequestHandler extends BaseHandler {
-   protected PurchaseRequestHandler(HttpHeaders httpHeaders) {
+   public PurchaseRequestHandler(HttpHeaders httpHeaders) {
       super(httpHeaders);
    }
 

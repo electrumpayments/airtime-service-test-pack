@@ -1,4 +1,4 @@
-package io.electrum.airtime.handler;
+package io.electrum.airtime.handler.voucher;
 
 import static io.electrum.airtime.server.util.AirtimeModelUtils.buildAdviceResponseFromAdvice;
 
@@ -9,12 +9,13 @@ import javax.ws.rs.core.Response;
 
 import io.electrum.airtime.api.model.ErrorDetail;
 import io.electrum.airtime.api.model.VoucherConfirmation;
+import io.electrum.airtime.handler.BaseHandler;
 import io.electrum.airtime.server.AirtimeTestServerRunner;
 import io.electrum.airtime.server.util.RequestKey;
 import io.electrum.airtime.server.util.VoucherModelUtils;
 
 public class ConfirmVoucherHandler extends BaseHandler {
-   protected ConfirmVoucherHandler(HttpHeaders httpHeaders) {
+   public ConfirmVoucherHandler(HttpHeaders httpHeaders) {
       super(httpHeaders);
    }
 

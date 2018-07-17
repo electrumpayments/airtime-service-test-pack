@@ -1,4 +1,4 @@
-package io.electrum.airtime.handler;
+package io.electrum.airtime.handler.voucher;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -9,12 +9,13 @@ import javax.ws.rs.core.UriInfo;
 import io.electrum.airtime.api.model.ErrorDetail;
 import io.electrum.airtime.api.model.VoucherRequest;
 import io.electrum.airtime.api.model.VoucherResponse;
+import io.electrum.airtime.handler.BaseHandler;
 import io.electrum.airtime.server.AirtimeTestServerRunner;
 import io.electrum.airtime.server.util.RequestKey;
 import io.electrum.airtime.server.util.VoucherModelUtils;
 
 public class ProvisionVoucherHandler extends BaseHandler {
-   protected ProvisionVoucherHandler(HttpHeaders httpHeaders) {
+   public ProvisionVoucherHandler(HttpHeaders httpHeaders) {
       super(httpHeaders);
    }
 

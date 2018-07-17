@@ -1,4 +1,4 @@
-package io.electrum.airtime.handler;
+package io.electrum.airtime.handler.voucher;
 
 import static io.electrum.airtime.server.util.AirtimeModelUtils.buildAdviceResponseFromAdvice;
 
@@ -8,13 +8,14 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
 import io.electrum.airtime.api.model.ErrorDetail;
+import io.electrum.airtime.handler.BaseHandler;
 import io.electrum.airtime.server.AirtimeTestServerRunner;
 import io.electrum.airtime.server.util.RequestKey;
 import io.electrum.airtime.server.util.VoucherModelUtils;
 import io.electrum.vas.model.BasicReversal;
 
 public class ReverseVoucherHandler extends BaseHandler {
-   protected ReverseVoucherHandler(HttpHeaders httpHeaders) {
+   public ReverseVoucherHandler(HttpHeaders httpHeaders) {
       super(httpHeaders);
    }
 
