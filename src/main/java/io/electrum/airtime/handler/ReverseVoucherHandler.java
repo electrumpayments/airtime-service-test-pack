@@ -1,5 +1,7 @@
 package io.electrum.airtime.handler;
 
+import static io.electrum.airtime.server.util.AirtimeModelUtils.buildAdviceResponseFromAdvice;
+
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.ws.rs.core.HttpHeaders;
@@ -14,7 +16,6 @@ import io.electrum.airtime.server.AirtimeTestServerRunner;
 import io.electrum.airtime.server.util.AirtimeModelUtils;
 import io.electrum.airtime.server.util.RequestKey;
 import io.electrum.airtime.server.util.VoucherModelUtils;
-import io.electrum.vas.model.BasicAdviceResponse;
 import io.electrum.vas.model.BasicReversal;
 
 public class ReverseVoucherHandler {
@@ -22,7 +23,7 @@ public class ReverseVoucherHandler {
 
    public Response handle(String voucherId, String reversalId, BasicReversal reversal, HttpHeaders httpHeaders) {
       try {
-         Response rsp = VoucherModelUtils.validateBasicReversal(reversal);
+         Response rsp = VoucherModelUtils.validateVoucherReversal(reversal);
          if (rsp != null) {
             return rsp;
          }
@@ -34,38 +35,35 @@ public class ReverseVoucherHandler {
          String authString = AirtimeModelUtils.getAuthString(httpHeaders.getHeaderString(HttpHeaders.AUTHORIZATION));
          String username = AirtimeModelUtils.getUsernameFromAuth(authString);
          String password = AirtimeModelUtils.getPasswordFromAuth(authString);
+
          rsp = VoucherModelUtils.canReverseVoucher(voucherId, reversalId, username, password);
          if (rsp != null) {
             if (rsp.getStatus() == 404) {
-               ConcurrentHashMap<RequestKey, BasicReversal> reversalRecords =
-                     AirtimeTestServerRunner.getTestServer().getVoucherReversalRecords();
-               RequestKey reversalKey =
-                     new RequestKey(username, password, RequestKey.REVERSALS_RESOURCE, voucherId.toString());
                // make sure to record the reversal in case we get the request late.
-               reversalRecords.put(reversalKey, reversal);
+               addVoucherReversalToCache(reversal, username, password);
             }
             return rsp;
          }
-         ConcurrentHashMap<RequestKey, BasicReversal> reversalRecords =
-               AirtimeTestServerRunner.getTestServer().getVoucherReversalRecords();
-         RequestKey reversalKey =
-               new RequestKey(username, password, RequestKey.REVERSALS_RESOURCE, voucherId.toString());
+
          // quietly overwrites any existing reversal
-         reversalRecords.put(reversalKey, reversal);
-         rsp =
-               Response
-                     .accepted(
-                           new BasicAdviceResponse().id(reversal.getId())
-                                 .requestId(reversal.getRequestId())
-                                 .time(reversal.getTime())
-                                 .transactionIdentifiers(reversal.getThirdPartyIdentifiers()))
-                     .build();
+         addVoucherReversalToCache(reversal, username, password);
+
+         rsp = Response.accepted(buildAdviceResponseFromAdvice(reversal)).build();
+
          return rsp;
       } catch (Exception e) {
          log.debug("error processing VoucherProvision", e);
          Response rsp = Response.serverError().entity(e.getMessage()).build();
          return rsp;
       }
+   }
+
+   private void addVoucherReversalToCache(BasicReversal basicReversal, String username, String password) {
+      ConcurrentHashMap<RequestKey, BasicReversal> reversalRecords =
+            AirtimeTestServerRunner.getTestServer().getVoucherReversalRecords();
+      RequestKey reversalKey =
+            new RequestKey(username, password, RequestKey.REVERSALS_RESOURCE, basicReversal.getRequestId());
+      reversalRecords.put(reversalKey, basicReversal);
    }
 
    private ErrorDetail buildVoucherReversalErrorResponse(String reversalId, BasicReversal reversal) {

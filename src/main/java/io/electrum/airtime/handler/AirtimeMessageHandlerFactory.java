@@ -17,4 +17,8 @@ public class AirtimeMessageHandlerFactory {
       return new PurchaseRequestHandler();
    }
 
+   public static PurchaseReversalHandler getPurchaseReversalHandler() {
+      return new PurchaseReversalHandler();
+   }
+
 }

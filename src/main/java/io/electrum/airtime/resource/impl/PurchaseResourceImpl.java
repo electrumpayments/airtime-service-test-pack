@@ -74,7 +74,12 @@ public class PurchaseResourceImpl extends PurchaseResource implements IPurchaseR
          AsyncResponse asyncResponse,
          UriInfo uriInfo,
          HttpServletRequest httpServletRequest) {
+      log.info(String.format("%s %s", httpServletRequest.getMethod(), uriInfo.getPath()));
+      log.debug(String.format("%s %s\n%s", httpServletRequest.getMethod(), uriInfo.getPath(), purchaseReversal));
+      Response rsp = AirtimeMessageHandlerFactory.getPurchaseReversalHandler().handle(purchaseReversal, httpHeaders);
+      log.debug(String.format("Entity returned:\n%s", rsp.getEntity()));
 
+      asyncResponse.resume(rsp);
    }
 
    @Override

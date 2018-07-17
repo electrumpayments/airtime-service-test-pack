@@ -31,6 +31,8 @@ public class PurchaseRequestHandler {
 
          String authString = AirtimeModelUtils.getAuthString(httpHeaders.getHeaderString(HttpHeaders.AUTHORIZATION));
          String username = AirtimeModelUtils.getUsernameFromAuth(authString);
+         String password = AirtimeModelUtils.getPasswordFromAuth(authString);
+
          if (!validUsername(purchaseRequest, username)) {
             return PurchaseModelUtils.buildIncorrectUsernameErrorResponse(
                   purchaseRequest.getId(),
@@ -39,24 +41,18 @@ public class PurchaseRequestHandler {
                   ErrorDetail.RequestType.PURCHASE_REQUEST);
          }
 
-         String password = AirtimeModelUtils.getPasswordFromAuth(authString);
-         RequestKey key =
-               new RequestKey(username, password, PurchaseResource.Purchase.PURCHASE, purchaseRequest.getId());
          rsp = PurchaseModelUtils.canPurchasePurchaseRequest(purchaseRequest.getId(), username, password);
          if (rsp != null) {
             return rsp;
          }
 
          // store purchase request in db
-         ConcurrentHashMap<RequestKey, PurchaseRequest> purchaseRequestRecords =
-               AirtimeTestServerRunner.getTestServer().getPurchaseRequestRecords();
-         purchaseRequestRecords.put(key, purchaseRequest);
+         addPurchaseRequestToCache(purchaseRequest, username, password);
 
          // generate purchase response with randomized fields and store in db
          PurchaseResponse purchaseResponse = PurchaseModelUtils.purchaseRspFromReq(purchaseRequest);
-         ConcurrentHashMap<RequestKey, PurchaseResponse> responseRecords =
-               AirtimeTestServerRunner.getTestServer().getPurchaseResponseRecords();
-         responseRecords.put(key, purchaseResponse);
+
+         addPurchaseResponseToCache(purchaseResponse, username, password);
 
          rsp = Response.created(uriInfo.getRequestUri()).entity(purchaseResponse).build();
 
@@ -69,6 +65,20 @@ public class PurchaseRequestHandler {
          Response rsp = Response.serverError().entity(e.getMessage()).build();
          return rsp;
       }
+   }
+
+   private void addPurchaseRequestToCache(PurchaseRequest purchaseRequest, String username, String password) {
+      ConcurrentHashMap<RequestKey, PurchaseRequest> purchaseRequestRecords =
+            AirtimeTestServerRunner.getTestServer().getPurchaseRequestRecords();
+      RequestKey key = new RequestKey(username, password, PurchaseResource.Purchase.PURCHASE, purchaseRequest.getId());
+      purchaseRequestRecords.put(key, purchaseRequest);
+   }
+
+   private void addPurchaseResponseToCache(PurchaseResponse purchaseResponse, String username, String password) {
+      ConcurrentHashMap<RequestKey, PurchaseResponse> responseRecords =
+            AirtimeTestServerRunner.getTestServer().getPurchaseResponseRecords();
+      RequestKey key = new RequestKey(username, password, PurchaseResource.Purchase.PURCHASE, purchaseResponse.getId());
+      responseRecords.put(key, purchaseResponse);
    }
 
    private boolean validUsername(PurchaseRequest purchaseRequest, String username) {

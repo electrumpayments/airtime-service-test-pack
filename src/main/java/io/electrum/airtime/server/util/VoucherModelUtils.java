@@ -1,6 +1,6 @@
 package io.electrum.airtime.server.util;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -9,62 +9,30 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.validation.ConstraintViolation;
 import javax.ws.rs.core.Response;
 
-import org.joda.time.DateTime;
-
 import io.electrum.airtime.api.model.ErrorDetail;
 import io.electrum.airtime.api.model.ErrorDetail.ErrorType;
-import io.electrum.airtime.api.model.Product.ProductType;
-import io.electrum.airtime.api.model.Voucher;
+import io.electrum.airtime.api.model.Product;
 import io.electrum.airtime.api.model.VoucherConfirmation;
 import io.electrum.airtime.api.model.VoucherRequest;
 import io.electrum.airtime.api.model.VoucherResponse;
 import io.electrum.airtime.server.AirtimeTestServerRunner;
 import io.electrum.airtime.server.model.DetailMessage;
+import io.electrum.vas.JsonUtil;
 import io.electrum.vas.model.BasicReversal;
-import io.electrum.vas.model.Institution;
-import io.electrum.vas.model.SlipData;
 import io.electrum.vas.model.Tender;
-import io.electrum.vas.model.ThirdPartyIdentifier;
 
 public class VoucherModelUtils extends AirtimeModelUtils {
 
-   public static VoucherResponse voucherRspFromReq(VoucherRequest req) {
-      VoucherResponse rsp = new VoucherResponse();
-      rsp.setOriginator(req.getOriginator());
-      rsp.setTime(req.getTime());
-      Institution receiver = req.getReceiver();
-      List<ThirdPartyIdentifier> thirdPartyIds = req.getThirdPartyIdentifiers();
-      if (thirdPartyIds == null) {
-         new ArrayList<ThirdPartyIdentifier>();
-      }
-      rsp.setReceiver(req.getReceiver());
-      rsp.setId(req.getId());
-      Voucher voucher = new Voucher();
-      voucher.setPin(RandomData.random09((int) ((Math.random() * 20) + 1)));
-      voucher.setExpiryDate(new DateTime());
-      voucher.setSerialNumber(RandomData.random09((int) ((Math.random() * 20) + 1)));
-      voucher.setBatchNumber(RandomData.random09((int) ((Math.random() * 20) + 1)));
-      voucher.setRedeemInstructions(redeemInstructions);
-      rsp.setVoucher(voucher);
-      SlipData slipData = new SlipData();
-      slipData.setMessageLines(messageLines);
-      rsp.setSlipData(slipData);
-      Institution settlementEntity = req.getSettlementEntity();
-      if (settlementEntity == null) {
-         settlementEntity = new Institution();
-         settlementEntity.setId("33333333");
-         settlementEntity.setName("TransactionsRUs");
-      }
-      thirdPartyIds.add(
-            new ThirdPartyIdentifier().institutionId(settlementEntity.getId())
-                  .transactionIdentifier(RandomData.random09AZ((int) ((Math.random() * 20) + 1))));
-      thirdPartyIds.add(
-            new ThirdPartyIdentifier().institutionId(receiver.getId())
-                  .transactionIdentifier(RandomData.random09AZ((int) ((Math.random() * 20) + 1))));
-      rsp.setSettlementEntity(settlementEntity);
-      rsp.setThirdPartyIdentifiers(thirdPartyIds);
-      rsp.setResponseProduct(req.getProduct().name("TalkALot").type(ProductType.AIRTIME_FIXED));
-      return rsp;
+   public static VoucherResponse voucherRspFromReq(VoucherRequest req) throws IOException {
+      VoucherResponse voucherResponse =
+            JsonUtil.deserialize(JsonUtil.serialize(req, VoucherRequest.class), VoucherResponse.class);
+
+      updateWithRandomizedIdentifiers(voucherResponse);
+      voucherResponse.setVoucher(createRandomizedVoucher());
+      voucherResponse.setSlipData(createRandomizedSlipData());
+      voucherResponse.setResponseProduct(req.getProduct().name("TalkALot").type(Product.ProductType.AIRTIME_FIXED));
+
+      return voucherResponse;
    }
 
    public static ErrorDetail productNotRecognised(VoucherRequest req) {
@@ -100,14 +68,9 @@ public class VoucherModelUtils extends AirtimeModelUtils {
       return Response.status(400).entity(errorDetail).build();
    }
 
-   public static Response validateBasicReversal(BasicReversal reversal) {
+   public static Response validateVoucherReversal(BasicReversal reversal) {
       Set<ConstraintViolation<?>> violations = new HashSet<ConstraintViolation<?>>();
-      violations.addAll(validate(reversal));
-      violations.addAll(validate(reversal.getId()));
-      violations.addAll(validate(reversal.getRequestId()));
-      violations.addAll(validate(reversal.getReversalReason()));
-      violations.addAll(validate(reversal.getThirdPartyIdentifiers()));
-      violations.addAll(validate(reversal.getTime()));
+      validateBasicReversal(reversal, violations);
       ErrorDetail errorDetail = buildFormatErrorRsp(violations);
       if (errorDetail == null) {
          return null;

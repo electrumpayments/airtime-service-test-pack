@@ -21,6 +21,9 @@ import io.electrum.airtime.resource.impl.AirtimeTestServer;
 import io.electrum.airtime.server.model.DetailMessage;
 import io.electrum.airtime.server.model.FormatError;
 import io.electrum.vas.model.Amounts;
+import io.electrum.vas.model.BasicAdvice;
+import io.electrum.vas.model.BasicAdviceResponse;
+import io.electrum.vas.model.BasicReversal;
 import io.electrum.vas.model.Institution;
 import io.electrum.vas.model.LedgerAmount;
 import io.electrum.vas.model.Merchant;
@@ -116,6 +119,24 @@ public class AirtimeModelUtils {
          violations.addAll(validate(amounts.getBalanceAmount()));
          violations.addAll(validate(amounts.getFeeAmount()));
       }
+   }
+
+   protected static void validateBasicReversal(BasicReversal reversal, Set<ConstraintViolation<?>> violations) {
+      violations.addAll(validate(reversal));
+      if (reversal != null) {
+         violations.addAll(validate(reversal.getId()));
+         violations.addAll(validate(reversal.getRequestId()));
+         violations.addAll(validate(reversal.getReversalReason()));
+         violations.addAll(validate(reversal.getThirdPartyIdentifiers()));
+         violations.addAll(validate(reversal.getTime()));
+      }
+   }
+
+   public static BasicAdviceResponse buildAdviceResponseFromAdvice(BasicAdvice basicAdvice) {
+      return new BasicAdviceResponse().id(basicAdvice.getId())
+            .requestId(basicAdvice.getRequestId())
+            .time(basicAdvice.getTime())
+            .transactionIdentifiers(basicAdvice.getThirdPartyIdentifiers());
    }
 
    public static Response buildIncorrectUsernameErrorResponse(

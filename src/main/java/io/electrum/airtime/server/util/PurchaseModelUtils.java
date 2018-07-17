@@ -12,6 +12,7 @@ import io.electrum.airtime.api.PurchaseResource;
 import io.electrum.airtime.api.model.ErrorDetail;
 import io.electrum.airtime.api.model.Msisdn;
 import io.electrum.airtime.api.model.Product;
+import io.electrum.airtime.api.model.PurchaseConfirmation;
 import io.electrum.airtime.api.model.PurchaseRequest;
 import io.electrum.airtime.api.model.PurchaseResponse;
 import io.electrum.airtime.api.model.PurchaseReversal;
@@ -37,7 +38,7 @@ public class PurchaseModelUtils extends AirtimeModelUtils {
       return purchaseResponse;
    }
 
-   protected static Msisdn buildMsisdn(PurchaseRequest purchaseRequest) {
+   private static Msisdn buildMsisdn(PurchaseRequest purchaseRequest) {
       Msisdn msisdn;
       if ((msisdn = purchaseRequest.getRecipientMsisdn()) == null) {
          msisdn = new Msisdn().msisdn(RandomData.random09(10)).country("ZA");
@@ -49,6 +50,7 @@ public class PurchaseModelUtils extends AirtimeModelUtils {
       Set<ConstraintViolation<?>> violations = new HashSet<ConstraintViolation<?>>();
       validatePurchaseRequest(purchaseRequest, violations);
       ErrorDetail errorDetail = buildFormatErrorRsp(violations);
+
       if (errorDetail == null) {
          return null;
       }
@@ -56,7 +58,22 @@ public class PurchaseModelUtils extends AirtimeModelUtils {
       return Response.status(400).entity(errorDetail).build();
    }
 
-   public static void validatePurchaseRequest(PurchaseRequest purchaseRequest, Set<ConstraintViolation<?>> violations) {
+   public static Response validatePurchaseReversal(BasicReversal reversal) {
+      Set<ConstraintViolation<?>> violations = new HashSet<ConstraintViolation<?>>();
+      validateBasicReversal(reversal, violations);
+      ErrorDetail errorDetail = buildFormatErrorRsp(violations);
+
+      if (errorDetail == null) {
+         return null;
+      }
+      errorDetail.id(reversal.getId()).originalId(reversal.getRequestId()).requestType(
+            ErrorDetail.RequestType.PURCHASE_REVERSAL);
+      return Response.status(400).entity(errorDetail).build();
+   }
+
+   private static void validatePurchaseRequest(
+         PurchaseRequest purchaseRequest,
+         Set<ConstraintViolation<?>> violations) {
       violations.addAll(validate(purchaseRequest));
       if (purchaseRequest != null) {
          validateTransaction(purchaseRequest, violations);
@@ -72,20 +89,53 @@ public class PurchaseModelUtils extends AirtimeModelUtils {
    public static Response canPurchasePurchaseRequest(String purchaseRequestId, String username, String password) {
       ConcurrentHashMap<RequestKey, PurchaseRequest> purchaseRequestRecords =
             AirtimeTestServerRunner.getTestServer().getPurchaseRequestRecords();
-
       RequestKey requestKey = new RequestKey(username, password, PurchaseResource.Purchase.PURCHASE, purchaseRequestId);
+
+      // Check if request already provisioned
       PurchaseRequest originalRequest = purchaseRequestRecords.get(requestKey);
       if (originalRequest != null) {
          return buildDuplicateErrorResponse(purchaseRequestId, requestKey, originalRequest);
       }
 
-      ConcurrentHashMap<RequestKey, PurchaseReversal> reversalRecords =
-            AirtimeTestServerRunner.getTestServer().getPurchaseReversalRecords();
-      RequestKey reversalKey =
-            new RequestKey(username, password, PurchaseResource.ReversePurchase.REVERSE_PURCHASE, purchaseRequestId);
-      BasicReversal reversal = reversalRecords.get(reversalKey);
+      // Check if request has already been reversed
+      BasicReversal reversal = getPurchaseReversalFromCache(purchaseRequestId, username, password);
       if (reversal != null) {
          return buildAlreadyReversedErrorResponse(purchaseRequestId, requestKey, reversal);
+      }
+
+      return null;
+   }
+
+   public static Response canReversePurchase(BasicReversal reversal, String username, String password) {
+      if (!isPurchaseRequestProvisioned(reversal.getRequestId(), username, password)) {
+         ErrorDetail errorDetail =
+               buildErrorDetail(
+                     reversal.getId(),
+                     "Original purchase request was not found.",
+                     "No PurchaseRequest located for given purchaseRequestId.",
+                     reversal.getRequestId(),
+                     ErrorDetail.RequestType.PURCHASE_REVERSAL,
+                     ErrorDetail.ErrorType.UNABLE_TO_LOCATE_RECORD);
+
+         return Response.status(404).entity(errorDetail).build();
+      }
+
+      // check that it's not confirmed
+      PurchaseConfirmation confirmation = getPurchaseConfirmationFromCache(reversal.getRequestId(), username, password);
+      if (confirmation != null) {
+         ErrorDetail errorDetail =
+               buildErrorDetail(
+                     reversal.getId(),
+                     "Purchase Request confirmed already.",
+                     "The purchase cannot be reversed as it has already been confirmed with the associated details.",
+                     reversal.getRequestId(),
+                     ErrorDetail.RequestType.PURCHASE_REVERSAL,
+                     ErrorDetail.ErrorType.ACCOUNT_ALREADY_SETTLED);
+
+         DetailMessage detailMessage = (DetailMessage) errorDetail.getDetailMessage();
+         detailMessage.setConfirmationId(confirmation.getId());
+
+         return Response.status(400).entity(errorDetail).build();
       }
 
       return null;
@@ -104,11 +154,9 @@ public class PurchaseModelUtils extends AirtimeModelUtils {
                   ErrorDetail.RequestType.PURCHASE_REVERSAL,
                   ErrorDetail.ErrorType.ACCOUNT_ALREADY_SETTLED);
 
-      DetailMessage detailMessage = (DetailMessage) errorDetail.getDetailMessage();
-      ConcurrentHashMap<RequestKey, PurchaseResponse> responseRecords =
-            AirtimeTestServerRunner.getTestServer().getPurchaseResponseRecords();
-      PurchaseResponse rsp = responseRecords.get(requestKey);
+      PurchaseResponse rsp = getPurchaseResponseFromCache(requestKey);
       if (rsp != null) {
+         DetailMessage detailMessage = (DetailMessage) errorDetail.getDetailMessage();
          detailMessage.setVoucher(rsp.getVoucher());
       }
       return Response.status(400).entity(errorDetail).build();
@@ -128,12 +176,72 @@ public class PurchaseModelUtils extends AirtimeModelUtils {
       DetailMessage detailMessage = (DetailMessage) errorDetail.getDetailMessage();
       detailMessage.setProduct(originalRequest.getProduct());
 
-      ConcurrentHashMap<RequestKey, PurchaseResponse> responseRecords =
-            AirtimeTestServerRunner.getTestServer().getPurchaseResponseRecords();
-      PurchaseResponse rsp = responseRecords.get(requestKey);
+      PurchaseResponse rsp = getPurchaseResponseFromCache(requestKey);
       if (rsp != null) {
          detailMessage.setVoucher(rsp.getVoucher());
       }
       return Response.status(400).entity(errorDetail).build();
+   }
+
+   private static boolean isPurchaseRequestProvisioned(String purchaseRequestId, String username, String password) {
+      return getPurchaseRequestFromCache(purchaseRequestId, username, password) != null;
+   }
+
+   private static PurchaseRequest getPurchaseRequestFromCache(
+         String purchaseRequestId,
+         String username,
+         String password) {
+      ConcurrentHashMap<RequestKey, PurchaseRequest> purchaseRequestRecords =
+            AirtimeTestServerRunner.getTestServer().getPurchaseRequestRecords();
+      RequestKey provisionKey =
+            new RequestKey(username, password, PurchaseResource.Purchase.PURCHASE, purchaseRequestId);
+      log.debug(
+            String.format(
+                  "Searching for purchase request provision record under following key: %s",
+                  provisionKey.toString()));
+      return purchaseRequestRecords.get(provisionKey);
+   }
+
+   private static PurchaseReversal getPurchaseReversalFromCache(
+         String purchaseRequestId,
+         String username,
+         String password) {
+      ConcurrentHashMap<RequestKey, PurchaseReversal> reversalRecords =
+            AirtimeTestServerRunner.getTestServer().getPurchaseReversalRecords();
+      RequestKey reversalKey =
+            new RequestKey(username, password, PurchaseResource.ReversePurchase.REVERSE_PURCHASE, purchaseRequestId);
+      return reversalRecords.get(reversalKey);
+   }
+
+   private static PurchaseConfirmation getPurchaseConfirmationFromCache(
+         String purchaseRequestId,
+         String username,
+         String password) {
+      ConcurrentHashMap<RequestKey, PurchaseConfirmation> purchaseConfirmationRecords =
+            AirtimeTestServerRunner.getTestServer().getPurchaseConfirmationRecords();
+      RequestKey confirmKey =
+            new RequestKey(
+                  username,
+                  password,
+                  PurchaseResource.ConfirmPurchase.PURCHASE_CONFIRMATION,
+                  purchaseRequestId);
+      return purchaseConfirmationRecords.get(confirmKey);
+   }
+
+   private static PurchaseResponse getPurchaseResponseFromCache(RequestKey purchaseRequestKey) {
+      ConcurrentHashMap<RequestKey, PurchaseResponse> responseRecords =
+            AirtimeTestServerRunner.getTestServer().getPurchaseResponseRecords();
+      return responseRecords.get(purchaseRequestKey);
+   }
+
+   private static PurchaseResponse getPurchaseResponseFromCache(
+         String purchaseRequestId,
+         String username,
+         String password) {
+      RequestKey purchaseRequestKey =
+            new RequestKey(username, password, PurchaseResource.Purchase.PURCHASE, purchaseRequestId);
+      ConcurrentHashMap<RequestKey, PurchaseResponse> responseRecords =
+            AirtimeTestServerRunner.getTestServer().getPurchaseResponseRecords();
+      return responseRecords.get(purchaseRequestKey);
    }
 }
