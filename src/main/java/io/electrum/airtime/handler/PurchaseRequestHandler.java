@@ -6,34 +6,27 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import io.electrum.airtime.api.PurchaseResource;
 import io.electrum.airtime.api.model.ErrorDetail;
 import io.electrum.airtime.api.model.PurchaseRequest;
 import io.electrum.airtime.api.model.PurchaseResponse;
-import io.electrum.airtime.resource.impl.AirtimeTestServer;
 import io.electrum.airtime.server.AirtimeTestServerRunner;
-import io.electrum.airtime.server.util.AirtimeModelUtils;
 import io.electrum.airtime.server.util.PurchaseModelUtils;
 import io.electrum.airtime.server.util.RequestKey;
 
-public class PurchaseRequestHandler {
-   private static final Logger log = LoggerFactory.getLogger(AirtimeTestServer.class.getPackage().getName());
+public class PurchaseRequestHandler extends BaseHandler {
+   protected PurchaseRequestHandler(HttpHeaders httpHeaders) {
+      super(httpHeaders);
+   }
 
-   public Response handle(PurchaseRequest purchaseRequest, HttpHeaders httpHeaders, UriInfo uriInfo) {
+   public Response handle(PurchaseRequest purchaseRequest, UriInfo uriInfo) {
       try {
          Response rsp = PurchaseModelUtils.validatePurchaseRequest(purchaseRequest);
          if (rsp != null) {
             return rsp;
          }
 
-         String authString = AirtimeModelUtils.getAuthString(httpHeaders.getHeaderString(HttpHeaders.AUTHORIZATION));
-         String username = AirtimeModelUtils.getUsernameFromAuth(authString);
-         String password = AirtimeModelUtils.getPasswordFromAuth(authString);
-
-         if (!validUsername(purchaseRequest, username)) {
+         if (!validUsername(purchaseRequest)) {
             return PurchaseModelUtils.buildIncorrectUsernameErrorResponse(
                   purchaseRequest.getId(),
                   purchaseRequest.getClient(),
@@ -47,41 +40,41 @@ public class PurchaseRequestHandler {
          }
 
          // store purchase request in db
-         addPurchaseRequestToCache(purchaseRequest, username, password);
+         addPurchaseRequestToCache(purchaseRequest);
 
          // generate purchase response with randomized fields and store in db
          PurchaseResponse purchaseResponse = PurchaseModelUtils.purchaseRspFromReq(purchaseRequest);
 
-         addPurchaseResponseToCache(purchaseResponse, username, password);
+         addPurchaseResponseToCache(purchaseResponse);
 
          rsp = Response.created(uriInfo.getRequestUri()).entity(purchaseResponse).build();
 
          return rsp;
       } catch (Exception e) {
-         log.debug("error processing Purchase Request", e);
-         for (StackTraceElement ste : e.getStackTrace()) {
-            log.debug(ste.toString());
-         }
-         Response rsp = Response.serverError().entity(e.getMessage()).build();
-         return rsp;
+         return logAndBuildException(e);
       }
    }
 
-   private void addPurchaseRequestToCache(PurchaseRequest purchaseRequest, String username, String password) {
+   private void addPurchaseRequestToCache(PurchaseRequest purchaseRequest) {
       ConcurrentHashMap<RequestKey, PurchaseRequest> purchaseRequestRecords =
             AirtimeTestServerRunner.getTestServer().getPurchaseRequestRecords();
       RequestKey key = new RequestKey(username, password, PurchaseResource.Purchase.PURCHASE, purchaseRequest.getId());
       purchaseRequestRecords.put(key, purchaseRequest);
    }
 
-   private void addPurchaseResponseToCache(PurchaseResponse purchaseResponse, String username, String password) {
+   private void addPurchaseResponseToCache(PurchaseResponse purchaseResponse) {
       ConcurrentHashMap<RequestKey, PurchaseResponse> responseRecords =
             AirtimeTestServerRunner.getTestServer().getPurchaseResponseRecords();
       RequestKey key = new RequestKey(username, password, PurchaseResource.Purchase.PURCHASE, purchaseResponse.getId());
       responseRecords.put(key, purchaseResponse);
    }
 
-   private boolean validUsername(PurchaseRequest purchaseRequest, String username) {
+   private boolean validUsername(PurchaseRequest purchaseRequest) {
       return purchaseRequest.getClient().getId().equals(username);
+   }
+
+   @Override
+   protected String getRequestName() {
+      return "Purchase Request";
    }
 }

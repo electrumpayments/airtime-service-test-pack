@@ -19,6 +19,7 @@ import io.electrum.airtime.api.model.PurchaseReversal;
 import io.electrum.airtime.server.AirtimeTestServerRunner;
 import io.electrum.airtime.server.model.DetailMessage;
 import io.electrum.vas.JsonUtil;
+import io.electrum.vas.model.BasicAdvice;
 import io.electrum.vas.model.BasicReversal;
 
 public class PurchaseModelUtils extends AirtimeModelUtils {
@@ -71,6 +72,18 @@ public class PurchaseModelUtils extends AirtimeModelUtils {
       return Response.status(400).entity(errorDetail).build();
    }
 
+   public static Response validatePurchaseConfirmation(PurchaseConfirmation purchaseConfirmation) {
+      Set<ConstraintViolation<?>> violations = new HashSet<ConstraintViolation<?>>();
+      validateTenderAdvice(purchaseConfirmation, violations);
+      ErrorDetail errorDetail = buildFormatErrorRsp(violations);
+      if (errorDetail == null) {
+         return null;
+      }
+      errorDetail.id(purchaseConfirmation.getId()).originalId(purchaseConfirmation.getRequestId()).requestType(
+            ErrorDetail.RequestType.PURCHASE_CONFIRMATION);
+      return Response.status(400).entity(errorDetail).build();
+   }
+
    private static void validatePurchaseRequest(
          PurchaseRequest purchaseRequest,
          Set<ConstraintViolation<?>> violations) {
@@ -108,15 +121,7 @@ public class PurchaseModelUtils extends AirtimeModelUtils {
 
    public static Response canReversePurchase(BasicReversal reversal, String username, String password) {
       if (!isPurchaseRequestProvisioned(reversal.getRequestId(), username, password)) {
-         ErrorDetail errorDetail =
-               buildErrorDetail(
-                     reversal.getId(),
-                     "Original purchase request was not found.",
-                     "No PurchaseRequest located for given purchaseRequestId.",
-                     reversal.getRequestId(),
-                     ErrorDetail.RequestType.PURCHASE_REVERSAL,
-                     ErrorDetail.ErrorType.UNABLE_TO_LOCATE_RECORD);
-
+         ErrorDetail errorDetail = buildRequestNotFoundErrorDetail(reversal);
          return Response.status(404).entity(errorDetail).build();
       }
 
@@ -139,6 +144,43 @@ public class PurchaseModelUtils extends AirtimeModelUtils {
       }
 
       return null;
+   }
+
+   public static Response canConfirmPurchase(
+         PurchaseConfirmation purchaseConfirmation,
+         String username,
+         String password) {
+      // check if purchase request was provisioned
+      if (!isPurchaseRequestProvisioned(purchaseConfirmation.getRequestId(), username, password)) {
+         ErrorDetail errorDetail = buildRequestNotFoundErrorDetail(purchaseConfirmation);
+         return Response.status(404).entity(errorDetail).build();
+      }
+
+      // check that it's not reversed
+      BasicReversal reversal = getPurchaseReversalFromCache(purchaseConfirmation.getRequestId(), username, password);
+      if (reversal != null) {
+         ErrorDetail errorDetail =
+               buildErrorDetail(
+                     reversal.getId(),
+                     "Purchase Request reversed already.",
+                     "The purchase cannot be confirmed as it has already been reversed with the associated details.",
+                     reversal.getRequestId(),
+                     ErrorDetail.RequestType.PURCHASE_CONFIRMATION,
+                     ErrorDetail.ErrorType.ACCOUNT_ALREADY_SETTLED);
+         return Response.status(400).entity(errorDetail).build();
+      }
+
+      return null;
+   }
+
+   private static ErrorDetail buildRequestNotFoundErrorDetail(BasicAdvice basicAdvice) {
+      return buildErrorDetail(
+            basicAdvice.getId(),
+            "Original purchase request was not found.",
+            "No PurchaseRequest located for given purchaseRequestId.",
+            basicAdvice.getRequestId(),
+            ErrorDetail.RequestType.PURCHASE_CONFIRMATION,
+            ErrorDetail.ErrorType.UNABLE_TO_LOCATE_RECORD);
    }
 
    private static Response buildAlreadyReversedErrorResponse(

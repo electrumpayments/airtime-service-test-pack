@@ -44,6 +44,13 @@ public class PurchaseResourceImpl extends PurchaseResource implements IPurchaseR
          AsyncResponse asyncResponse,
          UriInfo uriInfo,
          HttpServletRequest httpServletRequest) {
+      log.info(String.format("%s %s", httpServletRequest.getMethod(), uriInfo.getPath()));
+      log.debug(String.format("%s %s\n%s", httpServletRequest.getMethod(), uriInfo.getPath(), purchaseConfirmation));
+      Response rsp =
+            AirtimeMessageHandlerFactory.getPurchaseConfirmationHandler(httpHeaders).handle(purchaseConfirmation);
+      log.debug(String.format("Entity returned:\n%s", rsp.getEntity()));
+
+      asyncResponse.resume(rsp);
 
    }
 
@@ -59,7 +66,7 @@ public class PurchaseResourceImpl extends PurchaseResource implements IPurchaseR
       log.info(String.format("%s %s", httpServletRequest.getMethod(), uriInfo.getPath()));
       log.debug(String.format("%s %s\n%s", httpServletRequest.getMethod(), uriInfo.getPath(), purchaseRequest));
       Response rsp =
-            AirtimeMessageHandlerFactory.getPurchaseRequestHandler().handle(purchaseRequest, httpHeaders, uriInfo);
+            AirtimeMessageHandlerFactory.getPurchaseRequestHandler(httpHeaders).handle(purchaseRequest, uriInfo);
       log.debug(String.format("Entity returned:\n%s", rsp.getEntity()));
 
       asyncResponse.resume(rsp);
@@ -76,7 +83,7 @@ public class PurchaseResourceImpl extends PurchaseResource implements IPurchaseR
          HttpServletRequest httpServletRequest) {
       log.info(String.format("%s %s", httpServletRequest.getMethod(), uriInfo.getPath()));
       log.debug(String.format("%s %s\n%s", httpServletRequest.getMethod(), uriInfo.getPath(), purchaseReversal));
-      Response rsp = AirtimeMessageHandlerFactory.getPurchaseReversalHandler().handle(purchaseReversal, httpHeaders);
+      Response rsp = AirtimeMessageHandlerFactory.getPurchaseReversalHandler(httpHeaders).handle(purchaseReversal);
       log.debug(String.format("Entity returned:\n%s", rsp.getEntity()));
 
       asyncResponse.resume(rsp);

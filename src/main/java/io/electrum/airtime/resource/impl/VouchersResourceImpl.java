@@ -51,8 +51,8 @@ public class VouchersResourceImpl extends VouchersResource implements IVouchersR
       log.info(String.format("%s %s", httpServletRequest.getMethod(), uriInfo.getPath()));
       log.debug(String.format("%s %s\n%s", httpServletRequest.getMethod(), uriInfo.getPath(), confirmation));
       Response rsp =
-            AirtimeMessageHandlerFactory.getConfirmVoucherHandler()
-                  .handle(requestId, confirmationId, confirmation, httpHeaders);
+            AirtimeMessageHandlerFactory.getConfirmVoucherHandler(httpHeaders)
+                  .handle(requestId, confirmationId, confirmation);
       log.debug(String.format("Entity returned:\n%s", rsp.getEntity()));
 
       asyncResponse.resume(rsp);
@@ -71,8 +71,8 @@ public class VouchersResourceImpl extends VouchersResource implements IVouchersR
       log.info(String.format("%s %s", httpServletRequest.getMethod(), uriInfo.getPath()));
       log.debug(String.format("%s %s\n%s", httpServletRequest.getMethod(), uriInfo.getPath(), voucherRequest));
       Response rsp =
-            AirtimeMessageHandlerFactory.getProvisionVoucherHandler()
-                  .handle(requestId, voucherRequest, httpHeaders, uriInfo);
+            AirtimeMessageHandlerFactory.getProvisionVoucherHandler(httpHeaders)
+                  .handle(requestId, voucherRequest, uriInfo);
       log.debug(String.format("Entity returned:\n%s", rsp.getEntity()));
 
       asyncResponse.resume(rsp);
@@ -92,8 +92,7 @@ public class VouchersResourceImpl extends VouchersResource implements IVouchersR
       log.info(String.format("%s %s", httpServletRequest.getMethod(), uriInfo.getPath()));
       log.debug(String.format("%s %s\n%s", httpServletRequest.getMethod(), uriInfo.getPath(), reversal));
       Response rsp =
-            AirtimeMessageHandlerFactory.getReverseVoucherHandler()
-                  .handle(requestId, reversalId, reversal, httpHeaders);
+            AirtimeMessageHandlerFactory.getReverseVoucherHandler(httpHeaders).handle(requestId, reversalId, reversal);
       log.debug(String.format("Entity returned:\n%s", rsp.getEntity()));
 
       asyncResponse.resume(rsp);

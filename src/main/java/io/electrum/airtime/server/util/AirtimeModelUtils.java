@@ -30,6 +30,8 @@ import io.electrum.vas.model.Merchant;
 import io.electrum.vas.model.Originator;
 import io.electrum.vas.model.SlipData;
 import io.electrum.vas.model.SlipLine;
+import io.electrum.vas.model.Tender;
+import io.electrum.vas.model.TenderAdvice;
 import io.electrum.vas.model.ThirdPartyIdentifier;
 import io.electrum.vas.model.Transaction;
 
@@ -124,11 +126,30 @@ public class AirtimeModelUtils {
    protected static void validateBasicReversal(BasicReversal reversal, Set<ConstraintViolation<?>> violations) {
       violations.addAll(validate(reversal));
       if (reversal != null) {
-         violations.addAll(validate(reversal.getId()));
-         violations.addAll(validate(reversal.getRequestId()));
+         validateBasicAdvice(reversal, violations);
          violations.addAll(validate(reversal.getReversalReason()));
-         violations.addAll(validate(reversal.getThirdPartyIdentifiers()));
-         violations.addAll(validate(reversal.getTime()));
+      }
+   }
+
+   protected static void validateTenderAdvice(TenderAdvice tenderAdvice, Set<ConstraintViolation<?>> violations) {
+      violations.addAll(validate(tenderAdvice));
+      if (tenderAdvice != null) {
+         validateBasicAdvice(tenderAdvice, violations);
+         List<Tender> tenders = tenderAdvice.getTenders();
+         violations.addAll(validate(tenders));
+         for (Tender tender : tenders) {
+            violations.addAll(validate(tender));
+         }
+      }
+   }
+
+   protected static void validateBasicAdvice(BasicAdvice basicAdvice, Set<ConstraintViolation<?>> violations) {
+      violations.addAll(validate(basicAdvice));
+      if (basicAdvice != null) {
+         violations.addAll(validate(basicAdvice.getId()));
+         violations.addAll(validate(basicAdvice.getRequestId()));
+         violations.addAll(validate(basicAdvice.getThirdPartyIdentifiers()));
+         violations.addAll(validate(basicAdvice.getTime()));
       }
    }
 

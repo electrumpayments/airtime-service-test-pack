@@ -7,58 +7,58 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import io.electrum.airtime.api.PurchaseResource;
 import io.electrum.airtime.api.model.PurchaseReversal;
-import io.electrum.airtime.resource.impl.AirtimeTestServer;
 import io.electrum.airtime.server.AirtimeTestServerRunner;
-import io.electrum.airtime.server.util.AirtimeModelUtils;
 import io.electrum.airtime.server.util.PurchaseModelUtils;
 import io.electrum.airtime.server.util.RequestKey;
 
-public class PurchaseReversalHandler {
-   private static final Logger log = LoggerFactory.getLogger(AirtimeTestServer.class.getPackage().getName());
+public class PurchaseReversalHandler extends BaseHandler {
+   protected PurchaseReversalHandler(HttpHeaders httpHeaders) {
+      super(httpHeaders);
+   }
 
-   public Response handle(PurchaseReversal purchaseReversal, HttpHeaders httpHeaders) {
+   public Response handle(PurchaseReversal purchaseReversal) {
       try {
          Response rsp = PurchaseModelUtils.validatePurchaseReversal(purchaseReversal);
          if (rsp != null) {
             return rsp;
          }
 
-         String authString = AirtimeModelUtils.getAuthString(httpHeaders.getHeaderString(HttpHeaders.AUTHORIZATION));
-         String username = AirtimeModelUtils.getUsernameFromAuth(authString);
-         String password = AirtimeModelUtils.getPasswordFromAuth(authString);
-
          rsp = PurchaseModelUtils.canReversePurchase(purchaseReversal, username, password);
          if (rsp != null) {
             if (rsp.getStatus() == 404) {
                // make sure to record the purchaseReversal in case we get the request late.
-               addPurchaseReversalToCache(purchaseReversal, username, password);
+               addPurchaseReversalToCache(purchaseReversal);
             }
             return rsp;
          }
 
          // quietly overwrites any existing purchaseReversal
-         addPurchaseReversalToCache(purchaseReversal, username, password);
+         addPurchaseReversalToCache(purchaseReversal);
 
          rsp = Response.accepted(buildAdviceResponseFromAdvice(purchaseReversal)).build();
 
          return rsp;
       } catch (Exception e) {
-         log.debug("error processing VoucherProvision", e);
-         Response rsp = Response.serverError().entity(e.getMessage()).build();
-         return rsp;
+         return logAndBuildException(e);
       }
    }
 
-   private void addPurchaseReversalToCache(PurchaseReversal purchaseReversal, String username, String password) {
+   private void addPurchaseReversalToCache(PurchaseReversal purchaseReversal) {
       ConcurrentHashMap<RequestKey, PurchaseReversal> reversalRecords =
             AirtimeTestServerRunner.getTestServer().getPurchaseReversalRecords();
       RequestKey reversalKey =
-            new RequestKey(username, password, RequestKey.REVERSALS_RESOURCE, purchaseReversal.getRequestId());
+            new RequestKey(
+                  username,
+                  password,
+                  PurchaseResource.ReversePurchase.REVERSE_PURCHASE,
+                  purchaseReversal.getRequestId());
       reversalRecords.put(reversalKey, purchaseReversal);
    }
 
+   @Override
+   protected String getRequestName() {
+      return "Purchase Reversal";
+   }
 }

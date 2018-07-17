@@ -2,7 +2,6 @@ package io.electrum.airtime.server.util;
 
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -19,7 +18,6 @@ import io.electrum.airtime.server.AirtimeTestServerRunner;
 import io.electrum.airtime.server.model.DetailMessage;
 import io.electrum.vas.JsonUtil;
 import io.electrum.vas.model.BasicReversal;
-import io.electrum.vas.model.Tender;
 
 public class VoucherModelUtils extends AirtimeModelUtils {
 
@@ -82,17 +80,9 @@ public class VoucherModelUtils extends AirtimeModelUtils {
 
    public static Response validateVoucherConfirmation(VoucherConfirmation confirmation) {
       Set<ConstraintViolation<?>> violations = new HashSet<ConstraintViolation<?>>();
-      violations.addAll(validate(confirmation));
-      violations.addAll(validate(confirmation.getId()));
-      violations.addAll(validate(confirmation.getRequestId()));
-      violations.addAll(validate(confirmation.getThirdPartyIdentifiers()));
-      violations.addAll(validate(confirmation.getTime()));
-      List<Tender> tenders = confirmation.getTenders();
-      violations.addAll(validate(tenders));
-      for (Tender tender : tenders) {
-         violations.addAll(validate(tender));
-      }
+      validateTenderAdvice(confirmation, violations);
       violations.addAll(validate(confirmation.getVoucher()));
+
       ErrorDetail errorDetail = buildFormatErrorRsp(violations);
       if (errorDetail == null) {
          return null;
