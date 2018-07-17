@@ -19,7 +19,6 @@ import io.electrum.airtime.api.model.PurchaseReversal;
 import io.electrum.airtime.server.AirtimeTestServerRunner;
 import io.electrum.airtime.server.model.DetailMessage;
 import io.electrum.vas.JsonUtil;
-import io.electrum.vas.model.BasicAdvice;
 import io.electrum.vas.model.BasicReversal;
 
 public class PurchaseModelUtils extends AirtimeModelUtils {
@@ -84,6 +83,22 @@ public class PurchaseModelUtils extends AirtimeModelUtils {
       return Response.status(400).entity(errorDetail).build();
    }
 
+   public static Response validatePurchaseStatus(String provider, String purchaseRef, String originalMsgId) {
+      Set<ConstraintViolation<?>> violations = new HashSet<ConstraintViolation<?>>();
+      violations.addAll(validate(provider));
+      violations.addAll(validate(purchaseRef));
+      violations.addAll(validate(originalMsgId));
+      ErrorDetail errorDetail = buildFormatErrorRsp(violations);
+      if (errorDetail == null) {
+         return null;
+      }
+      errorDetail.requestType(ErrorDetail.RequestType.PURCHASE_STATUS_REQUEST);
+      if (originalMsgId != null) {
+         errorDetail.setOriginalId(originalMsgId);
+      }
+      return Response.status(400).entity(errorDetail).build();
+   }
+
    private static void validatePurchaseRequest(
          PurchaseRequest purchaseRequest,
          Set<ConstraintViolation<?>> violations) {
@@ -121,7 +136,11 @@ public class PurchaseModelUtils extends AirtimeModelUtils {
 
    public static Response canReversePurchase(BasicReversal reversal, String username, String password) {
       if (!isPurchaseRequestProvisioned(reversal.getRequestId(), username, password)) {
-         ErrorDetail errorDetail = buildRequestNotFoundErrorDetail(reversal);
+         ErrorDetail errorDetail =
+               buildRequestNotFoundErrorDetail(
+                     reversal.getId(),
+                     reversal.getRequestId(),
+                     ErrorDetail.RequestType.PURCHASE_REVERSAL);
          return Response.status(404).entity(errorDetail).build();
       }
 
@@ -152,7 +171,11 @@ public class PurchaseModelUtils extends AirtimeModelUtils {
          String password) {
       // check if purchase request was provisioned
       if (!isPurchaseRequestProvisioned(purchaseConfirmation.getRequestId(), username, password)) {
-         ErrorDetail errorDetail = buildRequestNotFoundErrorDetail(purchaseConfirmation);
+         ErrorDetail errorDetail =
+               buildRequestNotFoundErrorDetail(
+                     purchaseConfirmation.getId(),
+                     purchaseConfirmation.getRequestId(),
+                     ErrorDetail.RequestType.PURCHASE_CONFIRMATION);
          return Response.status(404).entity(errorDetail).build();
       }
 
@@ -173,14 +196,47 @@ public class PurchaseModelUtils extends AirtimeModelUtils {
       return null;
    }
 
-   private static ErrorDetail buildRequestNotFoundErrorDetail(BasicAdvice basicAdvice) {
+   public static Response canPurchaseStatusWithMsgId(
+         String originalPurchaseRequestId,
+         String username,
+         String password) {
+      // check if purchase request was provisioned
+      if (!isPurchaseRequestProvisioned(originalPurchaseRequestId, username, password)) {
+         ErrorDetail errorDetail =
+               buildRequestNotFoundErrorDetail(
+                     null,
+                     originalPurchaseRequestId,
+                     ErrorDetail.RequestType.PURCHASE_STATUS_REQUEST);
+         return Response.status(404).entity(errorDetail).build();
+      }
+
+      return null;
+   }
+
+   private static ErrorDetail buildRequestNotFoundErrorDetail(
+         String id,
+         String requestId,
+         ErrorDetail.RequestType requestType) {
       return buildErrorDetail(
-            basicAdvice.getId(),
+            id,
             "Original purchase request was not found.",
             "No PurchaseRequest located for given purchaseRequestId.",
-            basicAdvice.getRequestId(),
-            ErrorDetail.RequestType.PURCHASE_CONFIRMATION,
+            requestId,
+            requestType,
             ErrorDetail.ErrorType.UNABLE_TO_LOCATE_RECORD);
+   }
+
+   public static Response buildNoPurchaseRspFoundErrorResponse(String purchaseRequestId) {
+      ErrorDetail errorDetail =
+            buildErrorDetail(
+                  null,
+                  "Purchase Response not found.",
+                  "No Purchase Response could be found with associated msg id.",
+                  purchaseRequestId,
+                  ErrorDetail.RequestType.PURCHASE_STATUS_REQUEST,
+                  ErrorDetail.ErrorType.UNABLE_TO_LOCATE_RECORD);
+
+      return Response.status(400).entity(errorDetail).build();
    }
 
    private static Response buildAlreadyReversedErrorResponse(
@@ -229,7 +285,7 @@ public class PurchaseModelUtils extends AirtimeModelUtils {
       return getPurchaseRequestFromCache(purchaseRequestId, username, password) != null;
    }
 
-   private static PurchaseRequest getPurchaseRequestFromCache(
+   public static PurchaseRequest getPurchaseRequestFromCache(
          String purchaseRequestId,
          String username,
          String password) {
@@ -276,7 +332,7 @@ public class PurchaseModelUtils extends AirtimeModelUtils {
       return responseRecords.get(purchaseRequestKey);
    }
 
-   private static PurchaseResponse getPurchaseResponseFromCache(
+   public static PurchaseResponse getPurchaseResponseFromCache(
          String purchaseRequestId,
          String username,
          String password) {
