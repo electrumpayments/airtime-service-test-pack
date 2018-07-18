@@ -23,37 +23,42 @@ public class PurchaseStatusHandler extends BaseHandler {
          }
 
          if (originalMsgId == null) {
-
-         } else {
-            rsp = PurchaseModelUtils.canPurchaseStatusWithMsgId(originalMsgId, username, password);
+            // checks that purchasRef and provider are provided and that a purchase id can be found with the purchaseRef
+            rsp = PurchaseModelUtils.canPurchaseStatusWithPurchaseRef(purchaseReference, provider, username, password);
             if (rsp != null) {
                return rsp;
             }
-
-            PurchaseResponse purchaseResponse =
-                  PurchaseModelUtils.getPurchaseResponseFromCache(originalMsgId, username, password);
-            if (purchaseResponse != null) {
-               rsp = Response.accepted(purchaseResponse).build();
-            } else {
-               rsp = buildNoPurchaseRspFoundErrorResponse(originalMsgId);
-            }
-
-            return rsp;
-
+            originalMsgId =
+                  PurchaseModelUtils.getPurchaseIdWithPurchRefFromCache(purchaseReference, username, password);
          }
-         return null;
+
+         // checks that purchase request exists with the given id and that it hasn't been reversed
+         rsp = PurchaseModelUtils.canPurchaseStatusWithMsgId(originalMsgId, username, password);
+         if (rsp != null) {
+            return rsp;
+         }
+
+         PurchaseResponse purchaseResponse =
+               PurchaseModelUtils.getPurchaseResponseFromCache(originalMsgId, username, password);
+         if (purchaseResponse != null) {
+            rsp = Response.accepted(purchaseResponse).build();
+         } else {
+            rsp = buildNoPurchaseRspFoundErrorResponse(originalMsgId);
+         }
+
+         return rsp;
       } catch (Exception e) {
          return logAndBuildException(e);
       }
    }
 
-   private static Response buildNoPurchaseRspFoundErrorResponse(String purchaseRequestId) {
+   private static Response buildNoPurchaseRspFoundErrorResponse(String purchaseIdentifier) {
       ErrorDetail errorDetail =
             buildErrorDetail(
                   null,
                   "Purchase Response not found.",
-                  "No Purchase Response could be found with associated msg id.",
-                  purchaseRequestId,
+                  "No Purchase Response could be found with associated identifier.",
+                  purchaseIdentifier,
                   ErrorDetail.RequestType.PURCHASE_STATUS_REQUEST,
                   ErrorDetail.ErrorType.UNABLE_TO_LOCATE_RECORD);
 

@@ -62,19 +62,6 @@ public class MsisdnInfoModelUtils extends AirtimeModelUtils {
             RandomData.randomAZ(3));
    }
 
-   public static Response validateMsisdnInfo(String msisdn, String operator) {
-      Set<ConstraintViolation<?>> violations = new HashSet<ConstraintViolation<?>>();
-      violations.addAll(validate(msisdn));
-      violations.addAll(validate(operator));
-      ErrorDetail errorDetail = buildFormatErrorRsp(violations);
-
-      if (errorDetail == null) {
-         return null;
-      }
-      errorDetail.requestType(ErrorDetail.RequestType.MSISDN_INFO_REQUEST);
-      return Response.status(400).entity(errorDetail).build();
-   }
-
    private static Promotion createPromotion() {
       return new Promotion().promotion("Example Promotion").startDate(new DateTime()).endDate(
             new DateTime().plusDays(Integer.parseInt(RandomData.random09(2))));
@@ -114,5 +101,18 @@ public class MsisdnInfoModelUtils extends AirtimeModelUtils {
             .productValues(productValues)
             .wholesalePrice(new LedgerAmount().amount(25L).currency("710"))
             .recipientAmount(new LedgerAmount().amount(100L).currency("112"));
+   }
+
+   public static Response validateMsisdnInfo(String msisdn, String operator) {
+      Set<ConstraintViolation<?>> violations = new HashSet<ConstraintViolation<?>>();
+      violations.addAll(validate(msisdn));
+      violations.addAll(validate(operator));
+      ErrorDetail errorDetail = buildFormatErrorRsp(violations);
+
+      if (errorDetail == null) {
+         return null;
+      }
+      errorDetail.requestType(ErrorDetail.RequestType.MSISDN_INFO_REQUEST);
+      return Response.status(400).entity(errorDetail).build();
    }
 }

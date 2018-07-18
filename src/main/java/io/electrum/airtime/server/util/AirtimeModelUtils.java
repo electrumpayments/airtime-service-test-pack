@@ -160,48 +160,6 @@ public class AirtimeModelUtils {
             .transactionIdentifiers(basicAdvice.getThirdPartyIdentifiers());
    }
 
-   public static Response buildIncorrectUsernameErrorResponse(
-         String objectId,
-         Institution client,
-         String username,
-         ErrorDetail.RequestType requestType) {
-
-      ErrorDetail errorDetail =
-            buildErrorDetail(
-                  objectId,
-                  "Incorrect username",
-                  "The HTTP Basic Authentication username (" + username
-                        + ") is not the same as the value in the Client.Id field (" + client.getId() + ").",
-                  null,
-                  requestType,
-                  ErrorDetail.ErrorType.FORMAT_ERROR);
-
-      DetailMessage detailMessage = (DetailMessage) errorDetail.getDetailMessage();
-      detailMessage.setClient(client);
-
-      return Response.status(400).entity(errorDetail).build();
-   }
-
-   public static ErrorDetail buildInconsistentIdErrorDetail(
-         String pathId,
-         String objectId,
-         String originalMsgId,
-         ErrorDetail.RequestType requestType) {
-      ErrorDetail errorDetail =
-            buildErrorDetail(
-                  objectId,
-                  "String inconsistent",
-                  "The ID path parameter is not the same as the object's ID.",
-                  originalMsgId,
-                  requestType,
-                  ErrorDetail.ErrorType.FORMAT_ERROR);
-
-      DetailMessage detailMessage = (DetailMessage) errorDetail.getDetailMessage();
-      detailMessage.setPathId(pathId);
-
-      return errorDetail;
-   }
-
    protected static Voucher createRandomizedVoucher() {
       Voucher voucher = new Voucher();
       voucher.setPin(RandomData.random09((int) ((Math.random() * 20) + 1)));
@@ -243,6 +201,48 @@ public class AirtimeModelUtils {
    private static LedgerAmount createRandomizedAmount() {
       return new LedgerAmount().currency("710")
             .amount(Long.parseLong(RandomData.random09((int) ((Math.random() * 2) + 1))));
+   }
+
+   public static Response buildIncorrectUsernameErrorResponse(
+         String objectId,
+         Institution client,
+         String username,
+         ErrorDetail.RequestType requestType) {
+
+      ErrorDetail errorDetail =
+            buildErrorDetail(
+                  objectId,
+                  "Incorrect username",
+                  "The HTTP Basic Authentication username (" + username
+                        + ") is not the same as the value in the Client.Id field (" + client.getId() + ").",
+                  null,
+                  requestType,
+                  ErrorDetail.ErrorType.FORMAT_ERROR);
+
+      DetailMessage detailMessage = (DetailMessage) errorDetail.getDetailMessage();
+      detailMessage.setClient(client);
+
+      return Response.status(400).entity(errorDetail).build();
+   }
+
+   public static ErrorDetail buildInconsistentIdErrorDetail(
+         String pathId,
+         String objectId,
+         String originalMsgId,
+         ErrorDetail.RequestType requestType) {
+      ErrorDetail errorDetail =
+            buildErrorDetail(
+                  objectId,
+                  "String inconsistent",
+                  "The ID path parameter is not the same as the object's ID.",
+                  originalMsgId,
+                  requestType,
+                  ErrorDetail.ErrorType.FORMAT_ERROR);
+
+      DetailMessage detailMessage = (DetailMessage) errorDetail.getDetailMessage();
+      detailMessage.setPathId(pathId);
+
+      return errorDetail;
    }
 
    public static ErrorDetail buildDuplicateErrorDetail(

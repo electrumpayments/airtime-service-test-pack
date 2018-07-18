@@ -20,6 +20,7 @@ import io.electrum.airtime.server.AirtimeTestServerRunner;
 import io.electrum.airtime.server.model.DetailMessage;
 import io.electrum.vas.JsonUtil;
 import io.electrum.vas.model.BasicReversal;
+import io.electrum.vas.model.Institution;
 
 public class PurchaseModelUtils extends AirtimeModelUtils {
 
@@ -34,6 +35,7 @@ public class PurchaseModelUtils extends AirtimeModelUtils {
             .setProduct(purchaseRequest.getProduct().name("TalkALot").type(Product.ProductType.AIRTIME_FIXED));
       purchaseResponse.setAmounts(createRandomizedAmounts());
       purchaseResponse.setMsisdn(buildMsisdn(purchaseRequest));
+      purchaseResponse.setSettlementEntity(buildRandomizedSettlementEntity()); // This is the "purchase reference"
 
       return purchaseResponse;
    }
@@ -44,6 +46,10 @@ public class PurchaseModelUtils extends AirtimeModelUtils {
          msisdn = new Msisdn().msisdn(RandomData.random09(10)).country("ZA");
       }
       return msisdn;
+   }
+
+   private static Institution buildRandomizedSettlementEntity() {
+      return new Institution().name(RandomData.randomAZ(8)).id(RandomData.random09(7));
    }
 
    public static Response validatePurchaseRequest(PurchaseRequest purchaseRequest) {
@@ -210,6 +216,47 @@ public class PurchaseModelUtils extends AirtimeModelUtils {
          return Response.status(404).entity(errorDetail).build();
       }
 
+      // check that it's not reversed
+      BasicReversal reversal = getPurchaseReversalFromCache(originalPurchaseRequestId, username, password);
+      if (reversal != null) {
+         ErrorDetail errorDetail =
+               buildErrorDetail(
+                     reversal.getId(),
+                     "Purchase Request reversed already.",
+                     "The purchase has already been reversed with the associated details.",
+                     reversal.getRequestId(),
+                     ErrorDetail.RequestType.PURCHASE_STATUS_REQUEST,
+                     ErrorDetail.ErrorType.ACCOUNT_ALREADY_SETTLED);
+         return Response.status(400).entity(errorDetail).build();
+      }
+
+      return null;
+   }
+
+   public static Response canPurchaseStatusWithPurchaseRef(
+         String purchaseRef,
+         String provider,
+         String username,
+         String password) {
+      if (purchaseRef == null || provider == null) {
+         ErrorDetail errorDetail =
+               buildErrorDetail(
+                     null,
+                     "The purchaseRef or provider is null",
+                     "The purchaseRef and provider are both required when no originalMsgId is given",
+                     purchaseRef,
+                     ErrorDetail.RequestType.PURCHASE_STATUS_REQUEST,
+                     ErrorDetail.ErrorType.FORMAT_ERROR);
+         return Response.status(400).entity(errorDetail).build();
+      }
+
+      // check if a purchase can be found with the given purchaseRef
+      if (!containsPurchaseIdWithPurchRef(purchaseRef, username, password)) {
+         ErrorDetail errorDetail =
+               buildRequestNotFoundErrorDetail(null, purchaseRef, ErrorDetail.RequestType.PURCHASE_STATUS_REQUEST);
+         return Response.status(404).entity(errorDetail).build();
+      }
+
       return null;
    }
 
@@ -219,8 +266,8 @@ public class PurchaseModelUtils extends AirtimeModelUtils {
          ErrorDetail.RequestType requestType) {
       return buildErrorDetail(
             id,
-            "Original purchase request was not found.",
-            "No PurchaseRequest located for given purchaseRequestId.",
+            "Original purchase was not found.",
+            "No PurchaseRequest located for given purchase Identifier.",
             requestId,
             requestType,
             ErrorDetail.ErrorType.UNABLE_TO_LOCATE_RECORD);
@@ -282,7 +329,15 @@ public class PurchaseModelUtils extends AirtimeModelUtils {
    }
 
    private static boolean isPurchaseRequestProvisioned(String purchaseRequestId, String username, String password) {
-      return getPurchaseRequestFromCache(purchaseRequestId, username, password) != null;
+      ConcurrentHashMap<RequestKey, PurchaseRequest> purchaseRequestRecords =
+            AirtimeTestServerRunner.getTestServer().getPurchaseRequestRecords();
+      RequestKey provisionKey =
+            new RequestKey(username, password, PurchaseResource.Purchase.PURCHASE, purchaseRequestId);
+      log.debug(
+            String.format(
+                  "Searching for purchase request provision record under following key: %s",
+                  provisionKey.toString()));
+      return purchaseRequestRecords.containsKey(provisionKey);
    }
 
    public static PurchaseRequest getPurchaseRequestFromCache(
@@ -342,4 +397,21 @@ public class PurchaseModelUtils extends AirtimeModelUtils {
             AirtimeTestServerRunner.getTestServer().getPurchaseResponseRecords();
       return responseRecords.get(purchaseRequestKey);
    }
+
+   public static String getPurchaseIdWithPurchRefFromCache(String purchaseReference, String username, String password) {
+      RequestKey purchaseReferenceKey =
+            new RequestKey(username, password, RequestKey.PURCHASE_REF_RESOURCE, purchaseReference);
+      ConcurrentHashMap<RequestKey, String> purchaseReferenceRecords =
+            AirtimeTestServerRunner.getTestServer().getPurchaseReferenceRecords();
+      return purchaseReferenceRecords.get(purchaseReferenceKey);
+   }
+
+   public static boolean containsPurchaseIdWithPurchRef(String purchaseReference, String username, String password) {
+      RequestKey purchaseReferenceKey =
+            new RequestKey(username, password, RequestKey.PURCHASE_REF_RESOURCE, purchaseReference);
+      ConcurrentHashMap<RequestKey, String> purchaseReferenceRecords =
+            AirtimeTestServerRunner.getTestServer().getPurchaseReferenceRecords();
+      return purchaseReferenceRecords.containsKey(purchaseReferenceKey);
+   }
+
 }

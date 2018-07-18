@@ -1,4 +1,5 @@
 package io.electrum.airtime.server.util;
+
 import java.util.Objects;
 
 public class RequestKey {
@@ -6,7 +7,9 @@ public class RequestKey {
    public static final String REVERSALS_RESOURCE = "reversals";
    public static final String CONFIRMATIONS_RESOURCE = "confirmations";
    public static final String VOIDS_RESOURCE = "voids";
-   
+
+   public static final String PURCHASE_REF_RESOURCE = "purchaseRefs";
+
    private String username;
    private String password;
    private String resourceType;
@@ -63,18 +66,17 @@ public class RequestKey {
       RequestKey otherKey = (RequestKey) o;
 
       return username != null && username.equals(otherKey.username) && password != null
-            && password.equals(otherKey.password) && resourceType != null && resourceType.equals(otherKey.resourceType) && uuid != null && uuid.equals(otherKey.uuid);
+            && password.equals(otherKey.password) && resourceType != null && resourceType.equals(otherKey.resourceType)
+            && uuid != null && uuid.equals(otherKey.uuid);
    }
-   
+
    @Override
-   public int hashCode()
-   {
+   public int hashCode() {
       return Objects.hash(username, password, resourceType, uuid);
    }
-   
+
    @Override
-   public String toString()
-   {
+   public String toString() {
       StringBuilder sb = new StringBuilder();
       sb.append(username);
       sb.append("|");
@@ -83,7 +85,7 @@ public class RequestKey {
       sb.append(resourceType);
       sb.append("|");
       sb.append(uuid);
-      return sb.toString(); 
+      return sb.toString();
    }
 
 }
