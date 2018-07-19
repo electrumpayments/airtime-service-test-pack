@@ -192,6 +192,8 @@ public class AirtimeModelUtils {
       thirdPartyIds.add(
             new ThirdPartyIdentifier().institutionId(receiver.getId())
                   .transactionIdentifier(RandomData.random09AZ((int) ((Math.random() * 20) + 1))));
+
+      transaction.setSettlementEntity(settlementEntity);
    }
 
    protected static Amounts createRandomizedAmounts() {
