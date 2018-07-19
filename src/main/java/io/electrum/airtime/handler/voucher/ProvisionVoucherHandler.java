@@ -43,15 +43,11 @@ public class ProvisionVoucherHandler extends BaseHandler {
             return rsp;
          }
 
-         RequestKey key = new RequestKey(username, password, RequestKey.VOUCHERS_RESOURCE, voucherId);
-         ConcurrentHashMap<RequestKey, VoucherRequest> provisionRecords =
-               AirtimeTestServerRunner.getTestServer().getProvisionVoucherRecords();
-         provisionRecords.put(key, request);
+         RequestKey key = addVoucherRequestToCache(voucherId, request);
 
          VoucherResponse voucherRsp = VoucherModelUtils.voucherRspFromReq(request);
-         ConcurrentHashMap<RequestKey, VoucherResponse> responseRecords =
-               AirtimeTestServerRunner.getTestServer().getVoucherResponseRecords();
-         responseRecords.put(key, voucherRsp);
+
+         addVoucherResponseToCache(key, voucherRsp);
 
          rsp = Response.created(uriInfo.getRequestUri()).entity(voucherRsp).build();
 
@@ -59,6 +55,20 @@ public class ProvisionVoucherHandler extends BaseHandler {
       } catch (Exception e) {
          return logAndBuildException(e);
       }
+   }
+
+   private void addVoucherResponseToCache(RequestKey key, VoucherResponse voucherRsp) {
+      ConcurrentHashMap<RequestKey, VoucherResponse> responseRecords =
+            AirtimeTestServerRunner.getTestServer().getVoucherResponseRecords();
+      responseRecords.put(key, voucherRsp);
+   }
+
+   private RequestKey addVoucherRequestToCache(String voucherId, VoucherRequest request) {
+      RequestKey key = new RequestKey(username, password, RequestKey.VOUCHERS_RESOURCE, voucherId);
+      ConcurrentHashMap<RequestKey, VoucherRequest> provisionRecords =
+            AirtimeTestServerRunner.getTestServer().getProvisionVoucherRecords();
+      provisionRecords.put(key, request);
+      return key;
    }
 
    private ErrorDetail buildVoucherRequestErrorResponse(String voucherId, VoucherRequest request) {

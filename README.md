@@ -8,6 +8,7 @@ These tests consist of correctly formatted JSON messages that validate server re
 The test pack is comprised of JSON files: `Airtime_heroku.postman_collection.json`, `Airtime_localhost.postman_collection.json`, `heroku.postman_environment.json` and `localhost.postman_environment.json`.
 The postman_collection files are a collection of JSON tests that will be run. They contain JSON request messages and response validation scripts. These tests are dependant on variables contained in the the associated postman_environment files.
 
+Please note for Msisdn Info Requests: We have configured specific msisdn numbers to return specific products and/or promotions. These are described within the above mentioned collection.
 ### Running tests
 
 There are two possible ways to run this test pack: either via the Postman desktop client or via Newman, the command line interface for Postman.

@@ -32,7 +32,7 @@ public class PurchaseStatusHandler extends BaseHandler {
                   PurchaseModelUtils.getPurchaseIdWithPurchRefFromCache(purchaseReference, username, password);
          }
 
-         // checks that purchase request exists with the given id and that it hasn't been reversed
+         // checks that a purchase request exists with the given id and that it hasn't been reversed
          rsp = PurchaseModelUtils.canPurchaseStatusWithMsgId(originalMsgId, username, password);
          if (rsp != null) {
             return rsp;

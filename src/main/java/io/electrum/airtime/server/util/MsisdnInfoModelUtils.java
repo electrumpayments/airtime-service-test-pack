@@ -2,11 +2,8 @@ package io.electrum.airtime.server.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import javax.validation.ConstraintViolation;
 import javax.ws.rs.core.Response;
 
 import org.joda.time.DateTime;
@@ -38,6 +35,22 @@ public class MsisdnInfoModelUtils extends AirtimeModelUtils {
       msisdnProductPairing.put(MSISDN_EXAMPLE_TWO, productListTwo);
 
       msisdnPromotionPairing.put(MSISDN_EXAMPLE_ONE, createPromotion());
+   }
+
+   public static Response canMsisdnInfoRequest(String msisdn) {
+      if (msisdn == null) {
+         ErrorDetail errorDetail =
+               buildErrorDetail(
+                     null,
+                     "Msisdn query parameter is not set.",
+                     "Msisdn was not set but is a mandatory field for msisdn lookups.",
+                     null,
+                     ErrorDetail.RequestType.MSISDN_INFO_REQUEST,
+                     ErrorDetail.ErrorType.FORMAT_ERROR);
+         return Response.status(400).entity(errorDetail).build();
+      }
+
+      return null;
    }
 
    public static MsisdnInfoResponse msisdnInfoResponseFromMsisdn(String msisdn, String operator) {
@@ -101,18 +114,5 @@ public class MsisdnInfoModelUtils extends AirtimeModelUtils {
             .productValues(productValues)
             .wholesalePrice(new LedgerAmount().amount(25L).currency("710"))
             .recipientAmount(new LedgerAmount().amount(100L).currency("112"));
-   }
-
-   public static Response validateMsisdnInfo(String msisdn, String operator) {
-      Set<ConstraintViolation<?>> violations = new HashSet<ConstraintViolation<?>>();
-      violations.addAll(validate(msisdn));
-      violations.addAll(validate(operator));
-      ErrorDetail errorDetail = buildFormatErrorRsp(violations);
-
-      if (errorDetail == null) {
-         return null;
-      }
-      errorDetail.requestType(ErrorDetail.RequestType.MSISDN_INFO_REQUEST);
-      return Response.status(400).entity(errorDetail).build();
    }
 }

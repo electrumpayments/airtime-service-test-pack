@@ -14,7 +14,7 @@ public class MsisdnInfoHandler extends BaseHandler {
 
    public Response handle(String msisdn, String operator) {
       try {
-         Response rsp = MsisdnInfoModelUtils.validateMsisdnInfo(msisdn, operator);
+         Response rsp = MsisdnInfoModelUtils.canMsisdnInfoRequest(msisdn);
          if (rsp != null) {
             return rsp;
          }
