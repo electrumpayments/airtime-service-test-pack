@@ -122,14 +122,29 @@ jobs:
           aws_access_key_id: $AWS_ACCESS_KEY_ID
           aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
     steps:
+      - checkout
+      - restore_cache:
+          # if you ever need to invalidate the cache, simply bump the version number
+          keys:
+            - v1-maven-{{ .Branch }}-{{ checksum "pom.xml" }}
+            - v1-maven-{{ .Branch }}
       - setup_remote_docker:   # (2)
           docker_layer_caching: true # (3)
-      - run: |
-          mvn clean install
-          docker build -t="airtime-service-test-pack" ./target
-          docker run -d -p 8080:8080 --name airtime-service-test-pack_container airtime-service-test-pack
-          npm install -g newman
-          newman run ./test/postman/Airtime.postman_collection.json -e ./test/postman/localhost.postman_environment.json
+      - run:
+          name: Compile service for the Test server Docker container
+          command: mvn clean install -B -Dstyle.color=always
+      - run:
+          name: Build the Test Server Docker container
+          command: docker build -t="airtime-service-test-pack" ./target
+      - run:
+          name: Run the Test Server Service in the Docker Container
+          command: docker run -d -p 8080:8080 --name airtime-service-test-pack_container airtime-service-test-pack
+      - run:
+          name: Install Newman on the instance so Postman tests can be run from cmd
+          command: npm install -g newman
+      - run:
+          name: Run postman tests from the collection against the docker test server service
+          command: newman run ./test/postman/Airtime.postman_collection.json -e ./test/postman/localhost.postman_environment.json
 
 workflows:
   version: 2
