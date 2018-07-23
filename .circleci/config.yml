@@ -141,7 +141,10 @@ jobs:
           command: docker run -d -p 8080:8080 --name airtime-service-test-pack_container airtime-service-test-pack
       - run:
           name: Install Newman on the instance so Postman tests can be run from cmd
-          command: npm install -g newman
+          command: |
+            curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+            sudo npm install -g newman
       - run:
           name: Run postman tests from the collection against the docker test server service
           command: newman run ./test/postman/Airtime.postman_collection.json -e ./test/postman/localhost.postman_environment.json
