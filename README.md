@@ -25,7 +25,7 @@ Note that that tests may be run individually from the main Postman view where te
 1. Install newman (make sure Node Package Manager is installed first):
 	`npm install newman -g`
 2. Run the tests:
-	`newman run Airtime_localhost.postman_collection.json -e localhost.postman_environment.json`
+	`newman run Airtime.postman_collection.json -e localhost.postman_environment.json`
 3. This will run all tests against an Airtime Service server implementation hosted on localhost:8080 and provide a basic breakdown of which tests passed and failed.
 
 ##Testing a Client

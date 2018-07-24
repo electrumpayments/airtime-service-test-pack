@@ -167,6 +167,9 @@
                                         <include>Dockerfile</include>
                                     </includes>
                                 </resource>
+                                <resource>
+                                    <directory>${basedir}/test</directory>
+                                </resource>
                             </resources>
                         </configuration>
                     </execution>
