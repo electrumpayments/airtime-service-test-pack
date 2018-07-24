@@ -135,13 +135,29 @@ jobs:
           command: mvn clean install -B -Dstyle.color=always
       - run:
           name: Build the Test Server Docker container
-          command: docker build -t="airtime-service-test-pack" ./target
+          command: docker build -t=.Environment.CIRCLE_PROJECT_REPONAME ./target
       - run:
           name: Run the Test Server Service in the Docker Container
-          command: docker run -d -p 8080:8080 --name airtime-service-test-pack_container airtime-service-test-pack
+          command: docker run -d -p 8080:8080 --name airtime-service-test-pack_container .Environment.CIRCLE_PROJECT_REPONAME
       - run:
           name: Run postman tests from the collection against the docker test server service
           command: docker exec airtime-service-test-pack_container newman run test/Airtime.postman_collection.json -e test/localhost.postman_environment.json
+  deploy-to-heroku:
+    machine:
+        enabled: true
+    environment:
+      HEROKU_APP: airtime-service-test-pack
+    steps:
+      - checkout
+      - restore_cache:
+          # if you ever need to invalidate the cache, simply bump the version number
+          keys:
+            - v1-maven-{{ .Branch }}-{{ checksum "pom.xml" }}
+            - v1-maven-{{ .Branch }}
+      - run:
+          name: Deploy Master to Heroku
+          command: |
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP.git master
 
 workflows:
   version: 2
@@ -155,6 +171,10 @@ workflows:
           context: java
           requires:
             - build-and-release
+      - deploy-to-heroku:
+          context: java
+          requires:
+            - tests-for-airtime-test-server
   nightly:
     jobs:
       - build-with-latest-deps:
