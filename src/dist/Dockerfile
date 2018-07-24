@@ -7,7 +7,7 @@ MAINTAINER Tim Whelan, timwhelan@electrum.co.za
 # we need this because the workdir is modified in dockerfile/java -> now java:8
 WORKDIR /
 
-RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 
 RUN apt-get install -y nodejs
 
