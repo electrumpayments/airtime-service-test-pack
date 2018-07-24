@@ -115,7 +115,7 @@ jobs:
       - store_artifacts:
           path: logs
           destination: logs
-  tests-for-airtime-test-server:
+  tests-for-test-server:
     docker:
       - image: 813968012009.dkr.ecr.us-east-1.amazonaws.com/circleci-openjdk8-8u162
         aws_auth:
@@ -138,10 +138,10 @@ jobs:
           command: docker build -t=$CIRCLE_PROJECT_REPONAME ./target
       - run:
           name: Run the Test Server Service in the Docker Container
-          command: docker run -d -p 8080:8080 --name airtime-service-test-pack_container $CIRCLE_PROJECT_REPONAME
+          command: docker run -d -p 8080:8080 --name test-server-container $CIRCLE_PROJECT_REPONAME
       - run:
           name: Run postman tests from the collection against the docker test server service
-          command: docker exec airtime-service-test-pack_container newman run test/Airtime.postman_collection.json -e test/localhost.postman_environment.json
+          command: docker exec test-server-container newman run test/Airtime.postman_collection.json -e test/localhost.postman_environment.json
   deploy-to-heroku:
     machine:
         enabled: true
@@ -165,7 +165,7 @@ workflows:
     jobs:
       - build-and-release:
           context: java
-      - tests-for-airtime-test-server:
+      - tests-for-test-server:
           context: java
       - code-coverage-report:
           context: java
@@ -174,7 +174,7 @@ workflows:
       - deploy-to-heroku:
           context: java
           requires:
-            - tests-for-airtime-test-server
+            - tests-for-test-server
   nightly:
     jobs:
       - build-with-latest-deps:
