@@ -135,10 +135,10 @@ jobs:
           command: mvn clean install -B -Dstyle.color=always
       - run:
           name: Build the Test Server Docker container
-          command: docker build -t={{ .Environment.CIRCLE_PROJECT_REPONAME }} ./target
+          command: docker build -t=$CIRCLE_PROJECT_REPONAME ./target
       - run:
           name: Run the Test Server Service in the Docker Container
-          command: docker run -d -p 8080:8080 --name airtime-service-test-pack_container {{ .Environment.CIRCLE_PROJECT_REPONAME }}
+          command: docker run -d -p 8080:8080 --name airtime-service-test-pack_container $CIRCLE_PROJECT_REPONAME
       - run:
           name: Run postman tests from the collection against the docker test server service
           command: docker exec airtime-service-test-pack_container newman run test/Airtime.postman_collection.json -e test/localhost.postman_environment.json
