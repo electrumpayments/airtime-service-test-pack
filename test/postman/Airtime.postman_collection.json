@@ -10448,17 +10448,16 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "fddc933d-63fe-4290-bb8c-ee37bf1348df",
+								"id": "2ff21de8-c187-4f50-a7a0-a6bda4718a70",
 								"type": "text/javascript",
 								"exec": [
 									"tests[\"Status code is 400\"] = responseCode.code === 400;",
 									"",
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-									"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-									"tests[\"Request Type correct\"] = jsonData.requestType === \"MSISDN_INFO_REQUEST\";",
-									"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorMessage !== null;",
-									""
+									"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+									"var formatErrors = jsonData.detailMessage.formatErrors;",
+									"tests[\"Correct Error message\"] = formatErrors[0].msg === \"query param msisdn may not be null\";"
 								]
 							}
 						},
