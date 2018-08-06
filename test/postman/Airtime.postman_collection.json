@@ -1317,21 +1317,23 @@
 								{
 									"listen": "test",
 									"script": {
+										"id": "ae01840c-eacf-4559-a3c6-b0c16f71d3cc",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"//null ID can't be checked",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"id may not be null\";"
 										]
 									}
 								},
 								{
 									"listen": "prerequest",
 									"script": {
+										"id": "df6938a2-1de9-43bf-b4d5-1ebecfb30027",
 										"type": "text/javascript",
 										"exec": [
 											"function _p8(s) {",
@@ -1391,10 +1393,6 @@
 									{
 										"key": "Content-Type",
 										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "Basic MjIyMjIyMjI6cGFzc3dvcmQ="
 									}
 								],
 								"body": {
@@ -1422,21 +1420,23 @@
 								{
 									"listen": "test",
 									"script": {
+										"id": "fa0a289b-f5c2-4c1e-a0ea-1719f3f179ff",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"product may not be null\";"
 										]
 									}
 								},
 								{
 									"listen": "prerequest",
 									"script": {
+										"id": "96816bba-2be6-4f41-ab6c-32c7cbf93829",
 										"type": "text/javascript",
 										"exec": [
 											"function _p8(s) {",
@@ -1527,21 +1527,23 @@
 								{
 									"listen": "test",
 									"script": {
+										"id": "b2333686-677c-4081-9540-45fa028f4fc4",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"product.productId may not be null\";"
 										]
 									}
 								},
 								{
 									"listen": "prerequest",
 									"script": {
+										"id": "b8594cac-876f-4e74-bfd3-505246584815",
 										"type": "text/javascript",
 										"exec": [
 											"function _p8(s) {",
@@ -1632,21 +1634,23 @@
 								{
 									"listen": "test",
 									"script": {
+										"id": "f46b99a6-3cd7-4125-a52c-be8f80249b94",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"time may not be null\";"
 										]
 									}
 								},
 								{
 									"listen": "prerequest",
 									"script": {
+										"id": "a153629e-0349-4cc9-a942-707c3aaea316",
 										"type": "text/javascript",
 										"exec": [
 											"function _p8(s) {",
@@ -1737,21 +1741,23 @@
 								{
 									"listen": "test",
 									"script": {
+										"id": "8e85bd24-f5e2-4182-884f-f2912bb4372c",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"originator may not be null\";"
 										]
 									}
 								},
 								{
 									"listen": "prerequest",
 									"script": {
+										"id": "07e98f24-6f29-4017-81c6-f5a00d5c7411",
 										"type": "text/javascript",
 										"exec": [
 											"function _p8(s) {",
@@ -1842,21 +1848,23 @@
 								{
 									"listen": "test",
 									"script": {
+										"id": "532bacbf-a351-464f-ac8c-f47efa85aae4",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"originator.merchant may not be null\";"
 										]
 									}
 								},
 								{
 									"listen": "prerequest",
 									"script": {
+										"id": "243250f5-ba10-436d-9bdd-908a848260da",
 										"type": "text/javascript",
 										"exec": [
 											"function _p8(s) {",
@@ -1947,21 +1955,23 @@
 								{
 									"listen": "test",
 									"script": {
+										"id": "e7610ef0-7256-49a7-b82d-47309b10ec19",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"originator.merchant.merchantId may not be null\";"
 										]
 									}
 								},
 								{
 									"listen": "prerequest",
 									"script": {
+										"id": "0d107e75-4d7a-4edc-aa6a-2de2f63284e1",
 										"type": "text/javascript",
 										"exec": [
 											"function _p8(s) {",
@@ -2052,21 +2062,23 @@
 								{
 									"listen": "test",
 									"script": {
+										"id": "8f26317a-703b-4fe5-960e-2b7cb3f75c6d",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"originator.merchant.merchantName may not be null\";"
 										]
 									}
 								},
 								{
 									"listen": "prerequest",
 									"script": {
+										"id": "ad867204-bfe3-4849-a7f1-df959d6638e3",
 										"type": "text/javascript",
 										"exec": [
 											"function _p8(s) {",
@@ -2157,21 +2169,23 @@
 								{
 									"listen": "test",
 									"script": {
+										"id": "7d86cda0-3a18-4b04-9660-57025727f05e",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"originator.merchant.merchantName.name may not be null\";"
 										]
 									}
 								},
 								{
 									"listen": "prerequest",
 									"script": {
+										"id": "0b4d47c9-4e07-460f-a8e9-22ac2a74193f",
 										"type": "text/javascript",
 										"exec": [
 											"function _p8(s) {",
@@ -2262,21 +2276,23 @@
 								{
 									"listen": "test",
 									"script": {
+										"id": "392b1498-4935-46d9-a95d-b565c098cef0",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"originator.merchant.merchantName.city may not be null\";"
 										]
 									}
 								},
 								{
 									"listen": "prerequest",
 									"script": {
+										"id": "ca400dbf-dde1-45f0-bdee-ad2644a34b36",
 										"type": "text/javascript",
 										"exec": [
 											"function _p8(s) {",
@@ -2367,21 +2383,23 @@
 								{
 									"listen": "test",
 									"script": {
+										"id": "b163b054-b04d-415c-af1c-141f3108f630",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"originator.merchant.merchantName.region may not be null\";"
 										]
 									}
 								},
 								{
 									"listen": "prerequest",
 									"script": {
+										"id": "e127cd7b-4ca4-41e8-860a-1b295d8c8f35",
 										"type": "text/javascript",
 										"exec": [
 											"function _p8(s) {",
@@ -2472,21 +2490,23 @@
 								{
 									"listen": "test",
 									"script": {
+										"id": "5d0b1e64-ec66-4736-a770-63124891da77",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"originator.merchant.merchantName.country may not be null\";"
 										]
 									}
 								},
 								{
 									"listen": "prerequest",
 									"script": {
+										"id": "485da880-3154-4c21-9149-1aae8bd5e6da",
 										"type": "text/javascript",
 										"exec": [
 											"function _p8(s) {",
@@ -2577,21 +2597,23 @@
 								{
 									"listen": "test",
 									"script": {
+										"id": "17fa6f3c-e970-4e08-823f-e18f77c92c11",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"originator.merchant.merchantType may not be null\";"
 										]
 									}
 								},
 								{
 									"listen": "prerequest",
 									"script": {
+										"id": "6a183ddd-a570-4ea2-97ac-33c37fedb552",
 										"type": "text/javascript",
 										"exec": [
 											"function _p8(s) {",
@@ -2682,21 +2704,23 @@
 								{
 									"listen": "test",
 									"script": {
+										"id": "a7ca689b-ed5f-4f5e-9eb3-f955eabac2a7",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"originator.terminalId may not be null\";"
 										]
 									}
 								},
 								{
 									"listen": "prerequest",
 									"script": {
+										"id": "3edfa005-9fb6-49af-8eb1-341e1f1dacf7",
 										"type": "text/javascript",
 										"exec": [
 											"function _p8(s) {",
@@ -2787,21 +2811,23 @@
 								{
 									"listen": "test",
 									"script": {
+										"id": "6551c880-dabe-4712-a088-257845681acf",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"originator.institution may not be null\";"
 										]
 									}
 								},
 								{
 									"listen": "prerequest",
 									"script": {
+										"id": "c72875f3-56db-4561-b27d-00d530c2e7de",
 										"type": "text/javascript",
 										"exec": [
 											"function _p8(s) {",
@@ -2892,21 +2918,23 @@
 								{
 									"listen": "test",
 									"script": {
+										"id": "ea5d1009-27fb-4205-8de3-445ff376e175",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"originator.institution.id may not be null\";"
 										]
 									}
 								},
 								{
 									"listen": "prerequest",
 									"script": {
+										"id": "3a2c1b48-4da8-49f8-9aa5-1fd6fde94516",
 										"type": "text/javascript",
 										"exec": [
 											"function _p8(s) {",
@@ -2997,21 +3025,23 @@
 								{
 									"listen": "test",
 									"script": {
+										"id": "79164c93-9e6e-45a3-9301-030c7c04bad3",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"originator.institution.name may not be null\";"
 										]
 									}
 								},
 								{
 									"listen": "prerequest",
 									"script": {
+										"id": "68026678-3096-4e8b-a686-79f01c1775f4",
 										"type": "text/javascript",
 										"exec": [
 											"function _p8(s) {",
@@ -3102,21 +3132,23 @@
 								{
 									"listen": "test",
 									"script": {
+										"id": "f83dcded-18fe-4d00-a5dd-627c41127714",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"client may not be null\";"
 										]
 									}
 								},
 								{
 									"listen": "prerequest",
 									"script": {
+										"id": "a5175f66-c2a8-4fb5-b3f8-1217372f81e9",
 										"type": "text/javascript",
 										"exec": [
 											"function _p8(s) {",
@@ -3207,21 +3239,23 @@
 								{
 									"listen": "test",
 									"script": {
+										"id": "247db5a9-3667-45e2-a02e-8217456f7fa7",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"client.id may not be null\";"
 										]
 									}
 								},
 								{
 									"listen": "prerequest",
 									"script": {
+										"id": "de4aa68c-6e0b-4794-b8d9-1f12462bd10f",
 										"type": "text/javascript",
 										"exec": [
 											"function _p8(s) {",
@@ -3312,21 +3346,23 @@
 								{
 									"listen": "test",
 									"script": {
+										"id": "3beb2324-d2e7-4659-8d4a-d1223ca66990",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"client.name may not be null\";"
 										]
 									}
 								},
 								{
 									"listen": "prerequest",
 									"script": {
+										"id": "e6e8e2f2-973a-4bd8-8f58-d93d815b3459",
 										"type": "text/javascript",
 										"exec": [
 											"function _p8(s) {",
@@ -3417,21 +3453,23 @@
 								{
 									"listen": "test",
 									"script": {
+										"id": "2232ccf9-99c5-411f-8abf-dbfc31a00359",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"Request ID returned\"] = jsonData.originalId === postman.getEnvironmentVariable(\"requestId\");",
-											"//missing reversal ID can't be checked",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REVERSAL\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"id may not be null\";"
 										]
 									}
 								},
 								{
 									"listen": "prerequest",
 									"script": {
+										"id": "f1bfd6bb-3ac9-4603-9b8f-fd0977d80ad0",
 										"type": "text/javascript",
 										"exec": [
 											"function _p8(s) {",
@@ -3517,21 +3555,23 @@
 								{
 									"listen": "test",
 									"script": {
+										"id": "ae4b1b48-8aa0-4414-b43c-b8ad1dfba99f",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"Reversal ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"reversalId\");",
-											"//missing request ID can't be checked",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REVERSAL\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"requestId may not be null\";"
 										]
 									}
 								},
 								{
 									"listen": "prerequest",
 									"script": {
+										"id": "0cbed0df-a5fd-4760-8ef1-68cb8662c916",
 										"type": "text/javascript",
 										"exec": [
 											"function _p8(s) {",
@@ -3617,21 +3657,23 @@
 								{
 									"listen": "test",
 									"script": {
+										"id": "437e9e49-34f2-496a-bd62-cc0c7bae229b",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"Reversal ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"reversalId\");",
-											"tests[\"Request ID returned\"] = jsonData.originalId === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REVERSAL\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"time may not be null\";"
 										]
 									}
 								},
 								{
 									"listen": "prerequest",
 									"script": {
+										"id": "16bebee5-d288-4426-80f8-c7bdce63c1ef",
 										"type": "text/javascript",
 										"exec": [
 											"function _p8(s) {",
@@ -3717,21 +3759,23 @@
 								{
 									"listen": "test",
 									"script": {
+										"id": "0f1a8531-2b30-4773-9b3b-b0ad1f7afc56",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"Reversal ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"reversalId\");",
-											"tests[\"Request ID returned\"] = jsonData.originalId === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_REVERSAL\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"reversalReason may not be null\";"
 										]
 									}
 								},
 								{
 									"listen": "prerequest",
 									"script": {
+										"id": "68e556a2-c3d6-4cad-bb71-c916e291576a",
 										"type": "text/javascript",
 										"exec": [
 											"function _p8(s) {",
@@ -3817,21 +3861,23 @@
 								{
 									"listen": "test",
 									"script": {
+										"id": "1c67e74e-08f7-4d80-a5dd-84db3dd7eecb",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"//missing confirmation ID can't be checked",
-											"tests[\"Request ID returned\"] = jsonData.originalId === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_CONFIRMATION\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"id may not be null\";"
 										]
 									}
 								},
 								{
 									"listen": "prerequest",
 									"script": {
+										"id": "e9e45d93-82bd-4659-95b7-11b064d3af3b",
 										"type": "text/javascript",
 										"exec": [
 											"function _p8(s) {",
@@ -3917,21 +3963,23 @@
 								{
 									"listen": "test",
 									"script": {
+										"id": "15606a94-81b1-45d9-abaa-a8881af5d05a",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"Confirmation ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"confirmationId\");",
-											"//missing request ID can't be checked",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_CONFIRMATION\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"requestId may not be null\";"
 										]
 									}
 								},
 								{
 									"listen": "prerequest",
 									"script": {
+										"id": "b9d006af-ca0c-4e83-82b7-b77bddb8a7d8",
 										"type": "text/javascript",
 										"exec": [
 											"function _p8(s) {",
@@ -4017,21 +4065,23 @@
 								{
 									"listen": "test",
 									"script": {
+										"id": "f97abe41-d957-4f92-a505-d64076f64d34",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"Confirmation ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"confirmationId\");",
-											"tests[\"Request ID returned\"] = jsonData.originalId === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_CONFIRMATION\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"time may not be null\";"
 										]
 									}
 								},
 								{
 									"listen": "prerequest",
 									"script": {
+										"id": "f8dac0d6-887a-4011-9878-24c479bae80b",
 										"type": "text/javascript",
 										"exec": [
 											"function _p8(s) {",
@@ -4117,21 +4167,23 @@
 								{
 									"listen": "test",
 									"script": {
+										"id": "f1173088-5e39-4ed6-b159-d34e6087b285",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"Confirmation ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"confirmationId\");",
-											"tests[\"Request ID returned\"] = jsonData.originalId === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"VOUCHER_CONFIRMATION\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"voucher.serialNumber may not be null\";"
 										]
 									}
 								},
 								{
 									"listen": "prerequest",
 									"script": {
+										"id": "479d8106-7b58-472a-8d3d-e749b2e745ea",
 										"type": "text/javascript",
 										"exec": [
 											"function _p8(s) {",
@@ -4335,10 +4387,6 @@
 									{
 										"key": "Content-Type",
 										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "Basic dGVzdENsaWVudDpwYXNzd29yZA=="
 									}
 								],
 								"body": {
@@ -4717,10 +4765,6 @@
 									{
 										"key": "Content-Type",
 										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "Basic MjIyMjIyMjI6cGFzc3dvcmQ="
 									}
 								],
 								"body": {
@@ -5615,16 +5659,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "f8f38b9f-f659-417b-b8cb-7d0e72bc61d4",
+										"id": "37ac071d-65d7-4918-87a6-807f10b62f1a",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"PURCHASE_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"product may not be null\";"
 										]
 									}
 								},
@@ -5721,16 +5765,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "af83c757-afa5-41fb-96a5-080a7ebe8a48",
+										"id": "422e9775-2c57-431e-9d8f-de8fe1319c0c",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"PURCHASE_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"product.productId may not be null\";"
 										]
 									}
 								},
@@ -5827,16 +5871,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "643b1d4b-defe-432c-b56c-1572760e96d3",
+										"id": "0364d935-6249-4596-a4a4-96bbd78ab0c7",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"PURCHASE_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"time may not be null\";"
 										]
 									}
 								},
@@ -5933,16 +5977,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "8ce04c27-c451-45a3-affb-d92366d17cb9",
+										"id": "fcd5e29d-0678-48f9-888e-d1682298d10c",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"PURCHASE_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"originator may not be null\";"
 										]
 									}
 								},
@@ -6039,16 +6083,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "cb1addb1-3a2b-49e7-bb09-8e49fe86bc89",
+										"id": "1dd19efb-9604-4b7f-a5b7-2eddcb5a1ddd",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"PURCHASE_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"originator.merchant may not be null\";"
 										]
 									}
 								},
@@ -6145,16 +6189,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "bc27321d-2123-49b7-a45e-26efeb878c22",
+										"id": "83fad5fa-0c03-403c-9113-cb4ffcacf4ff",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"PURCHASE_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"originator.merchant.merchantId may not be null\";"
 										]
 									}
 								},
@@ -6251,16 +6295,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "bc1090ef-8693-4da8-84ef-87fb5d4a8ece",
+										"id": "478ecc51-beb4-406c-afd8-a3552a167c0f",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"PURCHASE_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"originator.merchant.merchantName may not be null\";"
 										]
 									}
 								},
@@ -6357,16 +6401,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "123eb918-dc6b-4d88-88aa-3717ac372623",
+										"id": "9087dec0-c115-47b7-a6c0-ae8d29b9bfb9",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"PURCHASE_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"originator.merchant.merchantName.name may not be null\";"
 										]
 									}
 								},
@@ -6463,16 +6507,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "2a37e8af-9573-4a22-b064-9e351bdeaa23",
+										"id": "4085fe6c-98a1-4b33-9136-d9f9f29d8b89",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"PURCHASE_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"originator.merchant.merchantName.city may not be null\";"
 										]
 									}
 								},
@@ -6569,16 +6613,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "8e8c3113-ca54-4de7-9f0b-10a5cc4289e7",
+										"id": "e36ce092-4e2f-460c-bded-756d667b3096",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"PURCHASE_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"originator.merchant.merchantName.region may not be null\";"
 										]
 									}
 								},
@@ -6675,16 +6719,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "4354e707-5b86-455b-a972-2e974fdde358",
+										"id": "2401d10c-657d-4dbb-af68-86a6b5f3cd42",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"PURCHASE_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"originator.merchant.merchantName.country may not be null\";"
 										]
 									}
 								},
@@ -6781,16 +6825,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "04460dbf-82f0-4a4f-9410-55fbfcac6ef0",
+										"id": "7855e957-3de9-4130-beed-2ab6b98ca2ba",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"PURCHASE_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"originator.merchant.merchantType may not be null\";"
 										]
 									}
 								},
@@ -6887,16 +6931,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "3690472a-4387-48e1-b087-4736d82144bd",
+										"id": "28e89f81-f807-4dd0-99ca-8537c5f3af00",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"PURCHASE_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"originator.terminalId may not be null\";"
 										]
 									}
 								},
@@ -6993,16 +7037,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "efa7463c-e11f-4e8b-91df-69105f047f2f",
+										"id": "8b2f5a1e-930d-4f52-9e41-9a2727dd8bb3",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"PURCHASE_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"originator.institution may not be null\";"
 										]
 									}
 								},
@@ -7099,16 +7143,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "b3fa5329-1c6c-4e32-bf35-e7febaeff976",
+										"id": "54152114-0a9d-415b-ac14-8fa7ee965a9c",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"PURCHASE_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"originator.institution.id may not be null\";"
 										]
 									}
 								},
@@ -7205,16 +7249,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "2b6864c3-bed9-4e14-903f-09055ca9df83",
+										"id": "d0e57d75-908b-43df-a44a-b4ebca33135a",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"PURCHASE_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"originator.institution.name may not be null\";"
 										]
 									}
 								},
@@ -7311,16 +7355,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "79405566-07f2-4a25-8627-44d40a3f99d9",
+										"id": "126f8376-7e82-4e1b-b314-b5aeb2313bda",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"PURCHASE_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"client may not be null\";"
 										]
 									}
 								},
@@ -7417,16 +7461,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "f2369f8b-d17c-4f4d-8e2d-9cfbec9e2281",
+										"id": "6119ca69-d930-4444-9cbb-11c773b75da7",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"PURCHASE_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"client.id may not be null\";"
 										]
 									}
 								},
@@ -7523,16 +7567,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "4072275d-dc0e-4c34-8cf0-03c738c6eb45",
+										"id": "314a1db4-9892-485a-8f7a-2c2248b37102",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"No original ID returned\"] = jsonData.originalId == null;",
-											"tests[\"Request ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"PURCHASE_REQUEST\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"client.name may not be null\";"
 										]
 									}
 								},
@@ -7629,16 +7673,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "5a524e0b-a7dc-4bbf-afbf-049d0672dfc5",
+										"id": "ab77cfe3-f5c8-456c-b931-d332f42cf1a2",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"Request ID returned\"] = jsonData.originalId === postman.getEnvironmentVariable(\"requestId\");",
-											"//missing reversal ID can't be checked",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"PURCHASE_REVERSAL\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"id may not be null\";"
 										]
 									}
 								},
@@ -7729,16 +7773,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "714228c3-8442-4417-b527-13fd6afb1699",
+										"id": "5610d6ee-30f5-4dfc-a31a-1a62f61e28a8",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"Reversal ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"reversalId\");",
-											"//missing request ID can't be checked",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"PURCHASE_REVERSAL\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"requestId may not be null\";"
 										]
 									}
 								},
@@ -7829,16 +7873,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "bfc65ebe-2dd4-4a66-aa18-d3adc6ddeb4f",
+										"id": "52715382-4e32-4b75-83f8-5bf776f0d2c7",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"Reversal ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"reversalId\");",
-											"tests[\"Request ID returned\"] = jsonData.originalId === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"PURCHASE_REVERSAL\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"time may not be null\";"
 										]
 									}
 								},
@@ -7929,16 +7973,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "013908f5-8521-4dcd-8950-df416cc5ba9e",
+										"id": "b6bf329c-7be0-4e36-975e-99503c3187d4",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"Reversal ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"reversalId\");",
-											"tests[\"Request ID returned\"] = jsonData.originalId === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"PURCHASE_REVERSAL\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"reversalReason may not be null\";"
 										]
 									}
 								},
@@ -8029,16 +8073,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "492213b5-70ed-4209-b12f-0ca726976ce1",
+										"id": "50ba2bd3-34f6-44af-9e5d-1136094b57cc",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"//missing confirmation ID can't be checked",
-											"tests[\"Request ID returned\"] = jsonData.originalId === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"PURCHASE_CONFIRMATION\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"id may not be null\";"
 										]
 									}
 								},
@@ -8129,16 +8173,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "06837810-e694-48da-b40f-037b9e5d0fc5",
+										"id": "24e6f6a5-ec93-4c68-8dd1-d4e8fc09f53d",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"Confirmation ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"confirmationId\");",
-											"//missing request ID can't be checked",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"PURCHASE_CONFIRMATION\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"requestId may not be null\";"
 										]
 									}
 								},
@@ -8229,16 +8273,16 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "6be92352-8ddd-4250-96ce-dd4050cca011",
+										"id": "f715bc37-1eb3-49e4-801c-ec731db94261",
 										"type": "text/javascript",
 										"exec": [
 											"tests[\"Status code is 400\"] = responseCode.code === 400;",
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"Error type is FORMAT_ERROR\"] = jsonData.errorType === \"FORMAT_ERROR\";",
-											"tests[\"Confirmation ID returned\"] = jsonData.id === postman.getEnvironmentVariable(\"confirmationId\");",
-											"tests[\"Request ID returned\"] = jsonData.originalId === postman.getEnvironmentVariable(\"requestId\");",
-											"tests[\"Request Type correct\"] = jsonData.requestType === \"PURCHASE_CONFIRMATION\";"
+											"tests[\"Error message is not null\"] = jsonData.errorMessage !== null;",
+											"var formatErrors = jsonData.detailMessage.formatErrors;",
+											"tests[\"Correct Error message\"] = formatErrors[0].msg === \"time may not be null\";"
 										]
 									}
 								},

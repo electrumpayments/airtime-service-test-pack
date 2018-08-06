@@ -1,11 +1,8 @@
 package io.electrum.airtime.server.util;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.validation.ConstraintViolation;
 import javax.ws.rs.core.Response;
 
 import io.electrum.airtime.api.PurchaseResource;
@@ -50,74 +47,6 @@ public class PurchaseModelUtils extends AirtimeModelUtils {
 
    private static Institution buildRandomizedSettlementEntity() {
       return new Institution().name(RandomData.randomAZ(8)).id(RandomData.random09(7));
-   }
-
-   public static Response validatePurchaseRequest(PurchaseRequest purchaseRequest) {
-      Set<ConstraintViolation<?>> violations = new HashSet<ConstraintViolation<?>>();
-      validatePurchaseRequest(purchaseRequest, violations);
-      ErrorDetail errorDetail = buildFormatErrorRsp(violations);
-
-      if (errorDetail == null) {
-         return null;
-      }
-      errorDetail.id(purchaseRequest.getId()).requestType(ErrorDetail.RequestType.PURCHASE_REQUEST);
-      return Response.status(400).entity(errorDetail).build();
-   }
-
-   public static Response validatePurchaseReversal(BasicReversal reversal) {
-      Set<ConstraintViolation<?>> violations = new HashSet<ConstraintViolation<?>>();
-      validateBasicReversal(reversal, violations);
-      ErrorDetail errorDetail = buildFormatErrorRsp(violations);
-
-      if (errorDetail == null) {
-         return null;
-      }
-      errorDetail.id(reversal.getId()).originalId(reversal.getRequestId()).requestType(
-            ErrorDetail.RequestType.PURCHASE_REVERSAL);
-      return Response.status(400).entity(errorDetail).build();
-   }
-
-   public static Response validatePurchaseConfirmation(PurchaseConfirmation purchaseConfirmation) {
-      Set<ConstraintViolation<?>> violations = new HashSet<ConstraintViolation<?>>();
-      validateTenderAdvice(purchaseConfirmation, violations);
-      ErrorDetail errorDetail = buildFormatErrorRsp(violations);
-      if (errorDetail == null) {
-         return null;
-      }
-      errorDetail.id(purchaseConfirmation.getId()).originalId(purchaseConfirmation.getRequestId()).requestType(
-            ErrorDetail.RequestType.PURCHASE_CONFIRMATION);
-      return Response.status(400).entity(errorDetail).build();
-   }
-
-   public static Response validatePurchaseStatus(String provider, String purchaseRef, String originalMsgId) {
-      Set<ConstraintViolation<?>> violations = new HashSet<ConstraintViolation<?>>();
-      violations.addAll(validate(provider));
-      violations.addAll(validate(purchaseRef));
-      violations.addAll(validate(originalMsgId));
-      ErrorDetail errorDetail = buildFormatErrorRsp(violations);
-      if (errorDetail == null) {
-         return null;
-      }
-      errorDetail.requestType(ErrorDetail.RequestType.PURCHASE_STATUS_REQUEST);
-      if (originalMsgId != null) {
-         errorDetail.setOriginalId(originalMsgId);
-      }
-      return Response.status(400).entity(errorDetail).build();
-   }
-
-   private static void validatePurchaseRequest(
-         PurchaseRequest purchaseRequest,
-         Set<ConstraintViolation<?>> violations) {
-      violations.addAll(validate(purchaseRequest));
-      if (purchaseRequest != null) {
-         validateTransaction(purchaseRequest, violations);
-         violations.addAll(validate(purchaseRequest.getProduct()));
-         validateAmounts(violations, purchaseRequest.getAmounts());
-         violations.addAll(validate(purchaseRequest.getReceiver()));
-         violations.addAll(validate(purchaseRequest.getSettlementEntity()));
-         violations.addAll(validate(purchaseRequest.getThirdPartyIdentifiers()));
-         violations.addAll(validate(purchaseRequest.getTime()));
-      }
    }
 
    public static Response canPurchasePurchaseRequest(String purchaseRequestId, String username, String password) {

@@ -21,10 +21,7 @@ public class PurchaseConfirmationHandler extends BaseHandler {
 
    public Response handle(PurchaseConfirmation purchaseConfirmation) {
       try {
-         Response rsp = PurchaseModelUtils.validatePurchaseConfirmation(purchaseConfirmation);
-         if (rsp != null) {
-            return rsp;
-         }
+         Response rsp;
 
          rsp = PurchaseModelUtils.canConfirmPurchase(purchaseConfirmation, username, password);
          if (rsp != null) {

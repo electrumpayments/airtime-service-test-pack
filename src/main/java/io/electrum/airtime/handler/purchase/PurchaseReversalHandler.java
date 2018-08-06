@@ -21,10 +21,7 @@ public class PurchaseReversalHandler extends BaseHandler {
 
    public Response handle(PurchaseReversal purchaseReversal) {
       try {
-         Response rsp = PurchaseModelUtils.validatePurchaseReversal(purchaseReversal);
-         if (rsp != null) {
-            return rsp;
-         }
+         Response rsp;
 
          rsp = PurchaseModelUtils.canReversePurchase(purchaseReversal, username, password);
          if (rsp != null) {

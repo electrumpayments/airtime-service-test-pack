@@ -21,10 +21,7 @@ public class ConfirmVoucherHandler extends BaseHandler {
 
    public Response handle(String voucherId, String confirmationId, VoucherConfirmation confirmation) {
       try {
-         Response rsp = VoucherModelUtils.validateVoucherConfirmation(confirmation);
-         if (rsp != null) {
-            return rsp;
-         }
+         Response rsp;
 
          if (!VoucherModelUtils.isUuidConsistent(confirmationId, confirmation.getId())) {
             return Response.status(400)

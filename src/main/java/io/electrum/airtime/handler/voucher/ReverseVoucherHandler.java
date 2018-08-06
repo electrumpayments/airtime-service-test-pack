@@ -21,10 +21,7 @@ public class ReverseVoucherHandler extends BaseHandler {
 
    public Response handle(String voucherId, String reversalId, BasicReversal reversal) {
       try {
-         Response rsp = VoucherModelUtils.validateVoucherReversal(reversal);
-         if (rsp != null) {
-            return rsp;
-         }
+         Response rsp;
 
          if (!VoucherModelUtils.isUuidConsistent(reversalId, reversal.getId())) {
             return Response.status(400).entity(buildVoucherReversalErrorResponse(reversalId, reversal)).build();

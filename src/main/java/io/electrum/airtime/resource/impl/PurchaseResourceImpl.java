@@ -99,7 +99,6 @@ public class PurchaseResourceImpl extends PurchaseResource implements IPurchaseR
          AsyncResponse asyncResponse,
          UriInfo uriInfo,
          HttpServletRequest httpServletRequest) {
-      // todo FINISH THIS
       log.info(String.format("%s %s", httpServletRequest.getMethod(), uriInfo.getPath()));
       log.debug(
             String.format(

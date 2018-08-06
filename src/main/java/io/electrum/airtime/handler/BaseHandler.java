@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.electrum.airtime.resource.impl.AirtimeTestServer;
-import io.electrum.airtime.server.util.AirtimeModelUtils;
+import io.electrum.vas.Utils;
 
 public abstract class BaseHandler {
    private static final Logger log = LoggerFactory.getLogger(AirtimeTestServer.class.getPackage().getName());
@@ -16,9 +16,9 @@ public abstract class BaseHandler {
    protected String password;
 
    protected BaseHandler(HttpHeaders httpHeaders) {
-      String authString = AirtimeModelUtils.getAuthString(httpHeaders.getHeaderString(HttpHeaders.AUTHORIZATION));
-      this.username = AirtimeModelUtils.getUsernameFromAuth(authString);
-      this.password = AirtimeModelUtils.getPasswordFromAuth(authString);
+      String authString = Utils.getBasicAuthString(httpHeaders.getHeaderString(HttpHeaders.AUTHORIZATION));
+      this.username = Utils.getUsernameFromBasicAuth(authString);
+      this.password = Utils.getPasswordFromBasicAuth(authString);
    }
 
    protected Response logAndBuildException(Exception e) {

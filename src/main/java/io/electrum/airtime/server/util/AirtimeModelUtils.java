@@ -1,16 +1,10 @@
 package io.electrum.airtime.server.util;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
 import javax.ws.rs.core.Response;
 
-import org.glassfish.jersey.internal.util.Base64;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,15 +17,10 @@ import io.electrum.airtime.server.model.FormatError;
 import io.electrum.vas.model.Amounts;
 import io.electrum.vas.model.BasicAdvice;
 import io.electrum.vas.model.BasicAdviceResponse;
-import io.electrum.vas.model.BasicReversal;
 import io.electrum.vas.model.Institution;
 import io.electrum.vas.model.LedgerAmount;
-import io.electrum.vas.model.Merchant;
-import io.electrum.vas.model.Originator;
 import io.electrum.vas.model.SlipData;
 import io.electrum.vas.model.SlipLine;
-import io.electrum.vas.model.Tender;
-import io.electrum.vas.model.TenderAdvice;
 import io.electrum.vas.model.ThirdPartyIdentifier;
 import io.electrum.vas.model.Transaction;
 
@@ -50,107 +39,17 @@ public class AirtimeModelUtils {
       messageLines.add(new SlipLine().text("operator."));
    }
 
-   static <T> Set<ConstraintViolation<T>> validate(T tInstance) {
-      if (tInstance == null) {
-         return new HashSet<ConstraintViolation<T>>();
-      }
-      Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-      Set<ConstraintViolation<T>> violations = validator.validate(tInstance);
-      return violations;
-   }
-
-   protected static ErrorDetail buildFormatErrorRsp(Set<ConstraintViolation<?>> violations) {
-      if (violations.size() == 0) {
+   public static ErrorDetail buildFormatErrorRsp(List<String> errors) {
+      if (errors.size() == 0) {
          return null;
       }
-      List<FormatError> formatErrors = new ArrayList<FormatError>(violations.size());
-      int i = 0;
-      for (ConstraintViolation violation : violations) {
-         System.out.println(i);
-         formatErrors.add(
-               new FormatError().msg(violation.getMessage()).field(violation.getPropertyPath().toString()).value(
-                     violation.getInvalidValue() == null ? "null" : violation.getInvalidValue().toString()));
-         i++;
+      List<FormatError> formatErrors = new ArrayList<>(errors.size());
+      for (String error : errors) {
+         formatErrors.add(new FormatError().msg(error));
       }
-      ErrorDetail errorDetail =
-            new ErrorDetail().errorType(ErrorDetail.ErrorType.FORMAT_ERROR)
-                  .errorMessage("Bad formatting")
-                  .detailMessage(new DetailMessage().formatErrors(formatErrors));
-      return errorDetail;
-   }
-
-   protected static void validateTransaction(Transaction transaction, Set<ConstraintViolation<?>> violations) {
-      violations.addAll(validate(transaction));
-      if (transaction != null) {
-         violations.addAll(validate(transaction.getId()));
-         violations.addAll(validate(transaction.getTime()));
-         validateOriginator(transaction.getOriginator(), violations);
-         violations.addAll(validate(transaction.getClient()));
-         violations.addAll(validate(transaction.getSettlementEntity()));
-         violations.addAll(validate(transaction.getReceiver()));
-         violations.addAll(validate(transaction.getThirdPartyIdentifiers()));
-         violations.addAll(validate(transaction.getSlipData()));
-         violations.addAll(validate(transaction.getBasketRef()));
-         violations.addAll(validate(transaction.getTranType()));
-         violations.addAll(validate(transaction.getSrcAccType()));
-         violations.addAll(validate(transaction.getDestAccType()));
-      }
-   }
-
-   private static void validateOriginator(Originator originator, Set<ConstraintViolation<?>> violations) {
-      violations.addAll(validate(originator));
-      if (originator != null) {
-         violations.addAll(validate(originator.getInstitution()));
-         violations.addAll(validate(originator.getTerminalId()));
-         Merchant merchant = originator.getMerchant();
-         violations.addAll(validate(merchant));
-         if (merchant != null) {
-            violations.addAll(validate(merchant.getMerchantId()));
-            violations.addAll(validate(merchant.getMerchantType()));
-            violations.addAll(validate(merchant.getMerchantName()));
-         }
-      }
-   }
-
-   protected static void validateAmounts(Set<ConstraintViolation<?>> violations, Amounts amounts) {
-      violations.addAll(validate(amounts));
-      if (amounts != null) {
-         violations.addAll(validate(amounts.getRequestAmount()));
-         violations.addAll(validate(amounts.getAdditionalAmounts()));
-         violations.addAll(validate(amounts.getApprovedAmount()));
-         violations.addAll(validate(amounts.getBalanceAmount()));
-         violations.addAll(validate(amounts.getFeeAmount()));
-      }
-   }
-
-   protected static void validateBasicReversal(BasicReversal reversal, Set<ConstraintViolation<?>> violations) {
-      violations.addAll(validate(reversal));
-      if (reversal != null) {
-         validateBasicAdvice(reversal, violations);
-         violations.addAll(validate(reversal.getReversalReason()));
-      }
-   }
-
-   protected static void validateTenderAdvice(TenderAdvice tenderAdvice, Set<ConstraintViolation<?>> violations) {
-      violations.addAll(validate(tenderAdvice));
-      if (tenderAdvice != null) {
-         validateBasicAdvice(tenderAdvice, violations);
-         List<Tender> tenders = tenderAdvice.getTenders();
-         violations.addAll(validate(tenders));
-         for (Tender tender : tenders) {
-            violations.addAll(validate(tender));
-         }
-      }
-   }
-
-   protected static void validateBasicAdvice(BasicAdvice basicAdvice, Set<ConstraintViolation<?>> violations) {
-      violations.addAll(validate(basicAdvice));
-      if (basicAdvice != null) {
-         violations.addAll(validate(basicAdvice.getId()));
-         violations.addAll(validate(basicAdvice.getRequestId()));
-         violations.addAll(validate(basicAdvice.getThirdPartyIdentifiers()));
-         violations.addAll(validate(basicAdvice.getTime()));
-      }
+      return new ErrorDetail().errorType(ErrorDetail.ErrorType.FORMAT_ERROR)
+            .errorMessage("Bad formatting.")
+            .detailMessage(new DetailMessage().formatErrors(formatErrors));
    }
 
    public static BasicAdviceResponse buildAdviceResponseFromAdvice(BasicAdvice basicAdvice) {
@@ -299,28 +198,4 @@ public class AirtimeModelUtils {
       return pathId.equals(serviceId);
    }
 
-   public static String getAuthString(String authHeader) {
-      if (authHeader == null || authHeader.isEmpty() || !authHeader.startsWith("Basic ")) {
-         return null;
-      }
-      String credsSubstring = authHeader.substring("Basic ".length());
-      String usernameAndPassword = Base64.decodeAsString(credsSubstring);
-      return usernameAndPassword;
-   }
-
-   public static String getUsernameFromAuth(String authString) {
-      String username = "null";
-      if (authString != null && !authString.isEmpty()) {
-         username = authString.substring(0, authString.indexOf(':'));
-      }
-      return username;
-   }
-
-   public static String getPasswordFromAuth(String authString) {
-      String password = "null";
-      if (authString != null && !authString.isEmpty()) {
-         password = authString.substring(authString.indexOf(':') + 1);
-      }
-      return password;
-   }
 }

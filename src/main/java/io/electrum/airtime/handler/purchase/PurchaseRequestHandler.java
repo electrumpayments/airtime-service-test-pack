@@ -23,10 +23,7 @@ public class PurchaseRequestHandler extends BaseHandler {
 
    public Response handle(PurchaseRequest purchaseRequest, UriInfo uriInfo) {
       try {
-         Response rsp = PurchaseModelUtils.validatePurchaseRequest(purchaseRequest);
-         if (rsp != null) {
-            return rsp;
-         }
+         Response rsp;
 
          if (!validUsername(purchaseRequest)) {
             return PurchaseModelUtils.buildIncorrectUsernameErrorResponse(

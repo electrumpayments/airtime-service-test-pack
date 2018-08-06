@@ -21,10 +21,7 @@ public class ProvisionVoucherHandler extends BaseHandler {
 
    public Response handle(String voucherId, VoucherRequest request, UriInfo uriInfo) {
       try {
-         Response rsp = VoucherModelUtils.validateVoucherRequest(request);
-         if (rsp != null) {
-            return rsp;
-         }
+         Response rsp;
 
          if (!VoucherModelUtils.isUuidConsistent(voucherId, request.getId())) {
             return Response.status(400).entity(buildVoucherRequestErrorResponse(voucherId, request)).build();

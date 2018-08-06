@@ -20,6 +20,9 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 
+import io.dropwizard.jersey.validation.DropwizardConfiguredValidator;
+import io.dropwizard.jersey.validation.HibernateValidationFeature;
+import io.dropwizard.jersey.validation.Validators;
 import io.electrum.airtime.api.model.PurchaseConfirmation;
 import io.electrum.airtime.api.model.PurchaseRequest;
 import io.electrum.airtime.api.model.PurchaseResponse;
@@ -27,6 +30,7 @@ import io.electrum.airtime.api.model.PurchaseReversal;
 import io.electrum.airtime.api.model.VoucherConfirmation;
 import io.electrum.airtime.api.model.VoucherRequest;
 import io.electrum.airtime.api.model.VoucherResponse;
+import io.electrum.airtime.server.AirtimeViolationExceptionMapper;
 import io.electrum.airtime.server.util.RequestKey;
 import io.electrum.vas.model.BasicReversal;
 
@@ -52,8 +56,14 @@ public class AirtimeTestServer extends ResourceConfig {
 
       register(MyObjectMapperProvider.class);
       register(JacksonFeature.class);
+
+      register(
+            new HibernateValidationFeature(
+                  new DropwizardConfiguredValidator(Validators.newValidatorFactory().getValidator())));
+      register(new AirtimeViolationExceptionMapper());
+
       provisionVoucherRecords = new ConcurrentHashMap<>();
-      log.debug("Initiating new TestServer");
+      log.debug("Initialising new TestServer");
       voucherResponseRecords = new ConcurrentHashMap<>();
       voucherReversalRecords = new ConcurrentHashMap<>();
       voucherConfirmationRecords = new ConcurrentHashMap<>();

@@ -17,10 +17,7 @@ public class PurchaseStatusHandler extends BaseHandler {
 
    public Response handle(String provider, String purchaseReference, String originalMsgId) {
       try {
-         Response rsp = PurchaseModelUtils.validatePurchaseStatus(provider, purchaseReference, originalMsgId);
-         if (rsp != null) {
-            return rsp;
-         }
+         Response rsp;
 
          if (originalMsgId == null) {
             // checks that purchasRef and provider are provided and that a purchase id can be found with the purchaseRef

@@ -1,11 +1,8 @@
 package io.electrum.airtime.server.util;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.validation.ConstraintViolation;
 import javax.ws.rs.core.Response;
 
 import io.electrum.airtime.api.model.ErrorDetail;
@@ -42,54 +39,6 @@ public class VoucherModelUtils extends AirtimeModelUtils {
       detailMessage.setProduct(req.getProduct());
       detailMessage.setReceiver(req.getReceiver());
       return errorDetail;
-   }
-
-   public static void validateVoucherRequest(VoucherRequest voucherRequest, Set<ConstraintViolation<?>> violations) {
-      violations.addAll(validate(voucherRequest));
-      if (voucherRequest != null) {
-         validateTransaction(voucherRequest, violations);
-         violations.addAll(validate(voucherRequest.getProduct()));
-         validateAmounts(violations, voucherRequest.getAmounts());
-         violations.addAll(validate(voucherRequest.getTenders()));
-         violations.addAll(validate(voucherRequest.getPaymentMethods()));
-      }
-   }
-
-   public static Response validateVoucherRequest(VoucherRequest voucherRequest) {
-      Set<ConstraintViolation<?>> violations = new HashSet<ConstraintViolation<?>>();
-      validateVoucherRequest(voucherRequest, violations);
-      ErrorDetail errorDetail = buildFormatErrorRsp(violations);
-      if (errorDetail == null) {
-         return null;
-      }
-      errorDetail.id(voucherRequest.getId()).requestType(ErrorDetail.RequestType.VOUCHER_REQUEST);
-      return Response.status(400).entity(errorDetail).build();
-   }
-
-   public static Response validateVoucherReversal(BasicReversal reversal) {
-      Set<ConstraintViolation<?>> violations = new HashSet<ConstraintViolation<?>>();
-      validateBasicReversal(reversal, violations);
-      ErrorDetail errorDetail = buildFormatErrorRsp(violations);
-      if (errorDetail == null) {
-         return null;
-      }
-      errorDetail.id(reversal.getId()).originalId(reversal.getRequestId()).requestType(
-            ErrorDetail.RequestType.VOUCHER_REVERSAL);
-      return Response.status(400).entity(errorDetail).build();
-   }
-
-   public static Response validateVoucherConfirmation(VoucherConfirmation confirmation) {
-      Set<ConstraintViolation<?>> violations = new HashSet<ConstraintViolation<?>>();
-      validateTenderAdvice(confirmation, violations);
-      violations.addAll(validate(confirmation.getVoucher()));
-
-      ErrorDetail errorDetail = buildFormatErrorRsp(violations);
-      if (errorDetail == null) {
-         return null;
-      }
-      errorDetail.id(confirmation.getId()).originalId(confirmation.getRequestId()).requestType(
-            ErrorDetail.RequestType.VOUCHER_CONFIRMATION);
-      return Response.status(400).entity(errorDetail).build();
    }
 
    public static Response canProvisionVoucher(String voucherId, String username, String password) {
