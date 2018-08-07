@@ -39,6 +39,7 @@ public class ConfirmVoucherHandler extends BaseHandler {
          rsp = Response.accepted(buildAdviceResponseFromAdvice(confirmation)).build();
 
          return rsp;
+
       } catch (Exception e) {
          return logAndBuildException(e);
       }
