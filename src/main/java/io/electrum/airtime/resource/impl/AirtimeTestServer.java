@@ -20,18 +20,35 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 
+import io.dropwizard.jersey.validation.DropwizardConfiguredValidator;
+import io.dropwizard.jersey.validation.HibernateValidationFeature;
+import io.dropwizard.jersey.validation.Validators;
+import io.electrum.airtime.api.model.PurchaseConfirmation;
+import io.electrum.airtime.api.model.PurchaseRequest;
+import io.electrum.airtime.api.model.PurchaseResponse;
+import io.electrum.airtime.api.model.PurchaseReversal;
 import io.electrum.airtime.api.model.VoucherConfirmation;
 import io.electrum.airtime.api.model.VoucherRequest;
 import io.electrum.airtime.api.model.VoucherResponse;
+import io.electrum.airtime.server.AirtimeViolationExceptionMapper;
 import io.electrum.airtime.server.util.RequestKey;
 import io.electrum.vas.model.BasicReversal;
 
 public class AirtimeTestServer extends ResourceConfig {
 
-   private ConcurrentHashMap<RequestKey, VoucherRequest> provisionRecords;
-   private ConcurrentHashMap<RequestKey, VoucherResponse> responseRecords;
-   private ConcurrentHashMap<RequestKey, BasicReversal> reversalRecords;
-   private ConcurrentHashMap<RequestKey, VoucherConfirmation> confirmationRecords;
+   private ConcurrentHashMap<RequestKey, VoucherRequest> provisionVoucherRecords;
+   private ConcurrentHashMap<RequestKey, VoucherResponse> voucherResponseRecords;
+   private ConcurrentHashMap<RequestKey, BasicReversal> voucherReversalRecords;
+   private ConcurrentHashMap<RequestKey, VoucherConfirmation> voucherConfirmationRecords;
+
+   private ConcurrentHashMap<RequestKey, PurchaseRequest> purchaseRequestRecords;
+   private ConcurrentHashMap<RequestKey, PurchaseReversal> purchaseReversalRecords;
+   private ConcurrentHashMap<RequestKey, PurchaseConfirmation> purchaseConfirmationRecords;
+   private ConcurrentHashMap<RequestKey, PurchaseResponse> purchaseResponseRecords;
+   // This hashmap stores the relationship between purchase references and purchase request id's so a purchase reference
+   // can be used to retrieve the correlated purchase request id
+   private ConcurrentHashMap<RequestKey, String> purchaseReferenceRecords;
+
    private static final Logger log = LoggerFactory.getLogger(AirtimeTestServer.class.getPackage().getName());
 
    public AirtimeTestServer() {
@@ -39,43 +56,98 @@ public class AirtimeTestServer extends ResourceConfig {
 
       register(MyObjectMapperProvider.class);
       register(JacksonFeature.class);
-      provisionRecords = new ConcurrentHashMap<RequestKey, VoucherRequest>();
-      log.debug("Initing new TestServer");
-      responseRecords = new ConcurrentHashMap<RequestKey, VoucherResponse>();
-      reversalRecords = new ConcurrentHashMap<RequestKey, BasicReversal>();
-      confirmationRecords = new ConcurrentHashMap<RequestKey, VoucherConfirmation>();
+
+      register(
+            new HibernateValidationFeature(
+                  new DropwizardConfiguredValidator(Validators.newValidatorFactory().getValidator())));
+      register(new AirtimeViolationExceptionMapper());
+
+      provisionVoucherRecords = new ConcurrentHashMap<>();
+      log.debug("Initialising new TestServer");
+      voucherResponseRecords = new ConcurrentHashMap<>();
+      voucherReversalRecords = new ConcurrentHashMap<>();
+      voucherConfirmationRecords = new ConcurrentHashMap<>();
+
+      purchaseRequestRecords = new ConcurrentHashMap<>();
+      purchaseResponseRecords = new ConcurrentHashMap<>();
+      purchaseReversalRecords = new ConcurrentHashMap<>();
+      purchaseConfirmationRecords = new ConcurrentHashMap<>();
+
+      purchaseReferenceRecords = new ConcurrentHashMap<>();
    }
 
-   public ConcurrentHashMap<RequestKey, VoucherRequest> getProvisionRecords() {
-      return provisionRecords;
+   public ConcurrentHashMap<RequestKey, VoucherRequest> getProvisionVoucherRecords() {
+      return provisionVoucherRecords;
    }
 
-   public void setProvisionRecords(ConcurrentHashMap<RequestKey, VoucherRequest> provisionRecords) {
-      this.provisionRecords = provisionRecords;
+   public void setProvisionVoucherRecords(ConcurrentHashMap<RequestKey, VoucherRequest> provisionVoucherRecords) {
+      this.provisionVoucherRecords = provisionVoucherRecords;
    }
 
-   public ConcurrentHashMap<RequestKey, VoucherResponse> getResponseRecords() {
-      return responseRecords;
+   public ConcurrentHashMap<RequestKey, VoucherResponse> getVoucherResponseRecords() {
+      return voucherResponseRecords;
    }
 
-   public void setResponseRecords(ConcurrentHashMap<RequestKey, VoucherResponse> responseRecords) {
-      this.responseRecords = responseRecords;
+   public void setVoucherResponseRecords(ConcurrentHashMap<RequestKey, VoucherResponse> voucherResponseRecords) {
+      this.voucherResponseRecords = voucherResponseRecords;
    }
 
-   public ConcurrentHashMap<RequestKey, BasicReversal> getReversalRecords() {
-      return reversalRecords;
+   public ConcurrentHashMap<RequestKey, BasicReversal> getVoucherReversalRecords() {
+      return voucherReversalRecords;
    }
 
-   public void setReversalRecords(ConcurrentHashMap<RequestKey, BasicReversal> reversalRecords) {
-      this.reversalRecords = reversalRecords;
+   public void setVoucherReversalRecords(ConcurrentHashMap<RequestKey, BasicReversal> voucherReversalRecords) {
+      this.voucherReversalRecords = voucherReversalRecords;
    }
 
-   public ConcurrentHashMap<RequestKey, VoucherConfirmation> getConfirmationRecords() {
-      return confirmationRecords;
+   public ConcurrentHashMap<RequestKey, VoucherConfirmation> getVoucherConfirmationRecords() {
+      return voucherConfirmationRecords;
    }
 
-   public void setConfirmationRecords(ConcurrentHashMap<RequestKey, VoucherConfirmation> confirmationRecords) {
-      this.confirmationRecords = confirmationRecords;
+   public void setVoucherConfirmationRecords(
+         ConcurrentHashMap<RequestKey, VoucherConfirmation> voucherConfirmationRecords) {
+      this.voucherConfirmationRecords = voucherConfirmationRecords;
+   }
+
+   public ConcurrentHashMap<RequestKey, PurchaseRequest> getPurchaseRequestRecords() {
+      return purchaseRequestRecords;
+   }
+
+   public void setPurchaseRequestRecords(ConcurrentHashMap<RequestKey, PurchaseRequest> purchaseRequestRecords) {
+      this.purchaseRequestRecords = purchaseRequestRecords;
+   }
+
+   public ConcurrentHashMap<RequestKey, PurchaseResponse> getPurchaseResponseRecords() {
+      return purchaseResponseRecords;
+   }
+
+   public void setPurchaseResponseRecords(ConcurrentHashMap<RequestKey, PurchaseResponse> purchaseResponseRecords) {
+      this.purchaseResponseRecords = purchaseResponseRecords;
+   }
+
+   public ConcurrentHashMap<RequestKey, PurchaseReversal> getPurchaseReversalRecords() {
+      return purchaseReversalRecords;
+   }
+
+   public void setPurchaseReversalRecords(ConcurrentHashMap<RequestKey, PurchaseReversal> purchaseReversalRecords) {
+      this.purchaseReversalRecords = purchaseReversalRecords;
+   }
+
+   public ConcurrentHashMap<RequestKey, PurchaseConfirmation> getPurchaseConfirmationRecords() {
+      return purchaseConfirmationRecords;
+   }
+
+   public void setPurchaseConfirmationRecords(
+         ConcurrentHashMap<RequestKey, PurchaseConfirmation> purchaseConfirmationRecords) {
+      this.purchaseConfirmationRecords = purchaseConfirmationRecords;
+   }
+
+   public ConcurrentHashMap<RequestKey, String> getPurchaseReferenceRecords() {
+      return purchaseReferenceRecords;
+   }
+
+   public void setPurchaseReferenceRecords(ConcurrentHashMap<RequestKey, String> purchaseReferenceRecords) {
+      this.purchaseReferenceRecords = purchaseReferenceRecords;
    }
 
    @Provider

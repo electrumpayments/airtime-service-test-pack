@@ -1,0 +1,63 @@
+{
+  "msisdn": {
+    "msisdn": "27749670999",
+    "country": "OIU",
+    "operator": {
+      "id": "45061",
+      "name": "transferTo"
+    }
+  },
+  "promotion": {
+    "promotion": "Example Promotion",
+    "startDate": "2018-07-19T08:20:21.184Z",
+    "endDate": "2018-09-02T08:20:21.209Z"
+  },
+  "availableProducts": [
+    {
+      "productId": "89",
+      "name": "Data 100mb",
+      "type": "DATA",
+      "wholesalePrice": {
+        "amount": 40,
+        "currency": "710"
+      },
+      "recipientAmount": {
+        "amount": 120,
+        "currency": "812"
+      },
+      "productValues": [
+        {
+          "amount": 100,
+          "currency": "710"
+        },
+        {
+          "amount": 50,
+          "currency": "812"
+        }
+      ]
+    },
+    {
+      "productId": "12",
+      "name": "Airtime R29",
+      "type": "AIRTIME_FIXED",
+      "wholesalePrice": {
+        "amount": 20,
+        "currency": "710"
+      },
+      "recipientAmount": {
+        "amount": 25,
+        "currency": "212"
+      },
+      "productValues": [
+        {
+          "amount": 29,
+          "currency": "710"
+        },
+        {
+          "amount": 12,
+          "currency": "212"
+        }
+      ]
+    }
+  ]
+}

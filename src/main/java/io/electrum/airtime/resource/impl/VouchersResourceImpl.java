@@ -1,10 +1,13 @@
 package io.electrum.airtime.resource.impl;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import javax.ws.rs.Path;
 import javax.ws.rs.container.AsyncResponse;
-import javax.ws.rs.core.*;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Request;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
+import javax.ws.rs.core.UriInfo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +16,7 @@ import io.electrum.airtime.api.IVouchersResource;
 import io.electrum.airtime.api.VouchersResource;
 import io.electrum.airtime.api.model.VoucherConfirmation;
 import io.electrum.airtime.api.model.VoucherRequest;
-import io.electrum.airtime.handler.VoucherMessageHandlerFactory;
+import io.electrum.airtime.handler.AirtimeMessageHandlerFactory;
 import io.electrum.vas.model.BasicReversal;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.Authorization;
@@ -34,30 +37,9 @@ public class VouchersResourceImpl extends VouchersResource implements IVouchersR
    }
 
    @Override
-   public void confirmVoucherImpl(
-         String requestId,
-         String confirmationId,
-         VoucherConfirmation confirmation,
-         SecurityContext securityContext,
-         Request request,
-         HttpHeaders httpHeaders,
-         AsyncResponse asyncResponse,
-         UriInfo uriInfo,
-         HttpServletRequest httpServletRequest) {
-      log.info(String.format("%s %s", httpServletRequest.getMethod(), uriInfo.getPath()));
-      log.debug(String.format("%s %s\n%s", httpServletRequest.getMethod(), uriInfo.getPath(), confirmation));
-      Response rsp =
-            VoucherMessageHandlerFactory.getConfirmVoucherHandler()
-                  .handle(requestId, confirmationId, confirmation, httpHeaders);
-      log.debug(String.format("Entity returned:\n%s", rsp.getEntity()));
-
-      asyncResponse.resume(rsp);
-   }
-
-   @Override
    public void provisionVoucherImpl(
-         String requestId,
-         @Valid VoucherRequest voucherRequest,
+         String voucherId,
+         VoucherRequest body,
          SecurityContext securityContext,
          Request request,
          HttpHeaders httpHeaders,
@@ -65,10 +47,9 @@ public class VouchersResourceImpl extends VouchersResource implements IVouchersR
          UriInfo uriInfo,
          HttpServletRequest httpServletRequest) {
       log.info(String.format("%s %s", httpServletRequest.getMethod(), uriInfo.getPath()));
-      log.debug(String.format("%s %s\n%s", httpServletRequest.getMethod(), uriInfo.getPath(), voucherRequest));
+      log.debug(String.format("%s %s\n%s", httpServletRequest.getMethod(), uriInfo.getPath(), body));
       Response rsp =
-            VoucherMessageHandlerFactory.getProvisionVoucherHandler()
-                  .handle(requestId, voucherRequest, httpHeaders, uriInfo);
+            AirtimeMessageHandlerFactory.getProvisionVoucherHandler(httpHeaders).handle(voucherId, body, uriInfo);
       log.debug(String.format("Entity returned:\n%s", rsp.getEntity()));
 
       asyncResponse.resume(rsp);
@@ -76,9 +57,9 @@ public class VouchersResourceImpl extends VouchersResource implements IVouchersR
 
    @Override
    public void reverseVoucherImpl(
-         String requestId,
+         String voucherId,
          String reversalId,
-         BasicReversal reversal,
+         BasicReversal body,
          SecurityContext securityContext,
          Request request,
          HttpHeaders httpHeaders,
@@ -86,10 +67,29 @@ public class VouchersResourceImpl extends VouchersResource implements IVouchersR
          UriInfo uriInfo,
          HttpServletRequest httpServletRequest) {
       log.info(String.format("%s %s", httpServletRequest.getMethod(), uriInfo.getPath()));
-      log.debug(String.format("%s %s\n%s", httpServletRequest.getMethod(), uriInfo.getPath(), reversal));
+      log.debug(String.format("%s %s\n%s", httpServletRequest.getMethod(), uriInfo.getPath(), body));
       Response rsp =
-            VoucherMessageHandlerFactory.getReverseVoucherHandler()
-                  .handle(requestId, reversalId, reversal, httpHeaders);
+            AirtimeMessageHandlerFactory.getReverseVoucherHandler(httpHeaders).handle(voucherId, reversalId, body);
+      log.debug(String.format("Entity returned:\n%s", rsp.getEntity()));
+
+      asyncResponse.resume(rsp);
+   }
+
+   @Override
+   public void confirmVoucherImpl(
+         String voucherId,
+         String confirmationId,
+         VoucherConfirmation body,
+         SecurityContext securityContext,
+         Request request,
+         HttpHeaders httpHeaders,
+         AsyncResponse asyncResponse,
+         UriInfo uriInfo,
+         HttpServletRequest httpServletRequest) {
+      log.info(String.format("%s %s", httpServletRequest.getMethod(), uriInfo.getPath()));
+      log.debug(String.format("%s %s\n%s", httpServletRequest.getMethod(), uriInfo.getPath(), body));
+      Response rsp =
+            AirtimeMessageHandlerFactory.getConfirmVoucherHandler(httpHeaders).handle(voucherId, confirmationId, body);
       log.debug(String.format("Entity returned:\n%s", rsp.getEntity()));
 
       asyncResponse.resume(rsp);

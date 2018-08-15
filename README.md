@@ -8,6 +8,7 @@ These tests consist of correctly formatted JSON messages that validate server re
 The test pack is comprised of JSON files: `Airtime_heroku.postman_collection.json`, `Airtime_localhost.postman_collection.json`, `heroku.postman_environment.json` and `localhost.postman_environment.json`.
 The postman_collection files are a collection of JSON tests that will be run. They contain JSON request messages and response validation scripts. These tests are dependant on variables contained in the the associated postman_environment files.
 
+Please note for Msisdn Info Requests: We have configured specific msisdn numbers to return specific products and/or promotions. These are described within the above mentioned collection.
 ### Running tests
 
 There are two possible ways to run this test pack: either via the Postman desktop client or via Newman, the command line interface for Postman.
@@ -24,7 +25,7 @@ Note that that tests may be run individually from the main Postman view where te
 1. Install newman (make sure Node Package Manager is installed first):
 	`npm install newman -g`
 2. Run the tests:
-	`newman run Airtime_localhost.postman_collection.json -e localhost.postman_environment.json`
+	`newman run Airtime.postman_collection.json -e localhost.postman_environment.json`
 3. This will run all tests against an Airtime Service server implementation hosted on localhost:8080 and provide a basic breakdown of which tests passed and failed.
 
 ##Testing a Client

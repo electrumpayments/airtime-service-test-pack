@@ -1,0 +1,24 @@
+{
+  "id": "{{reversalId}}",
+  "requestId": "{{requestId}}",
+  "time": "{{timestamp}}",
+  "thirdPartyIdentifiers": [
+    {
+      "institutionId": "{{thirdPartyId1}}",
+      "transactionIdentifier": "{{thirdPartyTranRef1}}"
+    },
+    {
+      "institutionId": "{{thirdPartyId2}}",
+      "transactionIdentifier": "{{thirdPartyTranRef2}}"
+    },
+    {
+      "institutionId": "{{thirdPartyId3}}",
+      "transactionIdentifier": "{{thirdPartyTranRef3}}"
+    },
+    {
+      "institutionId": "{{thirdPartyId4}}",
+      "transactionIdentifier": "{{thirdPartyTranRef4}}"
+    }
+  ],
+  "reversalReason": "TIMEOUT"
+}

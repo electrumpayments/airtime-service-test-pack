@@ -16,25 +16,25 @@ import io.swagger.annotations.ApiModelProperty;
 
 public class DetailMessage {
 
-   private String pathId = null;
-   private String voucherId = null;
-   private String reversalId = null;
-   private String confirmationId = null;
-   private String voidId = null;
-   private Product product = null;
-   private String requestTime = null;
-   private String reversalTime = null;
-   private String confirmDate = null;
-   private String voidDate = null;
-   private Institution client = null;
-   private Originator originator = null;
-   private Institution settlementEntity = null;
-   private Institution receiver = null;
-   private Voucher voucher = null;
-   private SlipData slipData = null;
-   private String freeString = null;
-   private List<ThirdPartyIdentifier> thirdPartyIdentifiers = null;
-   private List<FormatError> formatErrors = null;
+   protected String pathId = null;
+   protected String voucherId = null;
+   protected String reversalId = null;
+   protected String confirmationId = null;
+   protected String voidId = null;
+   protected Product product = null;
+   protected String requestTime = null;
+   protected String reversalTime = null;
+   protected String confirmDate = null;
+   protected String voidDate = null;
+   protected Institution client = null;
+   protected Originator originator = null;
+   protected Institution settlementEntity = null;
+   protected Institution receiver = null;
+   protected Voucher voucher = null;
+   protected SlipData slipData = null;
+   protected String freeString = null;
+   protected List<ThirdPartyIdentifier> thirdPartyIdentifiers = null;
+   protected List<FormatError> formatErrors = null;
 
    /**
     * The randomly generated String identifying this voucher request, as defined for a variant 4 String in [RFC
@@ -356,9 +356,10 @@ public class DetailMessage {
    }
 
    /**
-    * The unaltered thirdPartyIdentifiers array as supplied in the related BasicResponse message. Required if thirdPartyIdentifiers field was
-    * present in the BasicResponse. If no thirdPartyIdentifiers was received in the BasicResponse or no BasicResponse was received
-    * then this should be set to the thirdPartyIdentifiers sent in the original request.
+    * The unaltered thirdPartyIdentifiers array as supplied in the related BasicResponse message. Required if
+    * thirdPartyIdentifiers field was present in the BasicResponse. If no thirdPartyIdentifiers was received in the
+    * BasicResponse or no BasicResponse was received then this should be set to the thirdPartyIdentifiers sent in the
+    * original request.
     **/
    public DetailMessage transactionIdentifiers(List<ThirdPartyIdentifier> transactionIdentifiers) {
       this.thirdPartyIdentifiers = transactionIdentifiers;
@@ -410,7 +411,8 @@ public class DetailMessage {
             && Objects.equals(reversalTime, detailMessage.reversalTime)
             && Objects.equals(confirmDate, detailMessage.confirmDate)
             && Objects.equals(voidDate, detailMessage.voidDate) && Objects.equals(originator, detailMessage.originator)
-            && Objects.equals(client, detailMessage.client) && Objects.equals(settlementEntity, detailMessage.settlementEntity)
+            && Objects.equals(client, detailMessage.client)
+            && Objects.equals(settlementEntity, detailMessage.settlementEntity)
             && Objects.equals(receiver, detailMessage.receiver) && Objects.equals(voucher, detailMessage.voucher)
             && Objects.equals(slipData, detailMessage.slipData) && Objects.equals(freeString, detailMessage.freeString)
             && Objects.equals(formatErrors, detailMessage.formatErrors);
