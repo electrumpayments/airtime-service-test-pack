@@ -2,7 +2,7 @@ version: 2
 jobs:
   build-and-test:
     docker:
-      - image: 813968012009.dkr.ecr.us-east-1.amazonaws.com/circleci-openjdk8-8u162
+      - image: 813968012009.dkr.ecr.us-east-1.amazonaws.com/circleci-test-server
         aws_auth:
           aws_access_key_id: $AWS_ACCESS_KEY_ID
           aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
@@ -15,12 +15,6 @@ jobs:
             - v1-maven-{{ .Branch }}
       - setup_remote_docker:
           docker_layer_caching: true
-      - run:
-          name: Install node.js and newman
-          command: |
-            curl -sL https://deb.nodesource.com/setup_8.x | bash -
-            apt-get install -y nodejs
-            npm install -g newman
       - run:
           name: Build, Run, and Test
           command: /electrum/bin/postmanTestJava.sh Airtime
@@ -37,7 +31,7 @@ jobs:
             git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP.git master
   build-with-latest-deps:
     docker:
-      - image: 813968012009.dkr.ecr.us-east-1.amazonaws.com/circleci-openjdk8-8u162
+      - image: 813968012009.dkr.ecr.us-east-1.amazonaws.com/circleci-test-server
         aws_auth:
           aws_access_key_id: $AWS_ACCESS_KEY_ID
           aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
