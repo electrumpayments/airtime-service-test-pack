@@ -17,7 +17,7 @@ jobs:
           command: mvn package -B -Dstyle.color=always
       - run:
           name: Build docker image for testing
-          command: docker build -t=$CIRCLE_PROJECT_NAME ./target
+          command: docker build -t $CIRCLE_PROJECT_NAME ./target
       - run:
           name: Run test server container
           command: docker run -d -p 8080:8080 --name test-server $CIRCLE_PROJECT_REPONAME
