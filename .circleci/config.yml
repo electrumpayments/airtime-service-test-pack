@@ -31,9 +31,15 @@ jobs:
           name: Run test server container
           command: docker run -d -p 8080:8080 --name test-server $CIRCLE_PROJECT_REPONAME
       - run:
+          # This is required because CircleCI 2.0 does not allow mounting of folders directly from job space
+          name: Create dummy container with volume containing Postman collections
+          command: |
+            docker create -v /etc/newman --name collections alpine:3.8 /bin/true
+            docker cp $CIRCLE_WORKING_DIRECTORY/test/postman/. collections:/etc/newman
+      - run:
           name: Run Postman test collection using Newman container
           command: >
-            docker run -v $CIRCLE_WORKING_DIRECTORY/test/postman:/etc/newman --network container:test-server -t postman/newman:ubuntu
+            docker run --volumes-from collections --network container:test-server -t postman/newman:ubuntu
             run Airtime.postman_collection.json -e localhost.postman_environment.json
   deploy:
     docker:
