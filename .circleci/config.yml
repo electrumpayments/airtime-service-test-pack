@@ -3,6 +3,7 @@ jobs:
   build-and-test:
     docker:
       - image: circleci/openjdk:8u181-jdk-stretch
+      - image: alpine:3.8
     working_directory: /home/circleci/project
     steps:
       - checkout
