@@ -33,8 +33,8 @@ jobs:
       - run:
           name: Run Postman test collection using Newman container
           command: >
-            docker run -v $CIRCLE_WORKING_DIRECTORY/test/postman:/etc/newman -t --network container:test-server
-            postman/newman:alpine run "Airtime.postman_collection.json" --environment="./test/postman/localhost.postman_environment.json"
+            docker run -v $CIRCLE_WORKING_DIRECTORY/test/postman:/etc/newman --network container:test-server -t postman/newman:ubuntu
+            run Airtime.postman_collection.json --environment=localhost.postman_environment.json
   deploy:
     docker:
       - image: circleci/buildpack-deps:stretch
