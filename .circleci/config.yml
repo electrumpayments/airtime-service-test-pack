@@ -2,10 +2,7 @@ version: 2
 jobs:
   build-and-test:
     docker:
-      - image: 813968012009.dkr.ecr.us-east-1.amazonaws.com/circleci-test-server
-        aws_auth:
-          aws_access_key_id: $AWS_ACCESS_KEY_ID
-          aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
+      - image: circleci/openjdk:8u181-jdk-stretch
     steps:
       - checkout
       - restore_cache:
@@ -16,8 +13,19 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
-          name: Build, Run, and Test
-          command: /electrum/bin/postmanTestJava.sh Airtime
+          name: Package
+          command: mvn package -B -Dstyle.color=always
+      - run:
+          name: Build docker image for testing
+          command: docker build -t=$CIRCLE_PROJECT_NAME ./target
+      - run:
+          name: Run test server container
+          command: docker run -d -p 8080:8080 --name test-server $CIRCLE_PROJECT_REPONAME
+      - run:
+          name: Run Postman test collection using Newman container
+          command: >
+            docker run -v test/postman:/etc/newman -t --network container:test-server
+            postman/newman:alpine run "Airtime.postman_collection.json" --environment="localhost.postman_environment.json"
   deploy:
     docker:
       - image: circleci/buildpack-deps:stretch
