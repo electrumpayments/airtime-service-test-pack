@@ -10,14 +10,17 @@ jobs:
           keys:
             - v1-maven-{{ .Branch }}-{{ checksum "pom.xml" }}
             - v1-maven-{{ .Branch }}
+      - run: mvn dependency:go-offline
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: v1-maven-{{ .Branch }}-{{ checksum "pom.xml" }}
+      - run: mvn package
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
-          name: Package
-          command: mvn package -B -Dstyle.color=always
-      - run:
           name: Build docker image for testing
-          command: docker build -t $CIRCLE_PROJECT_NAME ./target
+          command: docker build -t $CIRCLE_PROJECT_REPONAME ./target
       - run:
           name: Run test server container
           command: docker run -d -p 8080:8080 --name test-server $CIRCLE_PROJECT_REPONAME
