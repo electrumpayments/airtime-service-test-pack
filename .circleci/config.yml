@@ -27,7 +27,7 @@ jobs:
       - run:
           name: Run Postman test collection using Newman container
           command: >
-            docker run -v $CIRCLE_WORKING_DIRECTORY/test/postman:/etc/newman -t --network container:test-server
+            docker run -v `pwd`/test/postman:/etc/newman -t --network container:test-server
             postman/newman:alpine run "Airtime.postman_collection.json" --environment="localhost.postman_environment.json"
   deploy:
     docker:
