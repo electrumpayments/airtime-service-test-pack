@@ -2,8 +2,11 @@ version: 2
 jobs:
   build-and-test:
     docker:
-      - image: circleci/openjdk:8u181-jdk-stretch
-      - image: alpine:3.8
+      - image: 813968012009.dkr.ecr.us-east-1.amazonaws.com/circleci-openjdk-8u162
+        aws_auth:
+          aws_access_key_id: $AWS_ACCESS_KEY_ID
+          aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
+    # The below is required because of https://discuss.circleci.com/t/circle-working-directory-doesnt-expand/17007
     working_directory: /home/circleci/project
     steps:
       - checkout
@@ -17,34 +20,14 @@ jobs:
           paths:
             - ~/.m2
           key: v1-maven-{{ .Branch }}-{{ checksum "pom.xml" }}
-      - run:
-          name: mvn package
-          command: >
-            mvn package -B
-            -Dstyle.color=always
-            -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
-          name: Build docker image for testing
-          command: docker build -t $CIRCLE_PROJECT_REPONAME ./target
-      - run:
-          name: Run test server container
-          command: docker run -d -p 8080:8080 --name test-server $CIRCLE_PROJECT_REPONAME
-      - run:
-          # This is required because CircleCI 2.0 does not allow mounting of folders directly from job space
-          name: Create dummy container with volume containing Postman collections
-          command: |
-            docker create -v /etc/newman --name collections alpine:3.8 /bin/true
-            docker cp $CIRCLE_WORKING_DIRECTORY/test/postman/. collections:/etc/newman
-      - run:
-          name: Run Postman test collection using Newman container
-          command: >
-            docker run --volumes-from collections --network container:test-server -t postman/newman:ubuntu
-            run Airtime.postman_collection.json -e localhost.postman_environment.json
+          name: Build, run, and test
+          command: /electrum/bin/postmanTestJava.sh
   deploy:
     docker:
-      - image: circleci/buildpack-deps:stretch
+      - image: buildpack-deps:stretch
     environment:
       HEROKU_APP: airtime-service-test-pack
     steps:
@@ -55,7 +38,7 @@ jobs:
             git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP.git master
   build-with-latest-deps:
     docker:
-      - image: 813968012009.dkr.ecr.us-east-1.amazonaws.com/circleci-test-server
+      - image: 813968012009.dkr.ecr.us-east-1.amazonaws.com/circleci-openjdk-8u162
         aws_auth:
           aws_access_key_id: $AWS_ACCESS_KEY_ID
           aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
