@@ -24,7 +24,7 @@ jobs:
           docker_layer_caching: true
       - run:
           name: Build, run, and test
-          command: /electrum/bin/postmanTestJava.sh
+          command: /electrum/bin/postmanTestJava.sh Airtime
   deploy:
     docker:
       - image: buildpack-deps:stretch
@@ -54,7 +54,7 @@ jobs:
           command: /electrum/bin/updatePomWithLatestDeps.sh
       - run:
           name: Test, but only if any Electrum dependencies changed
-          command: /electrum/bin/postmanTestWithUpdatedDepsJava.sh
+          command: /electrum/bin/postmanTestWithUpdatedDepsJava.sh Airtime
       - run:
           name: Notify success to slack
           command: /electrum/bin/notifySlackDepBuildSucceeded.sh
