@@ -35,7 +35,7 @@ jobs:
             - test-server-image.tar
   deploy:
     docker:
-      - image: circleci/buildpack-deps:stretch
+      - image: circleci/openjdk:8u162-jdk-stretch
     environment:
       HEROKU_APP: airtime-service-test-pack
       DOCKER_REPONAME: electrum/airtime-service-test-server
