@@ -20,22 +20,46 @@ jobs:
           paths:
             - ~/.m2
           key: v1-maven-{{ .Branch }}-{{ checksum "pom.xml" }}
-      - setup_remote_docker:
-          docker_layer_caching: true
+      - setup_remote_docker
       - run:
           name: Build, run, and test
           command: /electrum/bin/postmanTestJava.sh Airtime
+      - run:
+          name: Save docker image for caching
+          command: |
+            mkdir -p docker-cache
+            docker save -o docker-cache/test-server-image.tar $CIRCLE_PROJECT_REPONAME
+      - persist_to_workspace:
+          root: docker-cache
+          paths:
+            - test-server-image.tar
   deploy:
     docker:
-      - image: buildpack-deps:stretch
+      - image: circleci/buildpack-deps:stretch
     environment:
       HEROKU_APP: airtime-service-test-pack
+      DOCKER_REPONAME: electrum/airtime-service-test-server
     steps:
       - checkout
       - run:
           name: Deploy Master to Heroku
           command: |
             git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP.git master
+      - attach_workspace:
+          at: docker-cache
+      - run:
+          name: Export service interface version
+          command: |
+            echo "export INTERFACE_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${airtime-version}' --non-recursive exec:exec)" >> $BASH_ENV
+            echo "export TAG=${INTERFACE_VERSION:0:1}" >> $BASH_ENV # tag with major version of underlying service interface
+      - setup_remote_docker
+      - run:
+          name: Deploy image to Docker Hub
+          command: |
+            docker load < docker-cache/test-server-image.tar
+            docker tag $CIRCLE_PROJECT_REPONAME $DOCKER_REPONAME:$TAG
+            echo $DOCKERHUB_PWD | docker login -u $DOCKERHUB_USERNAME --password-stdin
+            docker push $DOCKER_REPONAME:$TAG
   build-with-latest-deps:
     docker:
       - image: 813968012009.dkr.ecr.us-east-1.amazonaws.com/circleci-openjdk8-8u162
@@ -52,6 +76,7 @@ jobs:
       - run:
           name: Update pom with latest Electrum deps
           command: /electrum/bin/updatePomWithLatestDeps.sh
+      - setup_remote_docker
       - run:
           name: Test, but only if any Electrum dependencies changed
           command: /electrum/bin/postmanTestWithUpdatedDepsJava.sh Airtime
