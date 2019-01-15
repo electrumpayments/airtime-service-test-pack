@@ -51,8 +51,7 @@ jobs:
           name: Export service interface version
           # tag with major version of underlying service interface
           command: |
-            echo "export INTERFACE_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${airtime-version}' --non-recursive exec:exec)" >> $BASH_ENV
-            echo "export TAG=${INTERFACE_VERSION:0:1}" >> $BASH_ENV
+            echo "export TAG=$(mvn -q -Dexec.executable=echo -Dexec.args='${airtime-version}' --non-recursive exec:exec | cut -c1)" >> $BASH_ENV
       - setup_remote_docker
       - run:
           name: Deploy image to Docker Hub
