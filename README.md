@@ -2,7 +2,15 @@
 REST server for testing implementations of the [airtime-service-interface](https://github.com/electrumpayments/airtime-service-interface).
 
 ## Testing a Client
-To test a client implementation an instance of this test server is provided at: https://airtime-service-test-pack.herokuapp.com.
+To test a client implementation an instance of this test server is provided at https://airtime-service-test-pack.herokuapp.com.
+
+Or you can run a containerized version of this test server locally using Docker:
+```bash
+docker pull electrum/airtime-service-test-server:5
+# Run the test server listening on localhost:8080
+docker run -d -p 8080:8080 electrum/airtime-service-test-server:5
+```
+
 Messages sent to this server via the URLs described in the [airtime-service-interface](https://github.com/electrumpayments/airtime-service-interface) will be
 validated and responded to with mock voucher data.
 
