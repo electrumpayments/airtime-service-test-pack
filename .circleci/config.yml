@@ -38,7 +38,7 @@ jobs:
       - image: circleci/openjdk:8u162-jdk-stretch
     environment:
       HEROKU_APP: airtime-service-test-pack
-      DOCKER_REPONAME: electrum/airtime-service-test-server
+      DOCKER_REPONAME: electrum/airtime-test-server
     steps:
       - checkout
       - run:

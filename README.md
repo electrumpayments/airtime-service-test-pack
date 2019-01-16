@@ -6,9 +6,9 @@ To test a client implementation an instance of this test server is provided at h
 
 Or you can run a containerized version of this test server locally using Docker:
 ```bash
-docker pull electrum/airtime-service-test-server:5
+docker pull electrum/airtime-test-server:5
 # Run the test server listening on localhost:8080
-docker run -d -p 8080:8080 electrum/airtime-service-test-server:5
+docker run -d -p 8080:8080 electrum/airtime-test-server:5
 ```
 
 Messages sent to this server via the URLs described in the [airtime-service-interface](https://github.com/electrumpayments/airtime-service-interface) will be
