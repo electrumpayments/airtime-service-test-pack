@@ -15,7 +15,7 @@ jobs:
           keys:
             - v1-maven-{{ .Branch }}-{{ checksum "pom.xml" }}
             - v1-maven-{{ .Branch }}
-      - run: mvn dependency:resolve-plugins rdependency:go-offline -B -Dstyle.color=always
+      - run: mvn dependency:resolve-plugins dependency:go-offline -B -Dstyle.color=always
       - save_cache:
           paths:
             - ~/.m2
@@ -74,6 +74,7 @@ jobs:
         aws_auth:
           aws_access_key_id: $AWS_ACCESS_KEY_ID
           aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
+    working_directory: /home/circleci/project
     steps:
       - checkout
       - restore_cache:
