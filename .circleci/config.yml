@@ -15,7 +15,7 @@ jobs:
           keys:
             - v1-maven-{{ .Branch }}-{{ checksum "pom.xml" }}
             - v1-maven-{{ .Branch }}
-      - run: mvn dependency:go-offline
+      - run: mvn dependency:resolve-plugins rdependency:go-offline -B -Dstyle.color=always
       - save_cache:
           paths:
             - ~/.m2
@@ -25,12 +25,12 @@ jobs:
           name: Build, run, and test
           command: /electrum/bin/postmanTestJava.sh Airtime
       - run:
-          name: Save docker image for caching
+          name: Save docker image for persisting
           command: |
-            mkdir -p docker-cache
-            docker save -o docker-cache/test-server-image.tar $CIRCLE_PROJECT_REPONAME
+            mkdir -p workspace
+            docker save -o workspace/test-server-image.tar $CIRCLE_PROJECT_REPONAME
       - persist_to_workspace:
-          root: docker-cache
+          root: workspace
           paths:
             - test-server-image.tar
   deploy:
@@ -42,21 +42,29 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Setup Heroku
+          command: |
+            echo 'machine git.heroku.com
+              login $HEROKU_LOGIN
+              password $HEROKU_API_KEY' > ~/.netrc
+            echo 'VerifyHostKeyDNS yes
+                  StrictHostKeyChecking no' > ~/.ssh/config
+      - run:
           name: Deploy Master to Heroku
           command: |
-            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP.git master
+            git push git@heroku.com:$HEROKU_APP.git master
       - attach_workspace:
-          at: docker-cache
+          at: workspace
       - run:
           name: Export service interface version
-          # tag with major version of underlying service interface
           command: |
             echo "export TAG=$(mvn -q -Dexec.executable=echo -Dexec.args='${airtime-version}' --non-recursive exec:exec | cut -c1)" >> $BASH_ENV
       - setup_remote_docker
       - run:
           name: Deploy image to Docker Hub
           command: |
-            docker load < docker-cache/test-server-image.tar
+            docker load < workspace/test-server-image.tar
+            # tag with major version of underlying service interface
             docker tag $CIRCLE_PROJECT_REPONAME $DOCKER_REPONAME:$TAG
             echo $DOCKERHUB_PWD | docker login -u $DOCKERHUB_USERNAME --password-stdin
             docker push $DOCKER_REPONAME:$TAG
