@@ -85,6 +85,13 @@ public class AirtimeModelUtils {
       }
 
       Institution receiver = transaction.getReceiver();
+
+      if (receiver == null) {
+         receiver = new Institution();
+         receiver.setId("44444444");
+         receiver.setName("TransactionNetwork");
+      }
+
       thirdPartyIds.add(
             new ThirdPartyIdentifier().institutionId(settlementEntity.getId())
                   .transactionIdentifier(RandomData.random09AZ((int) ((Math.random() * 20) + 1))));
