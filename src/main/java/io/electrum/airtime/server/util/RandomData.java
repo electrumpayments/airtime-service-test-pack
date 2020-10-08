@@ -14,7 +14,7 @@ public class RandomData {
    public static String randomaz(int length) {
       StringBuilder sb = new StringBuilder();
       for (int i = 0; i < length; i++) {
-         sb.append((int) (Math.random() * 27 + 'a'));
+         sb.append((int) (Math.random() * 26 + 'a'));
       }
 
       return sb.toString();
@@ -23,7 +23,7 @@ public class RandomData {
    public static String randomAZ(int length) {
       StringBuilder sb = new StringBuilder();
       for (int i = 0; i < length; i++) {
-         sb.append((char) (Math.random() * 27 + 'A'));
+         sb.append((char) (Math.random() * 26 + 'A'));
       }
 
       return sb.toString();

@@ -16,37 +16,61 @@ import io.electrum.airtime.api.model.PurchaseReversal;
 import io.electrum.airtime.server.AirtimeTestServerRunner;
 import io.electrum.airtime.server.model.DetailMessage;
 import io.electrum.vas.JsonUtil;
+import io.electrum.vas.model.Amounts;
 import io.electrum.vas.model.BasicReversal;
-import io.electrum.vas.model.Institution;
+import io.electrum.vas.model.LedgerAmount;
 
 public class PurchaseModelUtils extends AirtimeModelUtils {
 
    public static PurchaseResponse purchaseRspFromReq(PurchaseRequest purchaseRequest) throws IOException {
       PurchaseResponse purchaseResponse =
             JsonUtil.deserialize(JsonUtil.serialize(purchaseRequest, PurchaseRequest.class), PurchaseResponse.class);
+      // after the above serialise/deserialise, any fields common to both objects should be populated in the response if
+      // they were populated in the request
 
       updateWithRandomizedIdentifiers(purchaseResponse);
-      purchaseResponse.setVoucher(createRandomizedVoucher());
+      if (purchaseRequest.getRecipientMsisdn() == null) {
+         // if the request doesn't contain a recipient MSISDN, presume it's a voucher-base/POR transaction
+         purchaseResponse.setVoucher(createRandomizedVoucher());
+      } else {
+         Msisdn responseMsisdn =
+               JsonUtil
+                     .deserialize(JsonUtil.serialize(purchaseRequest.getRecipientMsisdn(), Msisdn.class), Msisdn.class);
+         responseMsisdn.setOperator(purchaseResponse.getReceiver());
+         purchaseResponse.setMsisdn(responseMsisdn);
+      }
       purchaseResponse.setSlipData(createRandomizedSlipData());
-      purchaseResponse
-            .setProduct(purchaseRequest.getProduct().name("TalkALot").type(Product.ProductType.AIRTIME_FIXED));
-      purchaseResponse.setAmounts(createRandomizedAmounts());
-      purchaseResponse.setMsisdn(buildMsisdn(purchaseRequest));
-      purchaseResponse.setSettlementEntity(buildRandomizedSettlementEntity()); // This is the "purchase reference"
+      updateWithResponseProduct(purchaseResponse);
+      updateWithResponseAmounts(purchaseRequest, purchaseResponse);
 
       return purchaseResponse;
    }
 
-   private static Msisdn buildMsisdn(PurchaseRequest purchaseRequest) {
-      Msisdn msisdn;
-      if ((msisdn = purchaseRequest.getRecipientMsisdn()) == null) {
-         msisdn = new Msisdn().msisdn(RandomData.random09(10)).country("ZA");
+   private static void updateWithResponseAmounts(PurchaseRequest purchaseRequest, PurchaseResponse purchaseResponse) {
+      if (purchaseRequest.getAmounts() != null && purchaseRequest.getAmounts().getRequestAmount() != null) {
+         // if a request amount was received then echo it back as the approved amount
+         LedgerAmount requestAmount = purchaseRequest.getAmounts().getRequestAmount();
+         purchaseRequest.getAmounts().getRequestAmount();
+         Amounts responseAmounts =
+               purchaseResponse.getAmounts() == null ? new Amounts() : purchaseResponse.getAmounts();
+         responseAmounts.approvedAmount(
+               new LedgerAmount().amount(requestAmount.getAmount())
+                     .currency(requestAmount.getCurrency())
+                     .ledgerIndicator(requestAmount.getLedgerIndicator()));
+      } else {
+         // make up some amounts if none were received
+         purchaseResponse.setAmounts(createRandomizedAmounts());
       }
-      return msisdn;
    }
 
-   private static Institution buildRandomizedSettlementEntity() {
-      return new Institution().name(RandomData.randomAZ(8)).id(RandomData.random09(7));
+   private static void updateWithResponseProduct(PurchaseResponse purchaseResponse) {
+      Product responseProduct = purchaseResponse.getProduct();
+      if (responseProduct.getName() == null) {
+         responseProduct.setName("TalkALot");
+      }
+      if (responseProduct.getType() == null) {
+         responseProduct.setType(Product.ProductType.AIRTIME_FIXED);
+      }
    }
 
    public static Response canPurchasePurchaseRequest(String purchaseRequestId, String username, String password) {
