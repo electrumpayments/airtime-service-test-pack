@@ -100,6 +100,7 @@ public class AirtimeModelUtils {
                   .transactionIdentifier(RandomData.random09AZ((int) ((Math.random() * 20) + 1))));
 
       transaction.setSettlementEntity(settlementEntity);
+      transaction.setReceiver(receiver);
    }
 
    protected static Amounts createRandomizedAmounts() {

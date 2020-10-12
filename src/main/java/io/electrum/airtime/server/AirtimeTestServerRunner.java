@@ -18,17 +18,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.electrum.airtime.resource.impl.AirtimeTestServer;
+
 public class AirtimeTestServerRunner {
 
    private static Logger log_logger = LoggerFactory.getLogger("io.electrum.airtime.server.log");
-   
+
    private static AirtimeTestServer testServer;
 
    public static void main(String[] args) throws Exception {
-      startAirtimeTestServer(args[0]);
+      startAirtimeTestServer(args[0], args[1]);
    }
 
-   public static void startAirtimeTestServer(String port) throws Exception {
+   public static void startAirtimeTestServer(String port, String smsApiKey) throws Exception {
 
       log_logger.info("---- STARTING AIRTIME SERVER ----");
 
@@ -75,7 +76,7 @@ public class AirtimeTestServerRunner {
          ConstraintSecurityHandler sh = new ConstraintSecurityHandler();
          // sh.addConstraintMapping(cm);
 
-         testServer = new AirtimeTestServer();
+         testServer = new AirtimeTestServer(smsApiKey);
          ServletContainer servletContainer = new ServletContainer(testServer);
          ServletHolder servletHolder = new ServletHolder(servletContainer);
          ServletContextHandler context = new ServletContextHandler();
@@ -84,7 +85,7 @@ public class AirtimeTestServerRunner {
          context.insertHandler(sh);
 
          server.setHandler(context);
-        
+
          // Start the server
          server.start();
          server.join();
@@ -93,9 +94,8 @@ public class AirtimeTestServerRunner {
          throw e;
       }
    }
-   
-   public static AirtimeTestServer getTestServer()
-   {
+
+   public static AirtimeTestServer getTestServer() {
       return testServer;
    }
 }

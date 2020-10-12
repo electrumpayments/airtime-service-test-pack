@@ -48,10 +48,11 @@ public class AirtimeTestServer extends ResourceConfig {
    // This hashmap stores the relationship between purchase references and purchase request id's so a purchase reference
    // can be used to retrieve the correlated purchase request id
    private ConcurrentHashMap<RequestKey, String> purchaseReferenceRecords;
+   private String smsApiKey = null;
 
    private static final Logger log = LoggerFactory.getLogger(AirtimeTestServer.class.getPackage().getName());
 
-   public AirtimeTestServer() {
+   public AirtimeTestServer(String smsApiKey) {
       packages(AirtimeTestServer.class.getPackage().getName());
 
       register(MyObjectMapperProvider.class);
@@ -74,6 +75,7 @@ public class AirtimeTestServer extends ResourceConfig {
       purchaseConfirmationRecords = new ConcurrentHashMap<>();
 
       purchaseReferenceRecords = new ConcurrentHashMap<>();
+      this.smsApiKey = smsApiKey;
    }
 
    public ConcurrentHashMap<RequestKey, VoucherRequest> getProvisionVoucherRecords() {
@@ -148,6 +150,14 @@ public class AirtimeTestServer extends ResourceConfig {
 
    public void setPurchaseReferenceRecords(ConcurrentHashMap<RequestKey, String> purchaseReferenceRecords) {
       this.purchaseReferenceRecords = purchaseReferenceRecords;
+   }
+
+   public String getSmsApiKey() {
+      return smsApiKey;
+   }
+
+   public void setSmsApiKey(String smsApiKey) {
+      this.smsApiKey = smsApiKey;
    }
 
    @Provider
